@@ -10,7 +10,7 @@ This fund management system is mainly to achieve a user information processing a
 
 The users of our system are mainly university teachers and fund approvers. These users have the following characteristics: 1. Representativeness. Teachers usually have their own research groups, which need to apply for funding on behalf of the whole research group. 2. Timeliness. Teachers want grant applications reviewed as soon as possible.
 
-### 1.3 Project Scope 
+### 1.3 Project Scope
 
 This system mainly takes the teacher who applies for the management fund as the user, and the auditor who reviews the fund as the manager, which is temporarily applied in Southern University of Science and Technology.
 
@@ -18,11 +18,18 @@ This system mainly takes the teacher who applies for the management fund as the 
 
 To register the teacher as a user, the user has the attributes of the research group to which he belongs. If the user runs multiple research groups, he can view the information/forms of these research groups, and then maintain his fund balance, fund application, etc. At the same time, record the fund utilization rate and other information of the project he applied for. The approver, as the administrator, should be able to decide whether the application form is approved or not, if it is not approved, go back to the application to modify it, and if it is approved, check whether the application is complete.
 
-## 2. Development Process 
+## 2. Development Process
 
-### 2.1 Process Models 
+### 2.1 Process Models
 
-(This section describes the type of process to be followed,and why you choose this model.) 
+#### Incremental Process Models
+
+We decided to use Incremental Process Models as our development process model. 
+Our project is designed to split into multiple parts and each part can be a waterfall. Compared with other models, it's easier to get users' feedback and easier to design and debug in each small function part. By using this model, more rapid delivery and deployment of useful software is available. Also it is particularly useful when staffing is unavailable for a complete implementation
+
+
+
+
 
 ### 2.2 Project Schedule
 
@@ -30,54 +37,136 @@ To register the teacher as a user, the user has the attributes of the research g
 
 (In this section, You should suggest deliverables to be submitted for milestone 2 and milestone 3 (final delivery) by your schedule. Typical deliverable might include working code, documentation, training materials, test suites, etc. You should also briefly describe the suggested deliverable.) 
 
-### 3.1 Milestone 2 Deliverable 
+### 3.1 Milestone 2 Deliverable
+
+Basic structure of the system.
 
 (if the suggested deliverable for milestone 2 is a software system with 50% the basic functionalities, you should describe what these basic functionalities are.) 
 
-### 3.2 Milestone 3 Deliverable 
+### 3.2 Milestone 3 Deliverable
 
 (You should have finished project development. Listing all documents you've finished and all deliverables that you'll deliver to the clients.) 
 
-## 4. Requirements 
+## 4. Requirements
 
 ### 4.1 Functional Requirements
 
-#### 4.1.1 Functional Requirement 1
+#### 4.1.1 Account Management
 
-### 4.2 Non-Functional Requirements 
+Input: 
+Account number/User name; Key
 
-#### 4.2.1 Quality requirements Quality attributes include reliability 
+Processing: 
+Verify whether the password is correct; Distinguish between administrator accounts and user accounts
 
-(capabilities of providing correct and continuous operation results), test (tested easily), easy of use, execution speed, reliability, exception processing, and other related attributes.) 
+Output:
+Display login results and account type
 
-##### 4.2.1.1 Quality requirement 1 Description: 
+Description:
+Ensure that users can normally use their own permission type of account and ensure their account security.
+
+
+#### 4.1.2 Funding Application
+Input: 
+Account number; Applicant name; Application category; Number of funds applied.
+
+Processing: 
+Combine appliction data as application table and upload to database.
+
+Output:
+Funding application history.
+
+Description:
+It collects all the information the funding approval needs and store it into the database.
+
+
+#### 4.1.3 Funding Approval
+
+Input:
+Select funding entry.
+
+Process:
+Show details of this entry for user to do dicision.
+
+Output:
+Funding entry approval result.
+
+Description:
+Each funding entry needs a manager to dicide if it is valid. This function is for manager to check the funding entrys.
+
+#### 4.1.4 Form Output
+
+Input: 
+The type and range of the output form.
+
+Process:
+Read the data in the database of the system, calculate the result and output to a form.
+
+Output:
+The form stores the result.
+
+Description:
+Users can call up the required statistics form according to their own permissions
+
+
+#### 4.1.5 Funding Management
+Input: 
+Funding distribution; Funding cost.
+
+Processing: 
+Show the detailed users' funding management to help users manage their funding.
+
+Output:
+Funding management table.
+
+Description:
+Users need the system to help them record the condition of funding distribution and cost.
+
+### 4.2 Non-Functional Requirements
+
+#### 4.2.1 Quality requirements 
+
+Quality attributes include reliability(capabilities of providing correct and continuous operation results), test (tested easily), easy of use, execution speed, reliability, exception processing, and other related attributes.) 
+
+##### 4.2.1.1 System Stability for Undefined Input: 
+
+The system needs to keep running when some user performs not as we expected. That is, whenever some user clicked anything, the data and running status should be good.
 
 (you need to provide clear and accurate descriptions.) 
 
-##### 4.2.1.2 Quality requirement 2 
+##### 4.2.1.2 Testability:
 
-(similar to quality requirement 1,each quality requirement should be described clearly.) 
+The system is based on the incremental model. So the system can be divided into several functional parts and be tested independently.
 
-#### 4.2.2 Safety Requirements 
 
-(Data security, Password storage etc.)
+#### 4.2.1.3 Easy to Use
 
-##### 4.2.2.1 Safety Requirement 1 Description: 
+Each function of this system should be clear to use. There should not be confusing options. The output of each function should be easily visible.
 
-(you need to provide clear and accurate descriptions.) 
+#### 4.2.2 Safety Requirements
 
-##### 4.2.2.2 Safety Requirement 2 
 
-(similar to Safety requirement 1,each safety requirement should be described clearly.) 
+##### 4.2.2.1 Safety
+
+The system needs to be able to safely save the user's password and other information, which could avoid data loss and data safety
+ 
+
+##### 4.2.2.2 User Privacy
+
+User privacy needs to be guaranteed, that is, each user can only see the information and data that conform to his authority. For example, administrators can see everyone's information because of their higher privileges, while ordinary users can only see information about themselves.
+ 
 
 ## 5. Constraints 
 
 ### 5.1 Operation Environment 
 
-(constraints for operating environment of the system.) 
+For using, it is a webpage can open in a browser. It should be acting well in a computer.
 
+For deployment, it can be running in both linux and windows operating system.
 
 
 ### 5.2 Design and Implementation 
+
+We split this system into frontend and backend. The frontend will be using vue, and the backend should be using springboot. Both can be running on linux and windows.
 
 (constraints related to the system design and implementation. Specify the type of the platform and the development language and tools.
