@@ -35,17 +35,13 @@ Our project is designed to split into multiple parts and each part can be a wate
 
 ## 3. Suggested Deliverables
 
-(In this section, You should suggest deliverables to be submitted for milestone 2 and milestone 3 (final delivery) by your schedule. Typical deliverable might include working code, documentation, training materials, test suites, etc. You should also briefly describe the suggested deliverable.) 
-
 ### 3.1 Milestone 2 Deliverable
 
-Basic structure of the system.
-
-(if the suggested deliverable for milestone 2 is a software system with 50% the basic functionalities, you should describe what these basic functionalities are.) 
+Basic vue and springboot structure of the system. Also include functional requirement 1(Account Management) and functional requiremnet 2 (Funding Application).
 
 ### 3.2 Milestone 3 Deliverable
 
-(You should have finished project development. Listing all documents you've finished and all deliverables that you'll deliver to the clients.) 
+Whole vue and springboot structure code. Document of the funding system history and operation. And the test suites of our system passed.
 
 ## 4. Requirements
 
@@ -149,12 +145,12 @@ Each function of this system should be clear to use. There should not be confusi
 ##### 4.2.2.1 Safety
 
 The system needs to be able to safely save the user's password and other information, which could avoid data loss and data safety
- 
+
 
 ##### 4.2.2.2 User Privacy
 
 User privacy needs to be guaranteed, that is, each user can only see the information and data that conform to his authority. For example, administrators can see everyone's information because of their higher privileges, while ordinary users can only see information about themselves.
- 
+
 
 ## 5. Constraints 
 
