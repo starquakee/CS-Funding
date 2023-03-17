@@ -33,7 +33,13 @@ Our project is designed to split into multiple parts and each part can be a wate
 
 ### 2.2 Project Schedule
 
+![](D:\桌面\schedule1.png)
+
+![](D:\桌面\schedule2.png)
+
 ## 3. Suggested Deliverables
+
+
 
 ### 3.1 Milestone 2 Deliverable
 
@@ -44,6 +50,8 @@ Basic vue and springboot structure of the system. Also include functional requir
 Whole vue and springboot structure code. Document of the funding system history and operation. And the test suites of our system passed.
 
 ## 4. Requirements
+
+
 
 ### 4.1 Functional Requirements
 
@@ -61,8 +69,8 @@ Display login results and account type
 Description:
 Ensure that users can normally use their own permission type of account and ensure their account security.
 
-
 #### 4.1.2 Funding Application
+
 Input: 
 Account number; Applicant name; Application category; Number of funds applied.
 
@@ -90,6 +98,8 @@ Funding entry approval result.
 Description:
 Each funding entry needs a manager to dicide if it is valid. This function is for manager to check the funding entrys.
 
+
+
 #### 4.1.4 Form Output
 
 Input: 
@@ -104,8 +114,8 @@ The form stores the result.
 Description:
 Users can call up the required statistics form according to their own permissions
 
-
 #### 4.1.5 Funding Management
+
 Input: 
 Funding distribution; Funding cost.
 
@@ -126,9 +136,7 @@ Quality attributes include reliability(capabilities of providing correct and con
 
 ##### 4.2.1.1 System Stability for Undefined Input: 
 
-The system needs to keep running when some user performs not as we expected. That is, whenever some user clicked anything, the data and running status should be good.
-
-(you need to provide clear and accurate descriptions.) 
+The system needs to keep running when some user performs not as we expected. That is, whenever some user clicked anything, the data and running status should be good. So we should add the instructions of how to use our system. Meanwhile, we need to test our system many times in milestone 3 to check our system stability.
 
 ##### 4.2.1.2 Testability:
 
@@ -144,15 +152,14 @@ Each function of this system should be clear to use. There should not be confusi
 
 ##### 4.2.2.1 Safety
 
-The system needs to be able to safely save the user's password and other information, which could avoid data loss and data safety
+The system needs to be able to safely save the user's password and other information, which could avoid data loss and data safety.
 
 
 ##### 4.2.2.2 User Privacy
 
 User privacy needs to be guaranteed, that is, each user can only see the information and data that conform to his authority. For example, administrators can see everyone's information because of their higher privileges, while ordinary users can only see information about themselves.
 
-
-## 5. Constraints 
+## 5. Constraints
 
 ### 5.1 Operation Environment 
 
