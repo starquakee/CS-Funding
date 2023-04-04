@@ -16,4 +16,6 @@ public interface UserMapper {
     @Select("select * from user")
     List<User> getAllUser();
 
+    User findUserById(String id);
+
 }

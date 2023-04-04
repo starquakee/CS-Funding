@@ -16,16 +16,6 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-//    List<User> getList() {
-//        return IService.super.list();
-//    }
-
-//    String insertUser(){
-//        try {
-//
-//        }
-//    }
-
     public String testInsert() {
         User user = new User();
         user.setID(Long.toString(System.currentTimeMillis()));
