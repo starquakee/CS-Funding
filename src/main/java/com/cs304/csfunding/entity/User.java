@@ -8,4 +8,6 @@ public class User {
     private String ID;
     private String Key;
     private boolean IsAdmin;
+    private String PhoneNum;
+    private String Name;
 }

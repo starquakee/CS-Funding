@@ -1,5 +1,6 @@
 package com.cs304.csfunding.service;
 
+import com.cs304.csfunding.api.UserDTO;
 import com.cs304.csfunding.entity.User;
 import com.cs304.csfunding.mapper.UserMapper;
 import org.springframework.stereotype.Service;
@@ -16,17 +17,27 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public String testInsert() {
+    public String testInsert(UserDTO userDTO) {
         User user = new User();
         user.setID(Long.toString(System.currentTimeMillis()));
-        user.setKey(Long.toString(System.currentTimeMillis()));
+        user.setKey(userDTO.getKey());
+        user.setPhoneNum(userDTO.getPhoneNum());
+        user.setName(userDTO.getName());
         user.setIsAdmin(false);
         userMapper.addUser(user);
         return "";
     }
 
-    public List<User> testQuery(){
+    public List<User> testQueryAll(){
         return userMapper.getAllUser();
+    }
+
+    public User testQueryByID(String id){
+        return userMapper.findUserById(id);
+    }
+
+    public User testQueryByPhoneNum(String phoneNum){
+        return userMapper.findUserByPhoneNum(phoneNum);
     }
 
 }
