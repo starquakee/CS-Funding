@@ -31,6 +31,9 @@ public class User_ResearchGroupService {
         return "";
     }
 
+    public List<Integer> testQueryByUser(int user){
+        return user_researchGroupMapper.findResearchGroupByUser(user);
+    }
 
 
 }
