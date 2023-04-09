@@ -14,7 +14,7 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @GetMapping(value = "/api/login")
+    @PostMapping(value = "/api/login")
     public Result login(@RequestBody LoginDTO loginDTO){
         return loginService.login(loginDTO);
     }
