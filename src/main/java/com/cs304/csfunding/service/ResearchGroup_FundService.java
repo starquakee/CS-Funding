@@ -1,15 +1,8 @@
 package com.cs304.csfunding.service;
 
 import com.cs304.csfunding.api.ResearchGroup_FundDTO;
-import com.cs304.csfunding.api.UserDTO;
-import com.cs304.csfunding.api.User_ResearchGroupDTO;
-import com.cs304.csfunding.controller.User_ResearchGroupController;
 import com.cs304.csfunding.entity.ResearchGroup_Fund;
-import com.cs304.csfunding.entity.User;
-import com.cs304.csfunding.entity.User_ResearchGroup;
 import com.cs304.csfunding.mapper.ResearchGroup_FundMapper;
-import com.cs304.csfunding.mapper.UserMapper;
-import com.cs304.csfunding.mapper.User_ResearchGroupMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

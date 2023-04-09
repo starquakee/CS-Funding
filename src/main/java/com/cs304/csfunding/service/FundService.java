@@ -6,7 +6,6 @@ import com.cs304.csfunding.mapper.FundMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,15 +18,15 @@ public class FundService {
     }
 
     public String testInsert(FundDTO fundDTO) {
-        Fund fund = new Fund();
-        fund.setFundNumber(fundDTO.getFundNumber());
-        fund.setFundName(fundDTO.getFundName());
-        fund.setSum(fundDTO.getSum());
-        fund.setBalance(fundDTO.getBalance());
-        fund.setStartTime(new Date());
-        fund.setEndTime(new Date());
-        fund.setRemainDays(fundDTO.getRemainDays());
-        fundMapper.addFund(fund);
+        Fund ff = new Fund();
+        ff.setFundNumber(fundDTO.getFundNumber());
+        ff.setFundName(fundDTO.getFundName());
+        ff.setBalance(fundDTO.getBalance());
+        ff.setSum(fundDTO.getSum());
+        ff.setRemainDays(fundDTO.getRemainDays());
+        ff.setStartTime(fundDTO.getStartTime());
+        ff.setEndTime(fundDTO.getEndTime());
+        fundMapper.addFund(ff);
         return "";
     }
 

@@ -2,15 +2,15 @@ package com.cs304.csfunding.api;
 
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 public class FundDTO {
-    private String FundNumber;
-    private String FundName;
-    private float Sum;
-    private float Balance;
-    private int RemainDays;
+    private String fundNumber;
+    private String fundName;
+    private float sum;
+    private float balance;
+    private int remainDays;
+    private String startTime;
+    private String endTime;
 
 
 }
