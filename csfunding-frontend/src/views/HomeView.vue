@@ -1,128 +1,208 @@
 <template>
-    <el-container class="layout-container-demo" style="height: 100%; width: 100%">
-        <el-aside width="200px">
-            <el-scrollbar>
-                <el-menu :default-openeds="['1', '3']">
-                    <el-sub-menu index="1">
-                        <template #title>
-                            <el-icon><message /></el-icon>Navigator One
-                        </template>
-                        <el-menu-item-group>
-                            <template #title>Group 1</template>
-                            <el-menu-item index="1-1">Option 1</el-menu-item>
-                            <el-menu-item index="1-2">Option 2</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group title="Group 2">
-                            <el-menu-item index="1-3">Option 3</el-menu-item>
-                        </el-menu-item-group>
-                        <el-sub-menu index="1-4">
-                            <template #title>Option4</template>
-                            <el-menu-item index="1-4-1">Option 4-1</el-menu-item>
-                        </el-sub-menu>
-                    </el-sub-menu>
-                    <el-sub-menu index="2">
-                        <template #title>
-                            <el-icon><icon-menu /></el-icon>Navigator Two
-                        </template>
-                        <el-menu-item-group>
-                            <template #title>Group 1</template>
-                            <el-menu-item index="2-1">Option 1</el-menu-item>
-                            <el-menu-item index="2-2">Option 2</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group title="Group 2">
-                            <el-menu-item index="2-3">Option 3</el-menu-item>
-                        </el-menu-item-group>
-                        <el-sub-menu index="2-4">
-                            <template #title>Option 4</template>
-                            <el-menu-item index="2-4-1">Option 4-1</el-menu-item>
-                        </el-sub-menu>
-                    </el-sub-menu>
-                    <el-sub-menu index="3">
-                        <template #title>
-                            <el-icon><setting /></el-icon>Navigator Three
-                        </template>
-                        <el-menu-item-group>
-                            <template #title>Group 1</template>
-                            <el-menu-item index="3-1">Option 1</el-menu-item>
-                            <el-menu-item index="3-2">Option 2</el-menu-item>
-                        </el-menu-item-group>
-                        <el-menu-item-group title="Group 2">
-                            <el-menu-item index="3-3">Option 3</el-menu-item>
-                        </el-menu-item-group>
-                        <el-sub-menu index="3-4">
-                            <template #title>Option 4</template>
-                            <el-menu-item index="3-4-1">Option 4-1</el-menu-item>
-                        </el-sub-menu>
-                    </el-sub-menu>
-                </el-menu>
-            </el-scrollbar>
-        </el-aside>
+  <div class="Background">
+    <el-menu :default-active="activeIndex"
+             class="el-menu-demo"
+             mode="horizontal"
+             :ellipsis="false"
+             background-color="grey"
+             style="min-width: 100%">
+      <el-menu-item index="0">南方科技大学财务管理系统</el-menu-item>
+      <div class="flex-grow" />
+      <el-menu-item index="1">帮助中心</el-menu-item>
+      <el-sub-menu index="2">
+        <template #title>退出登录</template>
+        <el-menu-item index="2-1">
+          <router-link to="login">
+            返回登录页面
+          </router-link>
+        </el-menu-item>
+        <el-menu-item index="2-2">item two</el-menu-item>
+      </el-sub-menu>
+    </el-menu>
 
-        <el-container>
-            <el-header style="text-align: right; font-size: 12px">
-                <div class="toolbar">
-                    <el-dropdown>
-                        <el-icon style="margin-right: 8px; margin-top: 1px"
-                        ><setting
-                        /></el-icon>
-                        <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item>View</el-dropdown-item>
-                                <el-dropdown-item>Add</el-dropdown-item>
-                                <el-dropdown-item>Delete</el-dropdown-item>
-                            </el-dropdown-menu>
-                        </template>
-                    </el-dropdown>
-                    <span>Tom</span>
-                </div>
-            </el-header>
+    <el-container>
 
-            <el-main>
-                <el-scrollbar>
-                    <el-table :data="tableData">
-                        <el-table-column prop="date" label="Date" width="140" />
-                        <el-table-column prop="name" label="Name" width="120" />
-                        <el-table-column prop="address" label="Address" />
-                    </el-table>
-                </el-scrollbar>
-            </el-main>
-        </el-container>
+      <el-main>
+        <div class="Main">
+
+          <el-row>
+
+            <el-col :span="7">
+              <el-container class="Person">
+                <el-header height="30px">
+                  个人信息
+                </el-header>
+                <el-main>
+                  <div>
+                    <el-avatar> user </el-avatar>
+                  </div>
+                  <span>姓名</span>
+
+                </el-main>
+              </el-container>
+            </el-col>
+
+            <el-col :span="1">
+              <div class="box">
+              </div>
+            </el-col>
+
+            <el-col :span="7">
+              <el-container class="Group">
+                <el-header>
+                  我的课题组
+                </el-header>
+                <el-main>
+                <el-table :data="tableData" style="width: 100%" class="GroupTable">
+                  <el-table-column prop="name" label="课题组名称"  />
+                  <el-table-column prop="sum" label="经费总额" />
+                  <el-table-column prop="remain" label="经费剩余" />
+                  <el-table-column label="操作">
+                    <el-button type="primary" size="small" plain>查看</el-button>
+                  </el-table-column>
+                </el-table>
+                </el-main>
+              </el-container>
+            </el-col>
+
+            <el-col :span="1">
+              <div class="box">
+              </div>
+            </el-col>
+
+            <el-col :span="8">
+              <el-container class="Notice">
+                <el-header>
+                  通知
+                </el-header>
+                <el-main>
+
+                </el-main>
+
+                </el-container>
+            </el-col>
+
+          </el-row>
+
+          <el-row style="height: 40px">
+
+          </el-row>
+
+          <el-row>
+
+                <el-col :span="17">
+                  <el-container class="Record">
+                    <el-header>
+                      最近记录
+                    </el-header>
+                  <el-main>
+
+                  </el-main>
+                </el-container>
+            </el-col>
+
+            <el-col :span="1">
+              <div class="box">
+              </div>
+            </el-col>
+
+            <el-col :span="6">
+              <el-container class="Function">
+                <el-header>
+                  所有功能
+                </el-header>
+                <el-main>
+
+                </el-main>
+              </el-container>
+            </el-col>
+
+          </el-row>
+
+        </div>
+      </el-main>
+
+        <el-footer>
+          Foot
+        </el-footer>
+
     </el-container>
+  </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { Menu as IconMenu, Message, Setting } from '@element-plus/icons-vue'
 
-const item = {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+<style>
+.Main {
+  width: 1200px;
+  margin: 0 auto;
 }
-const tableData = ref(Array.from({ length: 20 }).fill(item))
+
+.Group{
+  height: 400px;
+  background-color: #eaeaea;
+  border: 1px solid orangered;
+  line-height: 100px;
+  font-size: 24px;
+}
+.Person{
+  height: 400px;
+  background-color: #eaeaea;
+  border: 1px solid orangered;
+  line-height: 100px;
+  font-size: 24px;
+}
+.Notice{
+  height: 400px;
+  background-color: #eaeaea;
+  border: 1px solid orangered;
+  line-height: 100px;
+  font-size: 24px;
+}
+.Record{
+  height: 400px;
+  background-color: #eaeaea;
+  border: 1px solid orangered;
+  line-height: 100px;
+  font-size: 24px;
+}
+.Function{
+  height: 400px;
+  background-color: #eaeaea;
+  border: 1px solid orangered;
+  line-height: 100px;
+  font-size: 24px;
+}
+
+.Background{
+  width: 100%;
+  height: 100%;
+  background-color: lightgray;
+  background-position: 0 0;
+  background-repeat: no-repeat;
+}
+.flex-grow {
+  flex-grow: 1;
+}
+
+
+</style>
+
+<script setup>
+import { ref } from 'vue'
+
+const activeIndex = ref('1')
+
+const tableData = [
+  {
+    name: 'Tom',
+    sum: 100000,
+    remain: 1000
+  },
+  {
+    name: 'Jerry',
+    sum: 200000,
+    remain: 1000
+  }
+]
 </script>
 
-<style scoped>
-.layout-container-demo .el-header {
-    position: relative;
-    background-color: var(--el-color-primary-light-7);
-    color: var(--el-text-color-primary);
-}
-.layout-container-demo .el-aside {
-    color: var(--el-text-color-primary);
-    background: var(--el-color-primary-light-8);
-}
-.layout-container-demo .el-menu {
-    border-right: none;
-}
-.layout-container-demo .el-main {
-    padding: 0;
-}
-.layout-container-demo .toolbar {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    right: 20px;
-}
-</style>
