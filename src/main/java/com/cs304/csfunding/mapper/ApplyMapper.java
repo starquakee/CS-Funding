@@ -1,7 +1,6 @@
 package com.cs304.csfunding.mapper;
 
 import com.cs304.csfunding.entity.Apply;
-import com.cs304.csfunding.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

@@ -1,8 +1,6 @@
 package com.cs304.csfunding.controller;
-
 import com.cs304.csfunding.api.ApplyDTO;
 import com.cs304.csfunding.entity.Apply;
-import com.cs304.csfunding.entity.User;
 import com.cs304.csfunding.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
