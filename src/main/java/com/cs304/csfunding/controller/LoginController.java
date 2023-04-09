@@ -16,7 +16,6 @@ public class LoginController {
 
     @GetMapping(value = "/api/login")
     public Result login(@RequestBody LoginDTO loginDTO){
-        System.out.println(loginDTO);
         return loginService.login(loginDTO);
     }
 }
