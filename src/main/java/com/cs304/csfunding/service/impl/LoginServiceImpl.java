@@ -28,7 +28,7 @@ public class LoginServiceImpl implements LoginService {
         //比较密码
 
         if (user != null && user.getKey().equals(loginDTO.getKey())) {
-            return new Result(200, "", user);
+            return new Result(200, "success", user);
         }
         return new Result(400, "登录失败", "");
     }

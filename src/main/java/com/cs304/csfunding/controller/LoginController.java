@@ -4,6 +4,7 @@ import com.cs304.csfunding.api.LoginDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,8 +14,9 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
-    @PostMapping(value = "/api/login")
+    @GetMapping(value = "/api/login")
     public Result login(@RequestBody LoginDTO loginDTO){
+        System.out.println(loginDTO);
         return loginService.login(loginDTO);
     }
 }
