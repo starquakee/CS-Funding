@@ -28,18 +28,18 @@
           <el-row>
 
             <el-col :span="7">
-              <el-container class="Person">
-                <el-header height="30px">
-                  个人信息
-                </el-header>
-                <el-main>
-                  <div>
-                    <el-avatar> user </el-avatar>
+              <el-card class="box-card">
+                <template #header>
+                  <div class="card-header">
+                    <span>用户信息</span>
+                    <el-button class="button" text>编辑</el-button>
                   </div>
-                  <span>姓名</span>
-
-                </el-main>
-              </el-container>
+                </template>
+                账号：{{username}} <br>
+                姓名：{{name}} <br>
+                联系电话：{{phoneNumber}} <br>
+                账号类型：{{type}} <br>
+              </el-card>
             </el-col>
 
             <el-col :span="1">
@@ -53,11 +53,11 @@
                   我的课题组
                 </el-header>
                 <el-main>
-                <el-table :data="tableData" style="width: 100%" class="GroupTable">
-                  <el-table-column prop="name" label="课题组名称"  />
+                <el-table :data="ResearchGroup" style="width: 100%" class="GroupTable">
+                  <el-table-column prop="name" label="课题组名称" width="95px"  />
                   <el-table-column prop="sum" label="经费总额" />
                   <el-table-column prop="remain" label="经费剩余" />
-                  <el-table-column label="操作">
+                  <el-table-column label="操作" width="50px">
                     <el-button type="primary" size="small" plain>查看</el-button>
                   </el-table-column>
                 </el-table>
@@ -144,13 +144,28 @@
   line-height: 100px;
   font-size: 24px;
 }
-.Person{
+.box-card{
   height: 400px;
   background-color: #eaeaea;
   border: 1px solid orangered;
-  line-height: 100px;
+  line-height: 50px;
   font-size: 24px;
 }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.item {
+  margin-bottom: 18px;
+}
+
 .Notice{
   height: 400px;
   background-color: #eaeaea;
@@ -187,22 +202,38 @@
 
 </style>
 
-<script setup>
+<script>
 import { ref } from 'vue'
 
 const activeIndex = ref('1')
 
-const tableData = [
-  {
-    name: 'Tom',
-    sum: 100000,
-    remain: 1000
+export default {
+  name:'Home',
+  data(){
+    return {
+      username: '',
+      name: 'xxx',
+      phoneNumber: 'xxxviii',
+      type: '',
+      ResearchGroup: []
+    }
   },
-  {
-    name: 'Jerry',
-    sum: 200000,
-    remain: 1000
+  created() {
+    const query = this.$route.query;
+
+    this.username = query.username
+    this.name = query.name
+    this.phoneNumber = query.phoneNumber
+
+    if (!JSON.parse(query.isAdmin)){
+      this.type = 'User'
+    }
+    else{
+      this.type = 'Admin'
+    }
+
+
   }
-]
+}
 </script>
 
