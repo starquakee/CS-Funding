@@ -8,7 +8,7 @@
 ### 1.2 Swimlane Diagram (for one of the use cases) (1 point)
 ![Swimlane Diagram](milstone2_pictures/泳道图.png)
 ### 1.3 Natural Language Description (for one of the use cases) (1 point)
-
+For example, for the login function, the back-end will first judge whether the account and password are empty. If neither is empty, it will call the "findUserById" api to find the corresponding user in the database, and then compare the password entered by the user with the password stored in the database. If the password is equal, it will return the user, indicating that the user has logged in successfully.
 ### 1.4 Diagrams for Logical view (2 points)
 ![Class Diagram](milstone2_pictures/class.png)
 ### 1.5 Data Design (2 points)
