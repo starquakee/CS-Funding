@@ -1,6 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
+import ApplyView from "@/views/ApplyView.vue";
+import FundView from '@/views/FundView.vue';
 import DefaultRedirect from "@/views/DefaultRedirect.vue";
 
 const router = createRouter({
@@ -24,6 +26,16 @@ const router = createRouter({
             // component: LoginView,
             redirect: '/login',
         },
+        {
+            path: '/apply',
+            name: 'apply',
+            component: ApplyView
+        },
+        {   path: '/fund',
+            name: 'fund',
+            component: FundView
+
+        }
     ]
 })
 

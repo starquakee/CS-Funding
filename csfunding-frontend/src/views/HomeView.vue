@@ -4,7 +4,7 @@
              class="el-menu-demo"
              mode="horizontal"
              :ellipsis="false"
-             background-color="grey"
+             background-color="FireBrick"
              style="min-width: 100%">
       <el-menu-item index="0">南方科技大学财务管理系统</el-menu-item>
       <div class="flex-grow" />
@@ -55,10 +55,10 @@
                 <el-main>
                 <el-table :data="ResearchGroup" style="width: 100%" class="GroupTable">
                   <el-table-column prop="name" label="课题组名称" width="95px"  />
-                  <el-table-column prop="sum" label="经费总额" />
-                  <el-table-column prop="remain" label="经费剩余" />
-                  <el-table-column label="操作" width="50px">
-                    <el-button type="primary" size="small" plain>查看</el-button>
+                  <el-table-column prop="sum" label="经费总额" width="65px" />
+                  <el-table-column prop="remain" label="经费剩余" width="65px"/>
+                  <el-table-column label="操作" width="60px">
+                    <el-button @click="FundByResearchGroup" type="primary" size="small" plain>查看</el-button>
                   </el-table-column>
                 </el-table>
                 </el-main>
@@ -91,14 +91,29 @@
           <el-row>
 
                 <el-col :span="17">
-                  <el-container class="Record">
-                    <el-header>
-                      最近记录
-                    </el-header>
-                  <el-main>
+                  <el-card class="box-card">
+                    <template #header>
+                      <div class="card-header">
+                        <el-container>
+                          <el-header>
+                        <span>最近记录</span>
+                        <el-button @click="AllApply" class="button" text>所有申请</el-button>
+                          </el-header>
+                          <el-main>
+                        <el-table :data="RecentApply" style="width: 100%" >
+                          <el-table-column prop="name" label="经费名称" />
+                          <el-table-column prop="researchGroup" label="课题组名称" />
+                          <el-table-column prop="applyPerson" label="申请人" />
+                          <el-table-column prop="amount" label="申请金额" />
+                          <el-table-column prop="state" label="申请状态" >
+                          </el-table-column>
+                        </el-table>
+                          </el-main>
+                          </el-container>
+                      </div>
+                    </template>
 
-                  </el-main>
-                </el-container>
+                  </el-card>
             </el-col>
 
             <el-col :span="1">
@@ -122,8 +137,8 @@
         </div>
       </el-main>
 
-        <el-footer>
-          Foot
+        <el-footer color="FireBrick">
+
         </el-footer>
 
     </el-container>
@@ -139,14 +154,14 @@
 
 .Group{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 100px;
   font-size: 24px;
 }
 .box-card{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 50px;
   font-size: 24px;
@@ -168,21 +183,15 @@
 
 .Notice{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 100px;
   font-size: 24px;
 }
-.Record{
-  height: 400px;
-  background-color: #eaeaea;
-  border: 1px solid orangered;
-  line-height: 100px;
-  font-size: 24px;
-}
+
 .Function{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 100px;
   font-size: 24px;
@@ -191,7 +200,7 @@
 .Background{
   width: 100%;
   height: 100%;
-  background-color: lightgray;
+  background-color: whitesmoke;
   background-position: 0 0;
   background-repeat: no-repeat;
 }
@@ -215,7 +224,8 @@ export default {
       name: 'xxx',
       phoneNumber: 'xxxviii',
       type: '',
-      ResearchGroup: []
+      ResearchGroup: [],
+      RecentApply:[]
     }
   },
   created() {
@@ -232,7 +242,63 @@ export default {
       this.type = 'Admin'
     }
 
+    this.ResearchGroup = [
+      {
+        name: '王',
+        sum: 10000,
+        remain: 10000
+      },
+      {
+        name: '李',
+        sum: 20000,
+        remain: 10000
+      },
+      {
+        name: '孙',
+        sum: 20000,
+        remain: 20000
+      },
+      {
+        name: '赵',
+        sum: 30000,
+        remain: 20000
+      }
+    ]
 
+    this.RecentApply = [
+      {
+        name: '经费1',
+        researchGroup: '王',
+        applyPerson: 'xxx',
+        amount: 500,
+        state: 'pass'
+      },
+      {
+        name: '经费2',
+        researchGroup: '李',
+        applyPerson: 'xxx',
+        amount: 2000,
+        state: 'pass'
+      },
+      {
+        name: '经费3',
+        researchGroup: '李',
+        applyPerson: 'xxx',
+        amount: 3000,
+        state: 'submit'
+      }
+
+    ]
+
+
+  },
+  methods:{
+    AllApply(){
+      this.$router.push({path: '/apply'})
+    },
+    FundByResearchGroup(){
+      this.$router.push({path: '/fund'})
+    }
   }
 }
 </script>
