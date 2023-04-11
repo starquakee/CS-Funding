@@ -4,7 +4,7 @@
              class="el-menu-demo"
              mode="horizontal"
              :ellipsis="false"
-             background-color="grey"
+             background-color="FireBrick"
              style="min-width: 100%">
       <el-menu-item index="0">南方科技大学财务管理系统</el-menu-item>
       <div class="flex-grow" />
@@ -137,8 +137,8 @@
         </div>
       </el-main>
 
-        <el-footer>
-          Foot
+        <el-footer color="FireBrick">
+
         </el-footer>
 
     </el-container>
@@ -154,14 +154,14 @@
 
 .Group{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 100px;
   font-size: 24px;
 }
 .box-card{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 50px;
   font-size: 24px;
@@ -183,21 +183,15 @@
 
 .Notice{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 100px;
   font-size: 24px;
 }
-.Record{
-  height: 400px;
-  background-color: #eaeaea;
-  border: 1px solid orangered;
-  line-height: 100px;
-  font-size: 24px;
-}
+
 .Function{
   height: 400px;
-  background-color: #eaeaea;
+  background-color: white;
   border: 1px solid orangered;
   line-height: 100px;
   font-size: 24px;
@@ -206,7 +200,7 @@
 .Background{
   width: 100%;
   height: 100%;
-  background-color: lightgray;
+  background-color: whitesmoke;
   background-position: 0 0;
   background-repeat: no-repeat;
 }
