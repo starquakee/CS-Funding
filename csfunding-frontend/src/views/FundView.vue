@@ -64,7 +64,7 @@ export default {
           name: '经费1',
           researchGroup: '王',
           applyPerson: 'xxx',
-          amount: 1000,
+          amount: 500,
           state: 'pass'
         }
       ]
