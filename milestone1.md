@@ -33,9 +33,8 @@ Our project is designed to split into multiple parts and each part can be a wate
 
 ### 2.2 Project Schedule
 
-![](D:\桌面\schedule1.png)
-
-![](D:\桌面\schedule2.png)
+![](milstone2_pictures/schedule1.png)
+![](milstone2_pictures/schedule2.png)
 
 ## 3. Suggested Deliverables
 
