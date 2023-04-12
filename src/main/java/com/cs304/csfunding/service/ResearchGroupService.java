@@ -29,6 +29,10 @@ public class ResearchGroupService {
         return researchGroupMapper.getAllResearchGroup();
     }
 
+    public List<ResearchGroup> testQueryByUser(int UserID){
+        return researchGroupMapper.getResearchGroupByUser(UserID);
+    }
+
 
 
 }

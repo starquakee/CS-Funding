@@ -29,5 +29,11 @@ public class ResearchGroupController {
         return researchGroupService.testQueryAll();
     }
 
+    @GetMapping("/getresearchgroupsbyuser")
+    public List<ResearchGroup> getResearchGroupByUser(int UserID){
+        System.out.println(UserID);
+        return researchGroupService.testQueryByUser(UserID);
+    }
+
 
 }
