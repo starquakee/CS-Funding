@@ -10,7 +10,9 @@ public class Apply {
     private String Type2;
     private int FundID;
     private int ResearchGroupID;
+    private int UserID;
     private String State;
     private String ContentSummary;
     private String Remark;
+    private String Time;
 }

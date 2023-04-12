@@ -11,8 +11,8 @@ import java.util.List;
 @Mapper
 public interface ApplyMapper {
 
-    @Insert("insert into apply(Name, Money, Type1, Type2, FundID, ResearchGroupID, State, ContentSummary, remark) values " +
-            "(#{Name}, #{Money}, #{Type1}, #{Type2}, #{FundID}, #{ResearchGroupID}, #{State}, #{ContentSummary}, #{remark})")
+    @Insert("insert into apply(Name, Money, Type1, Type2, FundID, ResearchGroupID, UserID, State, ContentSummary, Remark, Time) values " +
+            "(#{Name}, #{Money}, #{Type1}, #{Type2}, #{FundID}, #{ResearchGroupID}, #{UserID}, #{State}, #{ContentSummary}, #{Remark}, #{Time})")
     void addApply(Apply apply);
 
     @Select("select * from apply")
@@ -23,6 +23,9 @@ public interface ApplyMapper {
 
     @Select("select * from apply where ResearchGroupID=#{ResearchGroupID}")
     List<Apply> findApplyByResearchGroupID(@Param("ResearchGroupID") int researchGroupID);
+
+    @Select("select * from apply where UserID=#{UserID} order by Time desc")
+    List<Apply> findApplyByUserID(@Param("UserID") int userID);
 
 
 }

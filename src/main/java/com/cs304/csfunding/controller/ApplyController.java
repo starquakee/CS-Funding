@@ -36,4 +36,9 @@ public class ApplyController {
     public List<Apply> getApplyByResearchGroupID(int researchGroupID){
         return applyService.testQueryByResearchGroupID(researchGroupID);
     }
+
+    @GetMapping("/selectsortapplybyuserid")
+    public List<Apply> getSortApplyByUserID(int userID){
+        return applyService.testQueryByUserID(userID);
+    }
 }

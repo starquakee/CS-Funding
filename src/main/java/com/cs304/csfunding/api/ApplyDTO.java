@@ -10,9 +10,11 @@ public class ApplyDTO {
     private String type2;
     private int fundID;
     private int researchGroupID;
+    private int userID;
     private String state;
     private String contentSummary;
     private String remark;
+
 
 
 }

@@ -25,9 +25,11 @@ public class ApplyService {
         apply.setType2(applyDTO.getType2());
         apply.setFundID(applyDTO.getFundID());
         apply.setResearchGroupID(applyDTO.getResearchGroupID());
+        apply.setUserID(applyDTO.getUserID());
         apply.setState(applyDTO.getState());
         apply.setContentSummary(applyDTO.getContentSummary());
         apply.setRemark(applyDTO.getRemark());
+        apply.setTime(Long.toString(System.currentTimeMillis()));
         applyMapper.addApply(apply);
         return "";
     }
@@ -42,6 +44,10 @@ public class ApplyService {
 
     public List<Apply> testQueryByResearchGroupID(int researchGroupID){
         return applyMapper.findApplyByResearchGroupID(researchGroupID);
+    }
+
+    public List<Apply> testQueryByUserID(int userID){
+        return applyMapper.findApplyByUserID(userID);
     }
 
 }
