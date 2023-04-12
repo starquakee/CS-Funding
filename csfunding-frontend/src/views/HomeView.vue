@@ -48,7 +48,7 @@
             </el-col>
 
             <el-col :span="7">
-              <el-container class="Group">
+              <el-container class="Group card-base">
                 <el-header>
                   我的课题组
                 </el-header>
@@ -71,7 +71,7 @@
             </el-col>
 
             <el-col :span="8">
-              <el-container class="Notice">
+              <el-container class="Notice card-base">
                 <el-header>
                   通知
                 </el-header>
@@ -122,7 +122,7 @@
             </el-col>
 
             <el-col :span="6">
-              <el-container class="Function">
+              <el-container class="Function card-base">
                 <el-header>
                   所有功能
                 </el-header>
@@ -152,17 +152,20 @@
   margin: 0 auto;
 }
 
-.Group{
+.card-base{
   height: 400px;
   background-color: white;
-  border: 1px solid orangered;
+  /*border: 1px solid orangered;*/
   line-height: 100px;
   font-size: 24px;
+  /*border-radius: var(--el-card-border-radius);*/
+  border-radius: 5px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.12)
 }
 .box-card{
   height: 400px;
   background-color: white;
-  border: 1px solid orangered;
+  /*border: 1px solid orangered;*/
   line-height: 50px;
   font-size: 24px;
 }
@@ -184,7 +187,7 @@
 .Notice{
   height: 400px;
   background-color: white;
-  border: 1px solid orangered;
+  /*border: 1px solid orangered;*/
   line-height: 100px;
   font-size: 24px;
 }
@@ -192,7 +195,7 @@
 .Function{
   height: 400px;
   background-color: white;
-  border: 1px solid orangered;
+  /*border: 1px solid orangered;*/
   line-height: 100px;
   font-size: 24px;
 }
