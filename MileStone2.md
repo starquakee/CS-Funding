@@ -9,7 +9,7 @@
 Choose the use case "Review application", which means check the application whether is valid. 
 ![Swimlane Diagram](milstone2_pictures/泳道图.png)
 ### 1.3 Natural Language Description (for one of the use cases) (1 point)
-For example, for the login function, the name of the use case is login, and its purpose is to log the user into the system. 
+For example, for the meta part of login function, the name of the use case is login, and its purpose is to log the user into the system. 
 Its actors are the users and administrators, and the trigger is to log in and submit or view the form. 
 The entry condition for login is that the user or administrator is already in the database. 
 Post entry is when the user or administrator is found in the database. 
