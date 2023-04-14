@@ -21,13 +21,26 @@ We then designed four tables to gather information about the class. In order to 
 ![UI1](milstone2_pictures/ui1.png)
 ![UI2](milstone2_pictures/ui2.png)
 
-## 2. Collaborations (1 point)
+### 1.7 Collaborations (1 point)
+
+Commit distribution:
+
+![cmt](milstone2_pictures/commit.png)
+
 ![co1](milstone2_pictures/co1.png)
 ![co2](milstone2_pictures/co2.png)
 ![co3](milstone2_pictures/co3.png)
-## 3. Deliverables (1 point)
+### 1.8 Deliverables (1 point)
 So far, we have built all the tables, and we have added and searched all the tables on the back end, but the table to table query is not complete. At present, the function part has login and user information query. The overall framework of the code section is complete, and you just need to refine it according to the functional requirements.
+
+#### backend
+
 ![deli1](milstone2_pictures/deli1.png)
 ![deli2](milstone2_pictures/deli2.png)
+
+#### frontend
+
+![deli3](milstone2_pictures/deli3.png)
+
 ## 4. Team Presentation & Demo (2 points)
 
