@@ -32,6 +32,10 @@ public class UserService {
         return userMapper.getAllUser();
     }
 
+    public List<User> testQueryAllAdmin(){
+        return userMapper.getAllAdmin();
+    }
+
     public User testQueryByID(String id){
         return userMapper.findUserById(id);
     }

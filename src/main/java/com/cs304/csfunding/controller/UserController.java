@@ -28,6 +28,11 @@ public class UserController {
         return userService.testQueryAll();
     }
 
+    @GetMapping("/getalladmins")
+    public List<User> getAllAdmin(){
+        return userService.testQueryAllAdmin();
+    }
+
     @GetMapping("/selectuserbyid")
     public User getUserByID(String id){
         return userService.testQueryByID(id);
