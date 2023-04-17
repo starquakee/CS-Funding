@@ -6,17 +6,9 @@
 ![Use_Case Diagram](milstone2_pictures/usecase.png)
 
 ### 1.2 Swimlane Diagram (for one of the use cases) (1 point)
-Choose the use case "Review application", which means check the application whether is valid. 
 ![Swimlane Diagram](milstone2_pictures/泳道图.png)
 ### 1.3 Natural Language Description (for one of the use cases) (1 point)
-For example, for the meta part of login function, the name of the use case is login, and its purpose is to log the user into the system. 
-Its actors are the users and administrators, and the trigger is to log in and submit or view the form. 
-The entry condition for login is that the user or administrator is already in the database. 
-Post entry is when the user or administrator is found in the database. 
-We stored these two key pieces of data in the database. The password is only viewed from the database when logged in, and in ciphertext. 
-
-
-For the flow event, back-end will first judge whether the account and password are empty. If neither is empty, it will call the "findUserById" api to find the corresponding user in the database, and then compare the password entered by the user with the password stored in the database. If the password is equal, it will return the user, indicating that the user has logged in successfully. Finally, the user or adminstrator logins successfully. 
+​	For example, for the login function, the back-end will first judge whether the account and password are empty. If neither is empty, it will call the "findUserById" api to find the corresponding user in the database, and then compare the password entered by the user with the password stored in the database. If the password is equal, it will return the user, indicating that the user has logged in successfully.
 ### 1.4 Diagrams for Logical view (2 points)
 ![Class Diagram](milstone2_pictures/class.png)
 ### 1.5 Data Design (2 points)
@@ -35,17 +27,12 @@ Commit distribution:
 
 ![cmt](milstone2_pictures/commit.png)
 
-Commit history graph:
-
 ![co1](milstone2_pictures/co1.png)
 ![co2](milstone2_pictures/co2.png)
 ![co3](milstone2_pictures/co3.png)
 ### 1.8 Deliverables (1 point)
-Implemented functionalities description:
-
 So far, we have built all the tables, and we have added and searched all the tables on the back end, but the table to table query is not complete. At present, the function part has login and user information query. The overall framework of the code section is complete, and you just need to refine it according to the functional requirements.
 
-Snapshot of repo's directory structure:
 #### backend
 
 ![deli1](milstone2_pictures/deli1.png)
@@ -55,12 +42,5 @@ Snapshot of repo's directory structure:
 
 ![deli3](milstone2_pictures/deli3.png)
 
-## 2. Team Presentation & Demo (2 points)
-
-Attendance and Presentation are shown in class.
-
-Demo of the running system:
-
-![deli3](milstone2_pictures/login.png)
-![deli3](milstone2_pictures/home.png)
+## 4. Team Presentation & Demo (2 points)
 
