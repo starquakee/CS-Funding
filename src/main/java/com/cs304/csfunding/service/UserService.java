@@ -28,16 +28,20 @@ public class UserService {
         return "";
     }
 
-    public List<User> testQueryAll(){
+    public List<User> queryAll(){
         return userMapper.getAllUser();
     }
 
-    public User testQueryByID(String id){
+    public User queryByID(String id){
         return userMapper.findUserById(id);
     }
 
-    public User testQueryByPhoneNum(String phoneNum){
+    public User queryByPhoneNum(String phoneNum){
         return userMapper.findUserByPhoneNum(phoneNum);
+    }
+
+    public User queryByUuid(int uuid){
+        return userMapper.findUserByUuid(uuid);
     }
 
 }

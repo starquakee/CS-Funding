@@ -4,6 +4,7 @@ import LoginView from "@/views/LoginView.vue";
 import ApplyView from "@/views/ApplyView.vue";
 import FundView from '@/views/FundView.vue';
 import DefaultRedirect from "@/views/DefaultRedirect.vue";
+import {useTokenStore} from "@/stores/token";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,4 +40,26 @@ const router = createRouter({
     ]
 })
 
+// const store = useTokenStore()
+// router.beforeEach((to, from, next) => {
+//         //路由需要认证
+//         // let {token} = storeToRefs(store)
+//         console.log(store.token)
+//         if (to.meta.requireAuth) {
+//             //判断store里是否有token
+//             if (store.token) {
+//                 console.log(store.token)
+//                 next()
+//             } else {
+//                 next({
+//                     path: 'login',
+//                     query: {redirect: to.fullPath}
+//                 })
+//             }
+//         } else {
+//             next()
+//         }
+//         // next()
+//     }
+// )
 export default router
