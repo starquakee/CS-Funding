@@ -2,6 +2,7 @@ package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.ResearchGroupDTO;
 import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.ResearchGroup;
 import com.cs304.csfunding.service.ResearchGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,22 @@ public class ResearchGroupController {
 
     @GetMapping("/getallresearchgroups")
     public Result getAllResearchGroup(){
-        return new Result(200, "查找所有ResearchGroup成功", researchGroupService.testQueryAll());
+        List<ResearchGroup> researchgroups = researchGroupService.testQueryAll();
+        if (researchgroups == null) {
+            return new Result(404, "researchgroups not found", null);
+        } else {
+            return new Result(researchgroups);
+        }
     }
 
     @GetMapping("/getresearchgroupsbyuser")
     public Result getResearchGroupByUser(int UserID){
-        return new Result(200, "通过UserID查找所有ResearchGroup成功", researchGroupService.testQueryByUser(UserID));
+        List<ResearchGroup> researchgroups = researchGroupService.testQueryByUser(UserID);
+        if (researchgroups == null) {
+            return new Result(404, "researchgroups not found", null);
+        } else {
+            return new Result(researchgroups);
+        }
     }
 
 

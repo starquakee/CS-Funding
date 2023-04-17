@@ -25,21 +25,41 @@ public class ApplyController {
 
     @GetMapping("/getallapplys")
     public Result getAllApply(){
-        return new Result(200, "订单查找成功", applyService.testQueryAll());
+        List<Apply> applies = applyService.testQueryAll();
+        if (applies == null) {
+            return new Result(404, "applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 
     @GetMapping("/selectapplybyfundid")
     public Result getApplyByFundID(int fundID){
-        return new Result(200, "通过FundID查找申请成功", applyService.testQueryByFundID(fundID));
+        List<Apply> applies = applyService.testQueryByFundID(fundID);
+        if (applies == null) {
+            return new Result(404, "applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 
     @GetMapping("/selectapplybyresearchgroupid")
     public Result getApplyByResearchGroupID(int researchGroupID){
-        return new Result(200, "通过ResearchGroupID查找申请成功", applyService.testQueryByResearchGroupID(researchGroupID));
+        List<Apply> applies = applyService.testQueryByResearchGroupID(researchGroupID);
+        if (applies == null) {
+            return new Result(404, "applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 
     @GetMapping("/selectsortapplybyuserid")
     public Result getSortApplyByUserID(int userID){
-        return new Result(200, "通过UserID查找最近申请成功", applyService.testQueryByUserID(userID));
+        List<Apply> applies = applyService.testQueryByUserID(userID);
+        if (applies == null) {
+            return new Result(404, "latest applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 }
