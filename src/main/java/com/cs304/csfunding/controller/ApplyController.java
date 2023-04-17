@@ -1,5 +1,6 @@
 package com.cs304.csfunding.controller;
 import com.cs304.csfunding.api.ApplyDTO;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +24,22 @@ public class ApplyController {
     }
 
     @GetMapping("/getallapplys")
-    public List<Apply> getAllApply(){
-        return applyService.testQueryAll();
+    public Result getAllApply(){
+        return new Result(200, "订单查找成功", applyService.testQueryAll());
     }
 
     @GetMapping("/selectapplybyfundid")
-    public List<Apply> getApplyByFundID(int fundID){
-        return applyService.testQueryByFundID(fundID);
+    public Result getApplyByFundID(int fundID){
+        return new Result(200, "通过FundID查找申请成功", applyService.testQueryByFundID(fundID));
     }
 
     @GetMapping("/selectapplybyresearchgroupid")
-    public List<Apply> getApplyByResearchGroupID(int researchGroupID){
-        return applyService.testQueryByResearchGroupID(researchGroupID);
+    public Result getApplyByResearchGroupID(int researchGroupID){
+        return new Result(200, "通过ResearchGroupID查找申请成功", applyService.testQueryByResearchGroupID(researchGroupID));
     }
 
     @GetMapping("/selectsortapplybyuserid")
-    public List<Apply> getSortApplyByUserID(int userID){
-        return applyService.testQueryByUserID(userID);
+    public Result getSortApplyByUserID(int userID){
+        return new Result(200, "通过UserID查找最近申请成功", applyService.testQueryByUserID(userID));
     }
 }

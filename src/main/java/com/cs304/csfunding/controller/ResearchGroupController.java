@@ -1,6 +1,7 @@
 package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.ResearchGroupDTO;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.ResearchGroup;
 import com.cs304.csfunding.service.ResearchGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,13 @@ public class ResearchGroupController {
     }
 
     @GetMapping("/getallresearchgroups")
-    public List<ResearchGroup> getAllResearchGroup(){
-        return researchGroupService.testQueryAll();
+    public Result getAllResearchGroup(){
+        return new Result(200, "查找所有ResearchGroup成功", researchGroupService.testQueryAll());
     }
 
     @GetMapping("/getresearchgroupsbyuser")
-    public List<ResearchGroup> getResearchGroupByUser(int UserID){
-        System.out.println(UserID);
-        return researchGroupService.testQueryByUser(UserID);
+    public Result getResearchGroupByUser(int UserID){
+        return new Result(200, "通过UserID查找所有ResearchGroup成功", researchGroupService.testQueryByUser(UserID));
     }
 
 

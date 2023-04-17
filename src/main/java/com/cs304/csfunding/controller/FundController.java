@@ -1,6 +1,7 @@
 package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.FundDTO;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.service.FundService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class FundController {
     }
 
     @GetMapping("/getallfunds")
-    public List<Fund> getAllFund(){
-        return fundService.testQueryAll();
+    public Result getAllFund(){
+        return new Result(200, "经费查找成功", fundService.testQueryAll());
     }
 
 

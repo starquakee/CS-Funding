@@ -1,5 +1,6 @@
 package com.cs304.csfunding.controller;
 
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.api.UserDTO;
 import com.cs304.csfunding.entity.User;
 import com.cs304.csfunding.service.UserService;
@@ -24,17 +25,17 @@ public class UserController {
     }
 
     @GetMapping("/getallusers")
-    public List<User> getAllUser(){
-        return userService.testQueryAll();
+    public Result getAllUser(){
+        return new Result(200, "查找所有用户成功", userService.testQueryAll());
     }
 
     @GetMapping("/selectuserbyid")
-    public User getUserByID(String id){
-        return userService.testQueryByID(id);
+    public Result getUserByID(String id){
+        return new Result(200, "通过id查找用户成功", userService.testQueryByID(id));
     }
 
     @GetMapping("/selectuserbyphonenum")
-    public User getUserByPhoneNum(String id){
-        return userService.testQueryByPhoneNum(id);
+    public Result getUserByPhoneNum(String id){
+        return new Result(200, "通过电话查找所有用户成功", userService.testQueryByPhoneNum(id));
     }
 }
