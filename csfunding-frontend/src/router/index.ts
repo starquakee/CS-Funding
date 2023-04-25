@@ -3,8 +3,6 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import ApplyView from "@/views/ApplyView.vue";
 import FundView from '@/views/FundView.vue';
-import DefaultRedirect from "@/views/DefaultRedirect.vue";
-import {useTokenStore} from "@/stores/token";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,7 +13,7 @@ const router = createRouter({
             component: HomeView,
             meta: {
                 requireAuth: true
-            }
+            },
         },
         {
             path: '/login',
@@ -32,7 +30,8 @@ const router = createRouter({
             name: 'apply',
             component: ApplyView
         },
-        {   path: '/fund',
+        {
+            path: '/fund',
             name: 'fund',
             component: FundView
 
@@ -62,4 +61,10 @@ const router = createRouter({
 //         // next()
 //     }
 // )
+
+function requireAuth(to: any, from: any, next: () => void) {
+
+    next()
+}
+
 export default router

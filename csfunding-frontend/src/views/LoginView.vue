@@ -2,7 +2,8 @@
     <div class="login-wrap">
         <el-form class="login-container">
             <h1 class="title">用户登陆</h1>
-            <h1 class="title">{{ token }}</h1>
+            <el-form-item label="登录失败" style="padding-left: 10px; border: 1px solid red; border-radius: 4px" v-if="loginFail">
+            </el-form-item>
             <el-form-item>
                 <el-input type="text" v-model="form.name" placeholder="用户账号" autocomplete="off"></el-input>
             </el-form-item>
@@ -12,9 +13,6 @@
             <el-form-item>
                 <el-button type="primary" @click="doLogin" style="width: 100%;">登陆</el-button>
             </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="setToken" style="width: 100%;">Set Token</el-button>
-            </el-form-item>
         </el-form>
     </div>
 </template>
@@ -22,23 +20,28 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import {reactive} from "vue";
+import {inject, reactive, ref} from "vue";
 import router from "@/router";
 import {useTokenStore} from "@/stores/token";
 import {storeToRefs} from "pinia";
 
-const store = useTokenStore()
-const {token} = storeToRefs(store)
-const name = 'Login';
+
+const store = useTokenStore();
+const {token} = storeToRefs(store);
 const form = reactive({name: "", key: ""});
-let code;
-let person;
-let phoneNum;
-let isAdmin;
+const loginFail = ref(false)
 
 function doLogin() {
     let url = "http://localhost:8081/api/login";
-    router.push('/home')
+    axios.post(url, form).then(res => {
+        if (res.data.code === 200){
+            store.setToken(res.data.data);
+            router.push('/home');
+        } else {
+            loginFail.value = true;
+        }
+    });
+    // router.push('/home')
     // axios.post(url, form).then(resp => {
     //
     //     code = resp.data.code
@@ -64,10 +67,11 @@ function doLogin() {
 }
 
 function setToken() {
-    if (token.value) {
-        token.value = '';
+    console.log(router.currentRoute.value)
+    if (!store.token) {
+        store.setToken('tester')
     } else {
-        token.value = 'tester';
+        store.clearToken()
     }
 }
 </script>

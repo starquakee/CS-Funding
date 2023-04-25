@@ -35,10 +35,10 @@
                                         <el-button class="button" text>编辑</el-button>
                                     </div>
                                 </template>
-                                账号：{{ username }} <br>
-                                姓名：{{ name }} <br>
-                                联系电话：{{ phoneNumber }} <br>
-                                账号类型：{{ type }} <br>
+                                账号：{{ userData.username }} <br>
+                                姓名：{{ userData.name }} <br>
+                                联系电话：{{ userData.phoneNumber }} <br>
+                                账号类型：{{ userData.type }} <br>
                             </el-card>
                         </el-col>
 
@@ -219,16 +219,34 @@
 </style>
 
 <script setup lang="ts">
-import {ref} from 'vue'
+import {onMounted, reactive, ref} from 'vue'
 import router from "@/router";
+import request from "@/util/request";
+
 
 const activeIndex = ref('1')
-let username = ref('');
-let name = ref('xxx');
-let phoneNumber = ref('xxxviii');
-let type = ref('');
+const userData = reactive({
+    username: '',
+    name: '',
+    phoneNumber: '',
+    type: ''
+})
 let ResearchGroup = [];
 let RecentApply = [];
+
+onMounted(() => {
+    request({
+        url: '/current-user',
+        method: 'get'
+    }).then(res => {
+        console.log(res);
+        let ud = res.data.data;
+        userData.username = ud.id;
+        userData.name = ud.name;
+        userData.phoneNumber = ud.phoneNum;
+        userData.type = ud.isAdmin ? '管理员' : '用户';
+    })
+})
 // created() {
 //   const query = this.$route.query;
 //

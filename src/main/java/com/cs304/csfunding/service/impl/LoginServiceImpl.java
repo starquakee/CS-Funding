@@ -33,10 +33,7 @@ public class LoginServiceImpl implements LoginService {
 
         if (user != null && user.getKey().equals(loginDTO.getKey())) {
             String token = JwtUtil.createToken(user);
-            Map<String, Object> loginResult = new HashMap<>();
-            loginResult.put("user", user);
-            loginResult.put("token", token);
-            return new Result(200, "success", loginResult);
+            return new Result(200, "success", token);
         }
         return new Result(400, "登录失败", "");
     }

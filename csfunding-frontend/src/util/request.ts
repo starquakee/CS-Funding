@@ -6,11 +6,9 @@ const service = axios.create({
     baseURL: "http://localhost:8081/"
 })
 
-const store = useTokenStore();
-const token = store.token;
-
 service.interceptors.request.use(
     config => {
+        const store = useTokenStore();
         if (store.token) {
             config.headers['authorization'] = store.token
         }
@@ -23,23 +21,36 @@ service.interceptors.request.use(
     }
 )
 
-axios.interceptors.response.use(response => {
+service.interceptors.response.use(response => {
         let res = response.data;
-        console.log(res)
-        if (res.code === 200) {
+        let code = res.code;
+
+        if (code === 200) {
             return response
-        } else {
-            return Promise.reject(response.data.msg)
         }
+        if (code === 401){
+            const store = useTokenStore();
+            store.clearToken()
+            router.push({
+                path: '/login',
+                query: {redirect: router.currentRoute.value.fullPath}
+            })
+        }
+        return Promise.reject(response.data.msg)
     },
     error => {
+        const store = useTokenStore();
         console.log(error)
         if (error.response.data) {
             error.message = error.response.data.msg
         }
 
         if (error.response.status === 401) {
-            router.push("/login")
+            store.clearToken()
+            router.push({
+                path: '/login',
+                query: {redirect: router.currentRoute.value.fullPath}
+            })
         }
         return Promise.reject(error)
     }
