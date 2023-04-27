@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {RouterLink, RouterView} from 'vue-router';
-import {getCurrentInstance, onMounted} from "vue";
-
+import {RouterView} from 'vue-router';
 </script>
 
 <template>

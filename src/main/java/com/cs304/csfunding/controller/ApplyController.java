@@ -1,5 +1,6 @@
 package com.cs304.csfunding.controller;
 import com.cs304.csfunding.api.ApplyDTO;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +24,42 @@ public class ApplyController {
     }
 
     @GetMapping("/getallapplys")
-    public List<Apply> getAllApply(){
-        return applyService.testQueryAll();
+    public Result getAllApply(){
+        List<Apply> applies = applyService.testQueryAll();
+        if (applies == null) {
+            return new Result(404, "applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 
     @GetMapping("/selectapplybyfundid")
-    public List<Apply> getApplyByFundID(int fundID){
-        return applyService.testQueryByFundID(fundID);
+    public Result getApplyByFundID(int fundID){
+        List<Apply> applies = applyService.testQueryByFundID(fundID);
+        if (applies == null) {
+            return new Result(404, "applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 
     @GetMapping("/selectapplybyresearchgroupid")
-    public List<Apply> getApplyByResearchGroupID(int researchGroupID){
-        return applyService.testQueryByResearchGroupID(researchGroupID);
+    public Result getApplyByResearchGroupID(int researchGroupID){
+        List<Apply> applies = applyService.testQueryByResearchGroupID(researchGroupID);
+        if (applies == null) {
+            return new Result(404, "applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 
     @GetMapping("/selectsortapplybyuserid")
-    public List<Apply> getSortApplyByUserID(int userID){
-        return applyService.testQueryByUserID(userID);
+    public Result getSortApplyByUserID(int userID){
+        List<Apply> applies = applyService.testQueryByUserID(userID);
+        if (applies == null) {
+            return new Result(404, "latest applies not found", null);
+        } else {
+            return new Result(applies);
+        }
     }
 }

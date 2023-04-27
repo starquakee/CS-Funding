@@ -1,6 +1,8 @@
 package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.ResearchGroupDTO;
+import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.ResearchGroup;
 import com.cs304.csfunding.service.ResearchGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,23 @@ public class ResearchGroupController {
     }
 
     @GetMapping("/getallresearchgroups")
-    public List<ResearchGroup> getAllResearchGroup(){
-        return researchGroupService.testQueryAll();
+    public Result getAllResearchGroup(){
+        List<ResearchGroup> researchgroups = researchGroupService.testQueryAll();
+        if (researchgroups == null) {
+            return new Result(404, "researchgroups not found", null);
+        } else {
+            return new Result(researchgroups);
+        }
     }
 
     @GetMapping("/getresearchgroupsbyuser")
-    public List<ResearchGroup> getResearchGroupByUser(int UserID){
-        System.out.println(UserID);
-        return researchGroupService.testQueryByUser(UserID);
+    public Result getResearchGroupByUser(int UserID){
+        List<ResearchGroup> researchgroups = researchGroupService.testQueryByUser(UserID);
+        if (researchgroups == null) {
+            return new Result(404, "researchgroups not found", null);
+        } else {
+            return new Result(researchgroups);
+        }
     }
 
 

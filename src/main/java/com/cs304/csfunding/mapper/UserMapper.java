@@ -22,6 +22,9 @@ public interface UserMapper {
 
     User findUserById(String id);
 
+    @Select("SELECT * FROM user WHERE uuid = #{uuid}")
+    User findUserByUuid(int uuid);
+
 
     @Select("select * from user where PhoneNum=#{PhoneNum}")
     User findUserByPhoneNum(@Param("PhoneNum") String PhoneNum);

@@ -5,9 +5,13 @@ import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.User;
 import com.cs304.csfunding.mapper.UserMapper;
 import com.cs304.csfunding.service.LoginService;
+import com.cs304.csfunding.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -28,7 +32,8 @@ public class LoginServiceImpl implements LoginService {
         //比较密码
 
         if (user != null && user.getKey().equals(loginDTO.getKey())) {
-            return new Result(200, "success", user);
+            String token = JwtUtil.createToken(user);
+            return new Result(200, "success", token);
         }
         return new Result(400, "登录失败", "");
     }

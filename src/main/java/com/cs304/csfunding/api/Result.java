@@ -18,5 +18,11 @@ public class Result {
         this.data = data;
     }
 
+    public Result(Object data) {
+        this.code = 200;
+        this.message = "success";
+        this.data = data;
+    }
+
 
 }
