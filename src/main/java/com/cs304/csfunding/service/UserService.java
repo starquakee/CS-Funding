@@ -31,7 +31,7 @@ public class UserService {
     public List<User> queryAll(){
         return userMapper.getAllUser();
     }
-    
+
     public List<User> testQueryAllAdmin(){
         return userMapper.getAllAdmin();
     }

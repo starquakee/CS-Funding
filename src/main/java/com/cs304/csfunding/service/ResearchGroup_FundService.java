@@ -30,6 +30,8 @@ public class ResearchGroup_FundService {
         return researchGroup_fundMapper.findFundByResearchGroup(researchGroup);
     }
 
-
+    public List<Integer> testQueryByFund(int fund){
+        return researchGroup_fundMapper.findResearchGroupByFund(fund);
+    }
 
 }

@@ -17,6 +17,8 @@ public interface ResearchGroup_FundMapper {
     @Select("select Fund_UUID from researchgroup_fund where ResearchGroup_UUID=#{ResearchGroup_UUID}")
     List<Integer> findFundByResearchGroup(@Param("ResearchGroup_UUID") int researchgroup_UUID);
 
+    @Select("select ResearchGroup_UUID from researchgroup_fund where Fund_UUID=#{Fund_UUID}")
+    List<Integer> findResearchGroupByFund(@Param("Fund_UUID") int fund_UUID);
 
 
 }
