@@ -63,6 +63,13 @@ public class ApplyController {
         return new Result(200,"OK",null);
     }
 
+    @PostMapping(value="/testjudge")
+    public Result testJudgeApply(@RequestBody ApplyDTO applyDTO){
+        //change state by name
+        applyService.testJudgeByName(applyDTO.getState(), applyDTO.getName());
+        return new Result(200,"OK",null);
+    }
+
     @GetMapping("/getallapplys")
     public Result getAllApply(){
         List<Apply> applies = applyService.testQueryAll();
