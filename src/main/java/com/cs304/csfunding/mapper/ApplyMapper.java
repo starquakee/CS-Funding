@@ -1,10 +1,7 @@
 package com.cs304.csfunding.mapper;
 
 import com.cs304.csfunding.entity.Apply;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -27,5 +24,9 @@ public interface ApplyMapper {
     @Select("select * from apply where UserID=#{UserID} order by Time desc")
     List<Apply> findApplyByUserID(@Param("UserID") int userID);
 
+    @Update("update apply set State = #{state} where UUID = #{UUID}")
+    void updateApplyByID(@Param("state")String state,@Param("UUID")int uuid);
 
+    @Update("update apply set State = #{state} where Name = #{Name}")
+    void updateApplyByName(@Param("state")String state,@Param("Name")String name);
 }

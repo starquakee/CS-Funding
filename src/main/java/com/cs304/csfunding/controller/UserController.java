@@ -30,6 +30,11 @@ public class UserController {
         return new Result(userService.queryAll());
     }
 
+    @GetMapping("/getalladmins")
+    public List<User> getAllAdmin(){
+        return userService.testQueryAllAdmin();
+    }
+
     @GetMapping("/user-id")
     public Result getUserByID(@RequestBody String id) {
         User user = userService.queryByID(id);
@@ -38,6 +43,7 @@ public class UserController {
         } else {
             return new Result(user);
         }
+
     }
 
     @GetMapping("/current-user")

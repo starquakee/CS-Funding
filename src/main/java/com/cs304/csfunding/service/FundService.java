@@ -34,5 +34,5 @@ public class FundService {
         return fundMapper.getAllFund();
     }
 
-
+    public Fund queryByID(int uuid) {return fundMapper.getFundByID(uuid);}
 }

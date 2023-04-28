@@ -3,6 +3,7 @@ package com.cs304.csfunding.mapper;
 import com.cs304.csfunding.entity.Fund;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -16,7 +17,8 @@ public interface FundMapper {
     @Select("select * from fund")
     List<Fund> getAllFund();
 
-
+    @Select("select * from fund where UUID=#{UUID}")
+    Fund getFundByID(@Param("UUID") int uuid);
 
 
 }
