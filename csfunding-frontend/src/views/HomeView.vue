@@ -1,44 +1,63 @@
 <template>
     <div class="Background">
-        <el-menu :default-active="activeIndex"
-                 class="el-menu-demo"
-                 mode="horizontal"
-                 :ellipsis="false"
-                 background-color="FireBrick"
-                 style="min-width: 100%">
-            <el-menu-item index="0">南方科技大学财务管理系统</el-menu-item>
-            <div class="flex-grow"/>
-            <el-menu-item index="1">帮助中心</el-menu-item>
-            <el-sub-menu index="2">
-                <template #title>退出登录</template>
-                <el-menu-item index="2-1">
-                    <router-link to="login">
-                        返回登录页面
-                    </router-link>
-                </el-menu-item>
-                <el-menu-item index="2-2">item two</el-menu-item>
-            </el-sub-menu>
-        </el-menu>
+      <el-menu :default-active="activeIndex"
+               class="el-menu-demo"
+               mode="horizontal"
+               :ellipsis="false"
+               style="min-width: 100%">
+        <el-menu-item index="0">
+          <font style="color: white">南方科技大学财务管理系统</font>
+        </el-menu-item>
+        <div class="flex-grow"/>
+        <el-menu-item index="1">
+          <font style="color: white">您好 xxx</font>
+        </el-menu-item>
+        <el-sub-menu index="2">
+          <template #title>
+            <font style="color: white">注销</font>
+          </template>
+          <el-menu-item index="2-1">
+            <router-link to="login">
+              <font style="color: white">返回登录页面</font>
+            </router-link>
+          </el-menu-item>
+          <el-menu-item index="2-2">
+            <font style="color: white">返回官网</font>
+          </el-menu-item>
+        </el-sub-menu>
+      </el-menu>
 
         <el-container>
 
             <el-main>
                 <div class="Main">
-
                     <el-row>
 
                         <el-col :span="7">
-                            <el-card class="box-card">
-                                <template #header>
-                                    <div class="card-header">
+                            <el-card class="info">
+
+                                    <div class="info-header" style="height: 40px">
                                         <span>用户信息</span>
                                         <el-button class="button" text>编辑</el-button>
                                     </div>
-                                </template>
-                                账号：{{ userData.username }} <br>
-                                姓名：{{ userData.name }} <br>
-                                联系电话：{{ userData.phoneNumber }} <br>
-                                账号类型：{{ userData.type }} <br>
+
+                                    <div style="height: 20px">
+
+                                    </div>
+
+                              <div class="divide">
+
+                                <div>
+                                  <img src="@/img/user.png" width="85" height="150">
+                                </div>
+
+                                <div style="font-size: 16px">
+                                  账号：{{ userData.username }} <br>
+                                  姓名：{{ userData.name }} <br>
+                                  联系电话：{{ userData.phoneNumber }} <br>
+                                  账号类型：{{ userData.type }} <br>
+                                </div>
+                              </div>
                             </el-card>
                         </el-col>
 
@@ -48,16 +67,15 @@
                         </el-col>
 
                         <el-col :span="7">
-                            <el-container class="Group card-base">
+                            <el-container class="group">
                                 <el-header>
                                     我的课题组
                                 </el-header>
                                 <el-main>
-                                    <el-table :data="ResearchGroup" style="width: 100%" class="GroupTable">
-                                        <el-table-column prop="name" label="课题组名称" width="95px"/>
-                                        <el-table-column prop="sum" label="经费总额" width="65px"/>
-                                        <el-table-column prop="remain" label="经费剩余" width="65px"/>
-                                        <el-table-column label="操作" width="60px">
+                                    <el-table :data="ResearchGroup" style="width: 95%" class="GroupTable">
+                                        <el-table-column prop="name" label="课题组名称" align="center"/>
+                                        <el-table-column prop="sum" label="经费总额" align="center"/>
+                                        <el-table-column label="操作" align="center">
                                             <el-button @click="FundByResearchGroup" type="primary" size="small" plain>
                                                 查看
                                             </el-button>
@@ -73,7 +91,7 @@
                         </el-col>
 
                         <el-col :span="8">
-                            <el-container class="Notice card-base">
+                            <el-container class="Notice group">
                                 <el-header>
                                     通知
                                 </el-header>
@@ -93,9 +111,9 @@
                     <el-row>
 
                         <el-col :span="17">
-                            <el-card class="box-card">
+                            <el-card class="info">
                                 <template #header>
-                                    <div class="card-header">
+                                    <div class="info-header">
                                         <el-container>
                                             <el-header>
                                                 <span>最近记录</span>
@@ -103,11 +121,11 @@
                                             </el-header>
                                             <el-main>
                                                 <el-table :data="RecentApply" style="width: 100%">
-                                                    <el-table-column prop="name" label="经费名称"/>
-                                                    <el-table-column prop="researchGroup" label="课题组名称"/>
-                                                    <el-table-column prop="applyPerson" label="申请人"/>
-                                                    <el-table-column prop="amount" label="申请金额"/>
-                                                    <el-table-column prop="state" label="申请状态">
+                                                    <el-table-column prop="name" align="center" label="经费名称"/>
+                                                    <el-table-column prop="researchGroup" align="center" label="课题组名称"/>
+                                                    <el-table-column prop="applyPerson" align="center" label="申请人"/>
+                                                    <el-table-column prop="amount" align="center" label="申请金额"/>
+                                                    <el-table-column prop="state" align="center" label="申请状态">
                                                     </el-table-column>
                                                 </el-table>
                                             </el-main>
@@ -124,7 +142,7 @@
                         </el-col>
 
                         <el-col :span="6">
-                            <el-container class="Function card-base">
+                            <el-container class="Function group">
                                 <el-header>
                                     所有功能
                                 </el-header>
@@ -139,9 +157,12 @@
                 </div>
             </el-main>
 
-            <el-footer color="FireBrick">
-
-            </el-footer>
+          <div class="Bottom">
+            <div style="height: 5px"></div>
+            <el-button style="background-color: #8f000b; border: #8f000b">
+              <font style="color: white">主页</font>
+            </el-button>
+          </div>
 
         </el-container>
     </div>
@@ -154,41 +175,30 @@
     margin: 0 auto;
 }
 
-.card-base {
-    height: 400px;
+.group {
+    height: 300px;
     background-color: white;
-    /*border: 1px solid orangered;*/
-    line-height: 100px;
+    line-height: 75px;
     font-size: 24px;
-    /*border-radius: var(--el-card-border-radius);*/
     border-radius: 5px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.12)
 }
 
-.box-card {
-    height: 400px;
+.info {
+    height: 300px;
     background-color: white;
-    /*border: 1px solid orangered;*/
-    line-height: 50px;
+    line-height: 40px;
     font-size: 24px;
 }
 
-.card-header {
+.info-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.text {
-    font-size: 14px;
-}
-
-.item {
-    margin-bottom: 18px;
-}
-
 .Notice {
-    height: 400px;
+    height: 300px;
     background-color: white;
     /*border: 1px solid orangered;*/
     line-height: 100px;
@@ -215,6 +225,17 @@
     flex-grow: 1;
 }
 
+.divide {
+  width: 100%;
+  height: 22px;
+  display: flex;
+  flex-direction: row;
+}
+.divide > div {
+  height: 22px;
+  flex: 1;
+}
+
 
 </style>
 
@@ -231,8 +252,6 @@ const userData = reactive({
     phoneNumber: '',
     type: ''
 })
-let ResearchGroup = [];
-let RecentApply = [];
 
 onMounted(() => {
     request({
@@ -247,6 +266,49 @@ onMounted(() => {
         userData.type = ud.isAdmin ? '管理员' : '用户';
     })
 })
+
+  const ResearchGroup = [
+    {
+      name: '王',
+      sum: 10000,
+      remain: 10000
+    },
+    {
+      name: '李',
+      sum: 20000,
+      remain: 10000
+    },
+    {
+      name: '孙',
+      sum: 20000,
+      remain: 20000
+    }
+  ]
+
+  const RecentApply = [
+    {
+      name: '经费1',
+      researchGroup: '王',
+      applyPerson: 'xxx',
+      amount: 500,
+      state: 'pass'
+    },
+    {
+      name: '经费2',
+      researchGroup: '李',
+      applyPerson: 'xxx',
+      amount: 2000,
+      state: 'pass'
+    },
+    {
+      name: '经费3',
+      researchGroup: '李',
+      applyPerson: 'xxx',
+      amount: 3000,
+      state: 'submit'
+    }
+
+  ]
 // created() {
 //   const query = this.$route.query;
 //
@@ -261,53 +323,7 @@ onMounted(() => {
 //     this.type = 'Admin'
 //   }
 //
-//   this.ResearchGroup = [
-//     {
-//       name: '王',
-//       sum: 10000,
-//       remain: 10000
-//     },
-//     {
-//       name: '李',
-//       sum: 20000,
-//       remain: 10000
-//     },
-//     {
-//       name: '孙',
-//       sum: 20000,
-//       remain: 20000
-//     },
-//     {
-//       name: '赵',
-//       sum: 30000,
-//       remain: 20000
-//     }
-//   ]
 //
-//   this.RecentApply = [
-//     {
-//       name: '经费1',
-//       researchGroup: '王',
-//       applyPerson: 'xxx',
-//       amount: 500,
-//       state: 'pass'
-//     },
-//     {
-//       name: '经费2',
-//       researchGroup: '李',
-//       applyPerson: 'xxx',
-//       amount: 2000,
-//       state: 'pass'
-//     },
-//     {
-//       name: '经费3',
-//       researchGroup: '李',
-//       applyPerson: 'xxx',
-//       amount: 3000,
-//       state: 'submit'
-//     }
-//
-//   ]
 //
 //
 // },
