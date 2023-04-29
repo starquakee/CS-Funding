@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from "@/views/LoginView.vue";
 import ApplyView from "@/views/ApplyView.vue";
 import FundView from '@/views/FundView.vue';
+import CheckView from '@/views/CheckView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,8 +35,13 @@ const router = createRouter({
             path: '/fund',
             name: 'fund',
             component: FundView
-
+        },
+        {
+            path: '/check',
+            name: 'check',
+            component: CheckView
         }
+
     ]
 })
 

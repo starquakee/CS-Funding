@@ -1,46 +1,43 @@
 <template>
-
+  <div >
   <el-menu :default-active="activeIndex"
            class="el-menu-demo"
            mode="horizontal"
            :ellipsis="false"
-           style="min-width: 100%">
+  >
     <el-menu-item index="0">
       <font style="color: white">南方科技大学财务管理系统</font>
     </el-menu-item>
+    <el-menu-item index="0">
+      <font style="color: white">XXX 课题组</font>
+    </el-menu-item>
     <div class="flex-grow"/>
     <el-menu-item index="1">
-      <font style="color: white">您好 xxx</font>
+      <font style="color: white">您好</font>
     </el-menu-item>
-    <el-sub-menu index="2">
+    <el-sub-menu index="2" >
       <template #title>
         <font style="color: white">注销</font>
       </template>
       <el-menu-item index="2-1">
         <router-link to="login">
-          <font style="color: white">返回登录页面</font>
+          返回登录
         </router-link>
       </el-menu-item>
       <el-menu-item index="2-2">
-        <font style="color: white">返回官网</font>
+        返回官网
       </el-menu-item>
     </el-sub-menu>
   </el-menu>
 
   <div class = "SelectForm" >
     <div style="height: 10px"></div>
-    <el-form :inline="true" :model="formInline" class="demo-form-inline">
+    <el-form :inline="true" :model="SearchForm" class="demo-form-inline">
       <el-form-item label="编号">
-        <el-input v-model="formInline.user" placeholder="经费编号" />
+        <el-input v-model="SearchForm.FundNumber" placeholder="经费编号" />
       </el-form-item>
       <el-form-item label="名称">
-        <el-input v-model="formInline.user" placeholder="经费名称" />
-      </el-form-item>
-      <el-form-item label="状态">
-        <el-select v-model="formInline.region" placeholder="经费状态">
-          <el-option label="合格" value="pass" />
-          <el-option label="不合格" value="fail" />
-        </el-select>
+        <el-input v-model="SearchForm.FundName" placeholder="经费名称" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
@@ -52,24 +49,50 @@
   <el-table :data="tableData" style="width: 100%" border class="ParentTable" :row-class-name="tableRowClassName"
             :summary-method="getSummaries" show-summary>
 
-    <el-table-column type="expand">
+    <el-table-column type="expand" >
 
       <template #default="props">
-         <h3>{{props.row.name}}</h3>
-          <h4>已使用经费: {{props.row.sum - props.row.remain}}</h4>
-          <h4>当前执行率: {{props.row.rate}}</h4>
-          <h4>剩余时间: {{props.row.remainDay}}</h4>
+        <div style="display: flex;height: 200px; background-color: whitesmoke">
+          <div style="flex: 1; text-align: center;display: flex; justify-content: center; align-items: center;">
+            <h4 style="margin-right: 10px;">详细信息：</h4>
+            <el-card style="width: 30%;" shadow="never">
+            <h4>已使用经费: {{props.row.sum - props.row.remain}}</h4>
+            <h4>当前执行率: {{props.row.rate}}</h4>
+            <h4>剩余时间: {{props.row.remainDay}}</h4>
+            </el-card>
+          </div>
 
-          <h4>最近申请记录</h4>
-          <el-table :data="props.row.applies" border class="ChildTable">
+          <div style="flex: 1; text-align: center;display: flex; justify-content: center; align-items: center;">
+            <img src="@/img/user.png" width="580" height="120">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; align-items: center; background-color: whitesmoke">
+          <h4 style="margin-right: 10px;">最近申请记录：</h4>
+          <el-table :data="props.row.applies" border class="ChildTable" style="width: 65%; margin-bottom: 20px">
             <el-table-column prop="name" label="经费名称" align="center"/>
             <el-table-column prop="researchGroup" label="课题组名称" align="center"/>
             <el-table-column prop="applyPerson" label="申请人" align="center"/>
             <el-table-column prop="amount" label="申请金额" align="center"/>
             <el-table-column prop="state" label="申请状态" align="center">
+              <template #default="props">
+
+                <el-tag type="error" size="small" plain v-if="props.row.state === 'fail'" effect="dark">
+                  申请失败
+                </el-tag>
+
+                <el-tag type="warning" size="small" plain v-if="props.row.state === 'submit'" effect="dark">
+                  未审核
+                </el-tag>
+
+                <el-tag type="success" size="small" plain v-if="props.row.state === 'pass'" effect="dark">
+                  申请通过
+                </el-tag>
+
+              </template>
             </el-table-column>
           </el-table>
-
+          </div>
       </template>
     </el-table-column>
 
@@ -80,7 +103,18 @@
     <el-table-column prop="start" label="开始时间" align="center"/>
     <el-table-column prop="end" label="结束时间" align="center"/>
     <el-table-column prop="state" label="是否达标" align="center">
+      <template #default="props">
+        <el-tag type="error" size="small" plain v-if="props.row.remainDay < 60
+                                                 && props.row.remain/props.row.sum > 0.2" effect="dark">
+          不合格
+        </el-tag>
 
+        <el-tag type="success" size="small" plain v-if="!(props.row.remainDay < 60
+                                                 && props.row.remain/props.row.sum > 0.2)" effect="dark">
+          合格
+        </el-tag>
+
+      </template>
     </el-table-column>
   </el-table>
 
@@ -95,6 +129,8 @@
       <font style="color: white">返回主页</font>
     </el-button>
   </div>
+
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -102,9 +138,9 @@
 import {reactive} from "vue";
 import type { TableColumnCtx } from 'element-plus'
 
-const formInline = reactive({
-  user: '',
-  region: '',
+const SearchForm = reactive({
+  FundNumber: '',
+  FundName: '',
 })
 
 interface fund{
@@ -112,11 +148,9 @@ interface fund{
   name: string,
   sum: number,
   remain: number,
-  state: string,
   start: string,
   end: string,
   remainDay: number,
-  rate: number,
   applies: apply[]
 }
 interface apply {
@@ -132,7 +166,7 @@ const tableRowClassName = (
         { row: fund
           rowIndex: number
         }) => {
-  if (row.state != 'P') {
+  if (row.remainDay < 60 && row.remain/row.sum > 0.2) {
     return 'warning-row'
   }
   return 'success-row'
@@ -175,11 +209,9 @@ const tableData : fund[] = [
     name: '经费1',
     sum: 1000,
     remain: 500,
-    state: 'P',
     start: 'xxxx-yy-dd',
     end: 'xxxx-yy-dd',
     remainDay: 5,
-    rate: 0,
     applies: [
       {
         name: '经费1',
@@ -201,12 +233,10 @@ const tableData : fund[] = [
     id: 'xxx',
     name: '经费2',
     sum: 1000,
-    remain: 500,
-    state: 'P',
+    remain: 0,
     start: 'xxxx-yy-dd',
     end: 'xxxx-yy-dd',
     remainDay: 5,
-    rate: 0,
     applies:[]
   },
   {
@@ -214,11 +244,9 @@ const tableData : fund[] = [
     name: '经费3',
     sum: 1000,
     remain: 1000,
-    state: 'P',
     start: 'xxxx-yy-dd',
     end: 'xxxx-yy-dd',
     remainDay: 5,
-    rate: 0,
     applies:[]
   }
 ]
@@ -228,11 +256,6 @@ const tableData : fund[] = [
 
 <style>
 .ChildTable{
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
-}
-.ParentTable{
 
 }
 </style>
