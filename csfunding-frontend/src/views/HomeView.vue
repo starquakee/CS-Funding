@@ -48,7 +48,8 @@
                               <div class="info-divide">
 
                                 <div style="margin-top: 15px; margin-left: 15px">
-                                  <img src="@/img/user.png" width="80" height="120">
+                                  <img src="@/img/user.png" width="80" height="100" v-if="userData.type==='用户'">
+                                  <img src="@/img/admin.png" width="80" height="100" v-if="userData.type!=='用户'">
                                 </div>
 
                                 <div style="font-size: 16px">
@@ -70,6 +71,8 @@
                             <el-container class="group">
                                 <el-header>
                                     我的课题组
+                                  <el-button type="primary" :icon="Edit" style="margin-left: 100px"
+                                             v-if="userData.type!=='用户'">编辑</el-button>
                                 </el-header>
                                 <el-main>
                                     <el-table :data="ResearchGroup" style="width: 95%" class="GroupTable">
@@ -96,6 +99,14 @@
                                     通知
                                 </el-header>
                                 <el-main>
+                                  <el-table :data="Notices" style="width: 95%" class="GroupTable">
+                                    <el-table-column prop="notice" label="通知内容" />
+                                    <el-table-column v-if="userData.type!=='用户'">
+                                      <el-button type="danger" size="small" plain>
+                                        删除
+                                      </el-button>
+                                    </el-table-column>
+                                  </el-table>
 
                                 </el-main>
 
@@ -121,7 +132,22 @@
                                                     <el-table-column prop="researchGroup" align="center" label="课题组名称"/>
                                                     <el-table-column prop="applyPerson" align="center" label="申请人"/>
                                                     <el-table-column prop="amount" align="center" label="申请金额"/>
-                                                    <el-table-column prop="state" align="center" label="申请状态">
+                                                    <el-table-column align="center" label="申请状态">
+                                                      <template #default="props">
+
+                                                        <el-tag type="error" size="small" plain v-if="props.row.state === 'fail'" effect="dark">
+                                                          申请失败
+                                                        </el-tag>
+
+                                                        <el-tag type="warning" size="small" plain v-if="props.row.state === 'submit'" effect="dark">
+                                                          未审核
+                                                        </el-tag>
+
+                                                        <el-tag type="success" size="small" plain v-if="props.row.state === 'pass'" effect="dark">
+                                                          申请通过
+                                                        </el-tag>
+
+                                                      </template>
                                                     </el-table-column>
                                                 </el-table>
 
@@ -136,11 +162,11 @@
 
                         <el-col :span="6">
                           <el-card class="Function">
-                            
+
                             <span>功能</span>
-  
+
                             <div style="height: 15px"></div>
-  
+
                             <div class="info-divide" style="height: 85px">
 
                               <div class="function-button" v-if="userData.type==='用户'">
@@ -154,7 +180,7 @@
                                 我的申请
                               </div>
 
-                              <div class="function-button" v-if="userData.type!=='用户'">
+                              <div class="function-button" v-if="userData.type!=='用户'" @click="AllApply">
                                 <el-button type="primary" style="height: 50px; width: 50px" circle>
                                   <el-icon  style="vertical-align: middle;" size="25px">
                                     <View />
@@ -165,7 +191,9 @@
                               </div>
 
                               <div class="function-button">
-                                <el-button type="primary" style="height: 50px; width: 50px" circle>
+                                <el-button type="primary" style="height: 50px; width: 50px"
+                                           @click="ClickOnOutput; OutputDialogVisible=true"
+                                           circle>
                                   <el-icon  style="vertical-align: middle;" size="25px">
                                     <Document />
                                   </el-icon>
@@ -191,7 +219,7 @@
                               </div>
 
                               <div class="function-button" v-if="userData.type!=='用户'">
-                                <el-button type="primary" style="height: 50px; width: 50px" circle>
+                                <el-button type="primary" style="height: 50px; width: 50px" circle @click="FundDialogVisible=true">
                                   <el-icon  style="vertical-align: middle;" size="25px">
                                     <Coin />
                                   </el-icon>
@@ -201,7 +229,7 @@
                               </div>
 
                               <div class="function-button" v-if="userData.type!=='用户'">
-                                <el-button type="primary" style="height: 50px; width: 50px" circle>
+                                <el-button type="primary" style="height: 50px; width: 50px" circle @click="NoticeDialogVisible=true">
                                   <el-icon  style="vertical-align: middle;" size="25px">
                                     <Notification />
                                   </el-icon>
@@ -227,6 +255,117 @@
               <font style="color: white; margin-left: 5px; margin-top: 3px">主页</font>
             </el-button>
           </div>
+
+          <el-dialog v-model="OutputDialogVisible" title="导出数据" width="30%" draggable>
+
+            <el-form :model="OutputForm" label-width="120px">
+              <el-form-item label="课题组名称">
+                <el-select v-model="OutputForm.researchGroup" placeholder="经费名称">
+                  <el-option label="王" value="王" />
+                  <el-option label="李" value="李" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="经费名称">
+                <el-select v-model="OutputForm.fundName" placeholder="经费名称">
+                  <el-option label="经费1" value="经费1" />
+                  <el-option label="经费2" value="经费2" />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="生成Excel文件">
+                <a href="output" download>点击下载文件</a>
+              </el-form-item>
+
+            </el-form>
+            <template #footer>
+      <span class="dialog-footer">
+        <el-button type="success" @click="OutputDialogVisible = false">确认</el-button>
+        <el-button type="danger" @click="OutputDialogVisible = false">
+          取消
+        </el-button>
+      </span>
+            </template>
+          </el-dialog>
+
+          <el-dialog v-model="FundDialogVisible" title="创建经费" width="30%" draggable>
+
+            <el-form :model="FundForm" label-width="120px">
+              <el-form-item label="课题组名称">
+                <el-select v-model="FundForm.researchGroup" placeholder="经费名称">
+                  <el-option label="王" value="王" />
+                  <el-option label="李" value="李" />
+                </el-select>
+
+              </el-form-item>
+
+
+              <el-form-item label="经费编号">
+                <el-input v-model="FundForm.fundNumber" />
+              </el-form-item>
+
+              <el-form-item label="经费名称">
+                <el-input v-model="FundForm.fundName" />
+              </el-form-item>
+
+
+              <el-form-item label="总金额">
+                <el-input v-model="FundForm.sum" />
+              </el-form-item>
+
+              <el-form-item label="起止时间">
+                <el-col :span="11">
+                  <el-form-item prop="date1">
+                    <el-date-picker
+                        v-model="FundForm.start"
+                        type="date"
+                        label="Pick a date"
+                        placeholder="Pick a date"
+                        style="width: 100%"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col class="text-center" :span="2">
+                  <span class="text-gray-500"></span>
+                </el-col>
+                <el-col :span="11">
+                  <el-form-item prop="date2">
+                    <el-time-picker
+                        v-model="FundForm.end"
+                        type="date"
+                        label="Pick a date"
+                        placeholder="Pick a date"
+                        style="width: 100%"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-form-item>
+
+            </el-form>
+            <template #footer>
+      <span class="dialog-footer">
+        <el-button type="success" @click="FundDialogVisible = false">确认</el-button>
+        <el-button type="danger" @click="FundDialogVisible = false">
+          取消
+        </el-button>
+      </span>
+            </template>
+          </el-dialog>
+
+          <el-dialog v-model="NoticeDialogVisible" title="发布通知" width="30%" draggable>
+
+            <el-form :model="NoticeForm" label-width="40px">
+              <el-form-item label="通知">
+                <el-input v-model="NoticeForm.notice" type="textarea" />
+              </el-form-item>
+            </el-form>
+            <template #footer>
+      <span class="dialog-footer">
+        <el-button type="success" @click="NoticeDialogVisible = false">确认</el-button>
+        <el-button type="danger" @click="NoticeDialogVisible = false">
+          取消
+        </el-button>
+      </span>
+            </template>
+          </el-dialog>
 
         </el-container>
     </div>
@@ -337,6 +476,28 @@ const userData = reactive({
     type: ''
 })
 
+const OutputForm = reactive({
+  researchGroup: '',
+  fundName: ''
+})
+
+const NoticeForm = reactive({
+  notice: ''
+})
+
+const FundForm = reactive({
+  researchGroup: '',
+  fundName: '',
+  fundNumber: '',
+  start: Date,
+  end: Date,
+  sum: 0
+})
+
+let OutputDialogVisible = ref(false)
+let FundDialogVisible = ref(false)
+let NoticeDialogVisible = ref(false)
+
 onMounted(() => {
     request({
         url: '/current-user',
@@ -394,12 +555,25 @@ onMounted(() => {
 
   ]
 
+  const Notices = [
+    {
+      notice: "系统已上线"
+    },
+    {
+      notice: "已收到提交"
+    },
+
+  ]
+
 function AllApply() {
     router.push({path: '/apply'})
 }
 
 function FundByResearchGroup() {
     router.push({path: '/fund'})
+}
+function ClickOnOutput(){
+
 }
 
 
