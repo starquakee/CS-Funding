@@ -11,6 +11,6 @@ public class FundDTO {
     private int remainDays;
     private String startTime;
     private String endTime;
-
+    private int uuid;
 
 }

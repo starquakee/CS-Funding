@@ -1,6 +1,7 @@
 package com.cs304.csfunding.service;
 
 import com.cs304.csfunding.api.FundDTO;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.mapper.FundMapper;
 import org.springframework.stereotype.Service;
@@ -34,5 +35,25 @@ public class FundService {
         return fundMapper.getAllFund();
     }
 
-    public Fund queryByID(int uuid) {return fundMapper.getFundByID(uuid);}
+    public Fund queryByID(int uuid) {
+        return fundMapper.getFundByID(uuid);
+    }
+
+    public void testDelete(int uuid) {
+        fundMapper.deleteFundByID(uuid);
+    }
+
+    public Result testModify(FundDTO fundDTO) {
+        Fund fund = new Fund();
+        fund.setUuid(fundDTO.getUuid());
+        fund.setFundNumber(fundDTO.getFundNumber());
+        fund.setFundName(fundDTO.getFundName());
+        fund.setBalance(fundDTO.getBalance());
+        fund.setSum(fundDTO.getSum());
+        fund.setRemainDays(fundDTO.getRemainDays());
+        fund.setStartTime(fundDTO.getStartTime());
+        fund.setEndTime(fundDTO.getEndTime());
+        fundMapper.modifyFund(fund);
+        return new Result(200,"success",fund);
+    }
 }

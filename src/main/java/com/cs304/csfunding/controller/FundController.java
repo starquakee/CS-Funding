@@ -6,10 +6,7 @@ import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.service.FundService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,6 +22,27 @@ public class FundController {
         return fundService.testInsert(fundDTO);
     }
 
+    @PostMapping(value = "/modify/fund")
+    public Result testModifyFund(@RequestBody FundDTO fundDTO) {
+        Fund fund = fundService.queryByID(fundDTO.getUuid());
+        if (fund == null) {
+            return new Result(404, "fund not found", null);
+        } else {
+            return fundService.testModify(fundDTO);
+        }
+    }
+
+    @GetMapping("delete/fund")
+    public Result testDeleteFund(@RequestParam int uuid) {
+        Fund fund = fundService.queryByID(uuid);
+        if (fund == null) {
+            return new Result(404, "fund not found", null);
+        } else {
+            fundService.testDelete(uuid);
+            return new Result(200,"success",null);
+        }
+    }
+
     @GetMapping("/getallfunds")
     public Result getAllFund(){
         List<Fund> funds = fundService.testQueryAll();
@@ -35,5 +53,14 @@ public class FundController {
         }
     }
 
+    @GetMapping("/get/fund")
+    public Result testAddFund(@RequestParam int uuid) {
+        Fund fund = fundService.queryByID(uuid);
+        if (fund == null) {
+            return new Result(404, "fund not found", null);
+        } else {
+            return new Result(200,"success",fund);
+        }
+    }
 
 }
