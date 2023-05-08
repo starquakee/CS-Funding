@@ -50,8 +50,8 @@ public class ApplyService {
         return applyMapper.findApplyByUserID(userID);
     }
 
-    public void testJudgeByName(String state, String name) {
-        applyMapper.updateApplyByName(state, name);
-    }
+    public void testJudgeByName(String state, String remark, String name) {applyMapper.updateApplyByName(state, remark, name);}
+    public void testJudgeByID(String state,String remark, int uuid) {applyMapper.updateApplyByID(state, remark, uuid);}
+    public void testUpdateReSubmitted(int uuid){applyMapper.updateApplyByID("Resubmitted","",uuid);}
 
 }

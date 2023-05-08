@@ -14,4 +14,5 @@ public class ApplyDTO {
     private String state;
     private String contentSummary;
     private String remark;
+    private int UUID;
 }

@@ -63,10 +63,38 @@ public class ApplyController {
         return new Result(200,"OK",null);
     }
 
+    @PostMapping(value = "/register/resubmit")
+    public Result ResubmitApply(@RequestBody ApplyDTO applyDTO) {
+        //int uuid = HttpContextUtil.getRequestUuid();
+        int uuid = applyDTO.getUserID();
+        User user = userService.queryByUuid(uuid);
+        List<ResearchGroup> rg = researchGroupService.testQueryByUser(user.getUuid()); //user's research group
+        List<Integer> rg_uuid = new ArrayList<>();
+        for (ResearchGroup researchGroup : rg) {
+            rg_uuid.add(researchGroup.getUuid());
+        }
+        int fund_rg = researchGroupFundService.testQueryByFund(applyDTO.getFundID()).get(0); //fund's research group
+        Fund fund = fundService.queryByID(applyDTO.getFundID());
+        //filter
+        if(!rg_uuid.contains(applyDTO.getResearchGroupID())) {
+            return new Result(403, "user doesn't belong to the research group", null);
+        }
+        if(!rg_uuid.contains(fund_rg)){
+            return new Result(403,"fund provide no access to user", null);
+        }
+        if(applyDTO.getMoney()>fund.getSum()){
+            return new Result(403,"exceed fund budget", null);
+        }
+        //insert
+        applyService.testUpdateReSubmitted(applyDTO.getUUID());
+        applyService.testInsert(applyDTO);
+        return new Result(200,"OK",null);
+    }
+
     @PostMapping(value="/testjudge")
     public Result testJudgeApply(@RequestBody ApplyDTO applyDTO){
         //change state by name
-        applyService.testJudgeByName(applyDTO.getState(), applyDTO.getName());
+        applyService.testJudgeByID(applyDTO.getState(),applyDTO.getRemark(), applyDTO.getUUID());
         return new Result(200,"OK",null);
     }
 
