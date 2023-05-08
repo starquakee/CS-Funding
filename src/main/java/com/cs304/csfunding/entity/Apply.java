@@ -15,4 +15,5 @@ public class Apply {
     private String ContentSummary;
     private String Remark;
     private String Time;
+    private int uuid;
 }
