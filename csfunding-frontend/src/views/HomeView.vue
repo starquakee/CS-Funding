@@ -38,11 +38,10 @@
 
                                     <div class="info-header" style="height: 40px">
                                         <span>用户信息</span>
-                                      <el-button type="primary" :icon="Edit">编辑</el-button>
+                                      <el-button type="primary" :icon="Edit">修改密码</el-button>
+
                                     </div>
-
                                     <div style="height: 20px">
-
                                     </div>
 
                               <div class="info-divide">
@@ -56,7 +55,6 @@
                                   账号：{{ userData.username }} <br>
                                   姓名：{{ userData.name }} <br>
                                   账号类型：{{ userData.type }} <br>
-                                  联系方式：{{ userData.phoneNumber }} <br>
                                 </div>
                               </div>
                             </el-card>
@@ -70,17 +68,35 @@
                         <el-col :span="7">
                             <el-container class="group">
                                 <el-header>
-                                    我的课题组
-                                  <el-button type="primary" :icon="Edit" style="margin-left: 100px"
-                                             v-if="userData.type!=='用户'">编辑</el-button>
+                                  <div class="info-divide">
+                                    <div style="font-size: 24px;">
+                                    课题组
+                                    </div>
+                                  <div>
+                                    <el-form :inline="true" :model="ResearchGroupForm" class="demo-form-inline"
+                                    style="margin-top: 10px">
+
+                                      <el-form-item label-width="1px" >
+                                        <el-input v-model="ResearchGroupForm.ResearchGroupName" placeholder="组名" />
+                                      </el-form-item>
+
+                                    </el-form>
+
+
+                                  </div>
+                                    <el-button type="primary" style="margin-top: 25px">查询</el-button>
+                                  </div>
+
                                 </el-header>
                                 <el-main>
                                     <el-table :data="ResearchGroup" style="width: 95%" class="GroupTable">
                                         <el-table-column prop="name" label="课题组名称" align="center"/>
-                                        <el-table-column prop="sum" label="经费总额" align="center"/>
                                         <el-table-column label="操作" align="center">
                                             <el-button @click="FundByResearchGroup" type="primary" size="small" plain>
                                                 查看
+                                            </el-button>
+                                            <el-button type="danger" size="small" plain>
+                                              删除
                                             </el-button>
                                         </el-table-column>
                                     </el-table>
@@ -97,15 +113,21 @@
                             <el-container class="Notice">
                                 <el-header>
                                     通知
+                                  <el-button type="primary" :icon="Edit" style="margin-left: 220px"
+                                             v-if="userData.type!=='用户'">添加</el-button>
                                 </el-header>
                                 <el-main>
                                   <el-table :data="Notices" style="width: 95%" class="GroupTable">
-                                    <el-table-column prop="notice" label="通知内容" />
+                                    <el-table-column prop="notice" label="通知内容" width="210px" />
                                     <el-table-column v-if="userData.type!=='用户'">
+                                      <el-button type="warning" size="small" plain>
+                                        修改
+                                      </el-button>
                                       <el-button type="danger" size="small" plain>
                                         删除
                                       </el-button>
                                     </el-table-column>
+
                                   </el-table>
 
                                 </el-main>
@@ -389,7 +411,7 @@
 .info {
     height: 300px;
     background-color: white;
-    line-height: 40px;
+    line-height: 50px;
     font-size: 24px;
 }
 
@@ -492,6 +514,10 @@ const FundForm = reactive({
   start: Date,
   end: Date,
   sum: 0
+})
+
+const ResearchGroupForm = reactive({
+  ResearchGroupName: ''
 })
 
 let OutputDialogVisible = ref(false)
