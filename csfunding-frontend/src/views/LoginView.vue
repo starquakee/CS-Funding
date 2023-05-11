@@ -1,5 +1,6 @@
 <template>
-    <div class="login-wrap">
+  <div style="background-image: url('../img/background.jpg');">
+    <div class="login-wrap" >
         <el-form class="login-container">
             <h1 class="title">用户登陆</h1>
             <el-form-item label="登录失败" style="padding-left: 10px; border: 1px solid red; border-radius: 4px" v-if="loginFail">
@@ -15,6 +16,7 @@
             </el-form-item>
         </el-form>
     </div>
+  </div>
 </template>
 
 
@@ -82,11 +84,13 @@ function setToken() {
 .login-wrap {
     box-sizing: border-box;
     width: 100%;
-    height: 100%;
+    height: 781px;
     padding-top: 10%;
     background-repeat: no-repeat;
     background-position: center right;
     background-size: 100%;
+    background-image: url('../img/background.jpg');
+
 }
 
 .login-container {
