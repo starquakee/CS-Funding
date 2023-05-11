@@ -374,17 +374,30 @@
 
           <el-dialog v-model="NoticeDialogVisible" title="发布通知" width="30%" draggable>
 
-            <el-form :model="NoticeForm" label-width="40px">
-              <el-form-item label="通知">
+            <el-form :model="NoticeForm" label-width="40px" label-position="top">
+              <el-form-item label="不达标课题组/经费" >
+              <el-col :span="11">
+                  <el-select v-model="NoticeForm.researchGroup" placeholder="课题组名">
+                    <el-option label="Zone one" value="shanghai" />
+                    <el-option label="Zone two" value="beijing" />
+                  </el-select>
+              </el-col>
+              <el-col :span="11">
+                  <el-select v-model="NoticeForm.fund" placeholder="经费名">
+                    <el-option label="Zone one" value="shanghai" />
+                    <el-option label="Zone two" value="beijing" />
+                  </el-select>
+              </el-col>
+              </el-form-item>
+              <el-form-item label="备注">
                 <el-input v-model="NoticeForm.notice" type="textarea" />
               </el-form-item>
             </el-form>
             <template #footer>
       <span class="dialog-footer">
-        <el-button type="success" @click="NoticeDialogVisible = false">确认</el-button>
-        <el-button type="danger" @click="NoticeDialogVisible = false">
-          取消
-        </el-button>
+        <el-button type="primary" @click="NoticeDialogVisible = false">一键发送</el-button>
+        <el-button type="success" @click="NoticeDialogVisible = false">发布通知</el-button>
+        <el-button type="danger" @click="NoticeDialogVisible = false">取消</el-button>
       </span>
             </template>
           </el-dialog>
@@ -505,7 +518,9 @@ const OutputForm = reactive({
 })
 
 const NoticeForm = reactive({
-  notice: ''
+  notice: '',
+  researchGroup:'',
+  fund: ''
 })
 
 const FundForm = reactive({
