@@ -1,31 +1,4 @@
 <template>
-  <el-menu :default-active="activeIndex"
-           class="el-menu-demo"
-           mode="horizontal"
-           :ellipsis="false"
-  >
-    <el-menu-item index="0">
-      <font style="color: white">南方科技大学财务管理系统</font>
-    </el-menu-item>
-    <div class="flex-grow"/>
-    <el-menu-item index="1">
-      <font style="color: white">您好</font>
-    </el-menu-item>
-    <el-sub-menu index="2" >
-      <template #title>
-        <font style="color: white">注销</font>
-      </template>
-      <el-menu-item index="2-1">
-        <router-link to="login">
-          返回登录
-        </router-link>
-      </el-menu-item>
-      <el-menu-item index="2-2">
-        返回官网
-      </el-menu-item>
-    </el-sub-menu>
-  </el-menu>
-
 
   <div class = "SelectForm" >
     <div style="height: 10px"></div>
@@ -228,6 +201,8 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { ref } from 'vue'
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/stores/user";
 import { Delete, Edit, Search, Share, Upload, Bell, Back,
   UploadFilled, Document, View, Coin, Notification, HomeFilled} from '@element-plus/icons-vue'
 

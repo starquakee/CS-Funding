@@ -3,7 +3,8 @@
     <div class="login-wrap" >
         <el-form class="login-container">
             <h1 class="title">用户登陆</h1>
-            <el-form-item label="登录失败" style="padding-left: 10px; border: 1px solid red; border-radius: 4px" v-if="loginFail">
+            <el-form-item label="登录失败" style="padding-left: 10px; border: 1px solid red; border-radius: 4px"
+                          v-if="loginFail">
             </el-form-item>
             <el-form-item>
                 <el-input type="text" v-model="form.name" placeholder="用户账号" autocomplete="off"></el-input>
@@ -22,21 +23,31 @@
 
 <script setup lang="ts">
 import axios from 'axios';
-import {inject, reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import router from "@/router";
+import {useRoute} from "vue-router";
 import {useTokenStore} from "@/stores/token";
 import {storeToRefs} from "pinia";
+import {useUserStore} from "@/stores/user";
 
 
 const store = useTokenStore();
-const {token} = storeToRefs(store);
+const route = useRoute();
 const form = reactive({name: "", key: ""});
-const loginFail = ref(false)
+const loginFail = ref(false);
+const {isAdmin, userName} = storeToRefs(useUserStore());
+
+onMounted(() => {
+    if (route.query.logoff){
+        store.clearToken()
+        userName.value = ""
+    }
+})
 
 function doLogin() {
     let url = "http://localhost:8081/api/login";
     axios.post(url, form).then(res => {
-        if (res.data.code === 200){
+        if (res.data.code === 200) {
             store.setToken(res.data.data);
             router.push('/home');
         } else {
