@@ -126,6 +126,9 @@
   <div class="Bottom">
     <div style="height: 5px"></div>
     <el-button style="background-color: #8f000b; border: #8f000b">
+      <el-icon  style="vertical-align: middle;" size="25px">
+        <Back/>
+      </el-icon>
       <font style="color: white">返回主页</font>
     </el-button>
   </div>
@@ -137,6 +140,8 @@
 
 import {reactive} from "vue";
 import type { TableColumnCtx } from 'element-plus'
+import { Delete, Edit, Search, Share, Upload, Bell, Back,
+  UploadFilled, Document, View, Coin, Notification, HomeFilled} from '@element-plus/icons-vue'
 
 const SearchForm = reactive({
   FundNumber: '',

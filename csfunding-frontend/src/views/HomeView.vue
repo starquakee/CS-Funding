@@ -253,11 +253,11 @@
                               <div class="function-button" v-if="userData.type!=='用户'">
                                 <el-button type="primary" style="height: 50px; width: 50px" circle @click="NoticeDialogVisible=true">
                                   <el-icon  style="vertical-align: middle;" size="25px">
-                                    <Notification />
+                                    <Bell/>
                                   </el-icon>
                                 </el-button>
                                 <br>
-                                发布通知
+                                发布提醒
                               </div>
                             </div>
                           </el-card>
@@ -487,7 +487,8 @@
 import {onMounted, reactive, ref} from 'vue'
 import router from "@/router";
 import request from "@/util/request";
-import { Delete, Edit, Search, Share, Upload, UploadFilled, Document, View, Coin, Notification, HomeFilled} from '@element-plus/icons-vue'
+import { Delete, Edit, Search, Share, Upload, Bell, Back,
+  UploadFilled, Document, View, Coin, Notification, HomeFilled} from '@element-plus/icons-vue'
 
 
 const activeIndex = ref('1')
