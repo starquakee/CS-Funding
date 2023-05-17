@@ -19,6 +19,8 @@ public class NoticeService {
         Notice notice = new Notice();
         notice.setContent(notice.getContent());
         notice.setTime(Long.toString(System.currentTimeMillis()));
+        notice.setNoticeFrom(noticeDTO.getNoticeFrom());
+        notice.setNoticeTo(notice.getNoticeTo());
         noticeMapper.addNotice(notice);
         return "";
     }
