@@ -1,34 +1,5 @@
 <template>
   <div >
-  <el-menu :default-active="activeIndex"
-           class="el-menu-demo"
-           mode="horizontal"
-           :ellipsis="false"
-  >
-    <el-menu-item index="0">
-      <font style="color: white">南方科技大学财务管理系统</font>
-    </el-menu-item>
-    <el-menu-item index="0">
-      <font style="color: white">XXX 课题组</font>
-    </el-menu-item>
-    <div class="flex-grow"/>
-    <el-menu-item index="1">
-      <font style="color: white">您好</font>
-    </el-menu-item>
-    <el-sub-menu index="2" >
-      <template #title>
-        <font style="color: white">注销</font>
-      </template>
-      <el-menu-item index="2-1">
-        <router-link to="login">
-          返回登录
-        </router-link>
-      </el-menu-item>
-      <el-menu-item index="2-2">
-        返回官网
-      </el-menu-item>
-    </el-sub-menu>
-  </el-menu>
 
   <div class = "SelectForm" >
     <div style="height: 10px"></div>
@@ -126,6 +97,9 @@
   <div class="Bottom">
     <div style="height: 5px"></div>
     <el-button style="background-color: #8f000b; border: #8f000b">
+      <el-icon  style="vertical-align: middle;" size="25px">
+        <Back/>
+      </el-icon>
       <font style="color: white">返回主页</font>
     </el-button>
   </div>
@@ -137,6 +111,8 @@
 
 import {reactive} from "vue";
 import type { TableColumnCtx } from 'element-plus'
+import { Delete, Edit, Search, Share, Upload, Bell, Back,
+  UploadFilled, Document, View, Coin, Notification, HomeFilled} from '@element-plus/icons-vue'
 
 const SearchForm = reactive({
   FundNumber: '',

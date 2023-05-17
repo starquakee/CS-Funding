@@ -29,48 +29,30 @@ const router = createRouter({
         {
             path: '/apply',
             name: 'apply',
-            component: ApplyView
+            component: ApplyView,
+            meta: {
+                requireAuth: true
+            },
         },
         {
             path: '/fund',
             name: 'fund',
-            component: FundView
+            component: FundView,
+            meta: {
+                requireAuth: true
+            },
         },
         {
             path: '/check',
             name: 'check',
-            component: CheckView
+            component: CheckView,
+            meta: {
+                requireAuth: true
+            },
         }
 
     ]
 })
 
-// const store = useTokenStore()
-// router.beforeEach((to, from, next) => {
-//         //路由需要认证
-//         // let {token} = storeToRefs(store)
-//         console.log(store.token)
-//         if (to.meta.requireAuth) {
-//             //判断store里是否有token
-//             if (store.token) {
-//                 console.log(store.token)
-//                 next()
-//             } else {
-//                 next({
-//                     path: 'login',
-//                     query: {redirect: to.fullPath}
-//                 })
-//             }
-//         } else {
-//             next()
-//         }
-//         // next()
-//     }
-// )
 
-function requireAuth(to: any, from: any, next: () => void) {
-
-    next()
-}
-
-export default router
+export default router;
