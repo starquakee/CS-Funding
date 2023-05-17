@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 @Mapper
 public interface NoticeMapper {
-    @Insert("insert into notice(content, Time) values " + "(#{content}, #{Time})")
+    @Insert("insert into notice(content, Time, noticefrom, noticeto) values " + "(#{content}, #{Time}, #{noticefrom}, #{noticeto})")
     void addNotice(Notice notice);
 
     @Select("select * from notice")
