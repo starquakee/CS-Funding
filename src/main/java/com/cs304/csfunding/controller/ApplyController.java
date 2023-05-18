@@ -8,10 +8,7 @@ import com.cs304.csfunding.entity.User;
 import com.cs304.csfunding.service.*;
 import com.cs304.csfunding.util.HttpContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,8 +105,8 @@ public class ApplyController {
         }
     }
 
-    @GetMapping("/selectapplybyfundid")
-    public Result getApplyByFundID(int fundID){
+    @GetMapping("/all-apply-fund")
+    public Result getApplyByFundID(@RequestParam int fundID){
         List<Apply> applies = applyService.testQueryByFundID(fundID);
         if (applies == null) {
             return new Result(404, "applies not found", null);
@@ -128,7 +125,7 @@ public class ApplyController {
         }
     }
 
-    @GetMapping("/selectsortapplybyuserid")
+    @GetMapping("/apply-userid")
     public Result getSortApplyByUserID(int userID){
         List<Apply> applies = applyService.testQueryByUserID(userID);
         if (applies == null) {
@@ -136,5 +133,11 @@ public class ApplyController {
         } else {
             return new Result(applies);
         }
+    }
+
+    @GetMapping("/my-apply")
+    public Result getMyApply(){
+        int my_id = HttpContextUtil.getRequestUuid();
+        return getSortApplyByUserID(my_id);
     }
 }

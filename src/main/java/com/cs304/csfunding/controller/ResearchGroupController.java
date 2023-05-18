@@ -5,6 +5,7 @@ import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.ResearchGroup;
 import com.cs304.csfunding.service.ResearchGroupService;
+import com.cs304.csfunding.util.HttpContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +27,8 @@ public class ResearchGroupController {
         return researchGroupService.testInsert(researchGroupDTO);
     }
 
-    @GetMapping("/getallresearchgroups")
-    public Result getAllResearchGroup(){
+    @GetMapping("/get-all-research-groups")
+    public Result getAllResearchGroup() {
         List<ResearchGroup> researchgroups = researchGroupService.testQueryAll();
         if (researchgroups == null) {
             return new Result(404, "researchgroups not found", null);
@@ -36,8 +37,14 @@ public class ResearchGroupController {
         }
     }
 
-    @GetMapping("/getresearchgroupsbyuser")
-    public Result getResearchGroupByUser(int UserID){
+    @GetMapping("/get-current-group")
+    public Result getCurrentGroup() {
+        int uid = HttpContextUtil.getRequestUuid();
+        return getResearchGroupByUser(uid);
+    }
+
+    @GetMapping("/get-research-groups-by-user")
+    public Result getResearchGroupByUser(int UserID) {
         List<ResearchGroup> researchgroups = researchGroupService.testQueryByUser(UserID);
         if (researchgroups == null) {
             return new Result(404, "researchgroups not found", null);

@@ -41,6 +41,7 @@ onMounted(() => {
     if (route.query.logoff){
         store.clearToken()
         userName.value = ""
+        isAdmin.value = false
     }
 })
 
@@ -48,7 +49,9 @@ function doLogin() {
     let url = "http://localhost:8081/api/login";
     axios.post(url, form).then(res => {
         if (res.data.code === 200) {
-            store.setToken(res.data.data);
+            store.setToken(res.data.data.token);
+            isAdmin.value = res.data.data.isAdmin;
+            userName.value = res.data.userName;
             router.push('/home');
         } else {
             loginFail.value = true;

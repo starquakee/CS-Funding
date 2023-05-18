@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {RouterView, useRoute} from 'vue-router';
+import router from "@/router";
 import {onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/stores/user";
@@ -15,28 +16,21 @@ function __onWindowResize() {
     bottom.value = `${document.body.clientHeight - 40}px`
 }
 
+function backHome() {
+    console.log('home')
+    router.push('/home')
+}
+
 window.onresize = __onWindowResize
 __onWindowResize()
 </script>
 
 <template>
-  <!--  <header>-->
-  <!--    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />-->
-
-  <!--    <div class="wrapper">-->
-  <!--      <HelloWorld msg="You did it!" />-->
-
-  <!--      <nav>-->
-  <!--        <RouterLink to="/">Home</RouterLink>-->
-  <!--        <RouterLink to="/about">About</RouterLink>-->
-  <!--      </nav>-->
-  <!--    </div>-->
-  <!--  </header>-->
     <el-menu :default-active="activeIndex"
              class="el-menu-demo"
              mode="horizontal"
              :ellipsis="false"
-             v-if="userName"
+             v-if=router.currentRoute.value.meta.requireAuth
     >
         <el-menu-item index="0">
             <font style="color: white">南方科技大学财务管理系统</font>
@@ -62,9 +56,9 @@ __onWindowResize()
 
     <RouterView/>
 
-    <div class="Bottom" v-if="userName">
+    <div class="Bottom" v-if=router.currentRoute.value.meta.requireAuth>
         <div style="height: 5px"></div>
-        <el-button style="background-color: #8f000b; border: #8f000b">
+        <el-button style="background-color: #8f000b; border: #8f000b" @cllick="backHome">
             <el-icon style="vertical-align: middle;" size="25px">
                 <HomeFilled/>
             </el-icon>

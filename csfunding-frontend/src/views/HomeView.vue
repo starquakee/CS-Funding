@@ -11,13 +11,13 @@
                         <el-col :span="7">
                             <el-card class="info">
 
-                                    <div class="info-header" style="height: 40px">
-                                        <span>用户信息</span>
-                                      <el-button type="primary" :icon="Edit">修改密码</el-button>
+                                <div class="info-header" style="height: 40px">
+                                    <span>用户信息</span>
+                                    <el-button type="primary" :icon="Edit">修改密码</el-button>
 
-                                    </div>
-                                    <div style="height: 20px">
-                                    </div>
+                                </div>
+                                <div style="height: 20px">
+                                </div>
 
                                 <div class="info-divide">
 
@@ -27,12 +27,12 @@
                                              v-if="userData.type!=='用户'">
                                     </div>
 
-                                <div style="font-size: 16px">
-                                  账号：{{ userData.username }} <br>
-                                  姓名：{{ userData.name }} <br>
-                                  账号类型：{{ userData.type }} <br>
+                                    <div style="font-size: 16px">
+                                        账号：{{ userData.username }} <br>
+                                        姓名：{{ userData.name }} <br>
+                                        账号类型：{{ userData.type }} <br>
+                                    </div>
                                 </div>
-                              </div>
                             </el-card>
                         </el-col>
 
@@ -44,36 +44,39 @@
                         <el-col :span="7">
                             <el-container class="group">
                                 <el-header>
-                                  <div class="info-divide">
-                                    <div style="font-size: 24px;">
-                                    课题组
+                                    <div class="info-divide">
+                                        <div style="font-size: 24px;">
+                                            课题组
+                                        </div>
+                                        <div>
+                                            <el-form :inline="true" :model="ResearchGroupForm" class="demo-form-inline"
+                                                     style="margin-top: 10px">
+
+                                                <el-form-item label-width="1px">
+                                                    <el-input v-model="ResearchGroupForm.ResearchGroupName"
+                                                              placeholder="组名"/>
+                                                </el-form-item>
+
+                                            </el-form>
+
+
+                                        </div>
+                                        <el-button type="primary" style="margin-top: 25px">查询</el-button>
                                     </div>
-                                  <div>
-                                    <el-form :inline="true" :model="ResearchGroupForm" class="demo-form-inline"
-                                    style="margin-top: 10px">
-
-                                      <el-form-item label-width="1px" >
-                                        <el-input v-model="ResearchGroupForm.ResearchGroupName" placeholder="组名" />
-                                      </el-form-item>
-
-                                    </el-form>
-
-
-                                  </div>
-                                    <el-button type="primary" style="margin-top: 25px">查询</el-button>
-                                  </div>
 
                                 </el-header>
                                 <el-main>
-                                    <el-table :data="ResearchGroup" style="width: 95%" class="GroupTable">
+                                    <el-table :data="researchGroup" style="width: 95%" class="GroupTable" >
                                         <el-table-column prop="name" label="课题组名称" align="center"/>
                                         <el-table-column label="操作" align="center">
-                                            <el-button @click="FundByResearchGroup" type="primary" size="small" plain>
-                                                查看
-                                            </el-button>
-                                            <el-button type="danger" size="small" plain>
-                                              删除
-                                            </el-button>
+                                            <template #default="props">
+                                                <el-button @click="FundByResearchGroup(props.row)" type="primary" size="small" plain>
+                                                    查看
+                                                </el-button>
+                                                <el-button type="danger" size="small" plain>
+                                                    删除
+                                                </el-button>
+                                            </template>
                                         </el-table-column>
                                     </el-table>
                                 </el-main>
@@ -89,22 +92,23 @@
                             <el-container class="Notice">
                                 <el-header>
                                     通知
-                                  <el-button type="primary" :icon="Edit" style="margin-left: 220px"
-                                             v-if="userData.type!=='用户'">添加</el-button>
+                                    <el-button type="primary" :icon="Edit" style="margin-left: 220px"
+                                               v-if="userData.type!=='用户'">添加
+                                    </el-button>
                                 </el-header>
                                 <el-main>
-                                  <el-table :data="Notices" style="width: 95%" class="GroupTable">
-                                    <el-table-column prop="notice" label="通知内容" width="210px" />
-                                    <el-table-column v-if="userData.type!=='用户'">
-                                      <el-button type="warning" size="small" plain>
-                                        修改
-                                      </el-button>
-                                      <el-button type="danger" size="small" plain>
-                                        删除
-                                      </el-button>
-                                    </el-table-column>
+                                    <el-table :data="Notices" style="width: 95%" class="GroupTable">
+                                        <el-table-column prop="notice" label="通知内容" width="210px"/>
+                                        <el-table-column v-if="userData.type!=='用户'">
+                                            <el-button type="warning" size="small" plain>
+                                                修改
+                                            </el-button>
+                                            <el-button type="danger" size="small" plain>
+                                                删除
+                                            </el-button>
+                                        </el-table-column>
 
-                                  </el-table>
+                                    </el-table>
 
                                 </el-main>
 
@@ -347,26 +351,26 @@
 
             <el-dialog v-model="NoticeDialogVisible" title="发布通知" width="30%" draggable>
 
-            <el-form :model="NoticeForm" label-width="40px" label-position="top">
-              <el-form-item label="不达标课题组/经费" >
-              <el-col :span="11">
-                  <el-select v-model="NoticeForm.researchGroup" placeholder="课题组名">
-                    <el-option label="Zone one" value="shanghai" />
-                    <el-option label="Zone two" value="beijing" />
-                  </el-select>
-              </el-col>
-              <el-col :span="11">
-                  <el-select v-model="NoticeForm.fund" placeholder="经费名">
-                    <el-option label="Zone one" value="shanghai" />
-                    <el-option label="Zone two" value="beijing" />
-                  </el-select>
-              </el-col>
-              </el-form-item>
-              <el-form-item label="备注">
-                <el-input v-model="NoticeForm.notice" type="textarea" />
-              </el-form-item>
-            </el-form>
-            <template #footer>
+                <el-form :model="NoticeForm" label-width="40px" label-position="top">
+                    <el-form-item label="不达标课题组/经费">
+                        <el-col :span="11">
+                            <el-select v-model="NoticeForm.researchGroup" placeholder="课题组名">
+                                <el-option label="Zone one" value="shanghai"/>
+                                <el-option label="Zone two" value="beijing"/>
+                            </el-select>
+                        </el-col>
+                        <el-col :span="11">
+                            <el-select v-model="NoticeForm.fund" placeholder="经费名">
+                                <el-option label="Zone one" value="shanghai"/>
+                                <el-option label="Zone two" value="beijing"/>
+                            </el-select>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item label="备注">
+                        <el-input v-model="NoticeForm.notice" type="textarea"/>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="NoticeDialogVisible = false">一键发送</el-button>
         <el-button type="success" @click="NoticeDialogVisible = false">发布通知</el-button>
@@ -475,8 +479,10 @@ import {useUserStore} from "@/stores/user";
 import {onMounted, reactive, ref} from 'vue'
 import router from "@/router";
 import request from "@/util/request";
-import { Delete, Edit, Search, Share, Upload, Bell, Back,
-  UploadFilled, Document, View, Coin, Notification, HomeFilled} from '@element-plus/icons-vue'
+import {
+    Delete, Edit, Search, Share, Upload, Bell, Back,
+    UploadFilled, Document, View, Coin, Notification, HomeFilled
+} from '@element-plus/icons-vue'
 
 const {isAdmin, userName} = storeToRefs(useUserStore());
 
@@ -494,9 +500,8 @@ const OutputForm = reactive({
 
 const NoticeForm = reactive({
     notice: '',
-  notice: '',
-  researchGroup:'',
-  fund: ''
+    researchGroup: '',
+    fund: ''
 })
 
 const FundForm = reactive({
@@ -509,46 +514,51 @@ const FundForm = reactive({
 })
 
 const ResearchGroupForm = reactive({
-  ResearchGroupName: ''
+    ResearchGroupName: ''
 })
 
 let OutputDialogVisible = ref(false)
 let FundDialogVisible = ref(false)
 let NoticeDialogVisible = ref(false)
 
-onMounted(() => {
+function getResearchGroup() {
+    request({
+        url: '/get-all-research-groups',
+        method: 'get'
+    }).then(r => {
+        r.data.data.forEach((val: any, index: any, arr: any) => {
+            // console.log(val)
+            let add = {
+                name: val.teacher,
+                sum: val.allFund,
+                uuid: val.uuid
+            }
+            researchGroup.push(add)
+        })
+        // console.log(researchGroup)
+    })
+}
+
+function getUserData(){
     request({
         url: '/current-user',
         method: 'get'
     }).then(res => {
-        console.log(res);
+        // console.log(res);
         let ud = res.data.data;
         userData.username = ud.id;
         userData.name = ud.name;
         userData.phoneNumber = ud.phoneNum;
         userData.type = ud.isAdmin ? '管理员' : '用户';
-        isAdmin.value = ud.isAdmin;
-        userName.value = ud.name;
     })
+}
+
+onMounted(() => {
+    getUserData();
+    getResearchGroup();
 })
 
-const ResearchGroup = [
-    {
-        name: '王',
-        sum: 10000,
-        remain: 10000
-    },
-    {
-        name: '李',
-        sum: 20000,
-        remain: 10000
-    },
-    {
-        name: '孙',
-        sum: 20000,
-        remain: 20000
-    }
-]
+const researchGroup = reactive([])
 
 const RecentApply = [
     {
@@ -589,8 +599,9 @@ function AllApply() {
     router.push({path: '/apply'})
 }
 
-function FundByResearchGroup() {
-    router.push({path: '/fund'})
+function FundByResearchGroup(group: any) {
+    router.push({path: '/fund', query:{gid: group.uuid}})
+    // console.log(group.uuid)
 }
 
 function ClickOnOutput() {

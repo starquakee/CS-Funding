@@ -53,8 +53,8 @@ public class FundController {
         }
     }
 
-    @GetMapping("/get/fund")
-    public Result testAddFund(@RequestParam int uuid) {
+    @GetMapping("/get-fund")
+    public Result getFundByUuid(@RequestParam int uuid) {
         Fund fund = fundService.queryByID(uuid);
         if (fund == null) {
             return new Result(404, "fund not found", null);

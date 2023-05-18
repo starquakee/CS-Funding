@@ -1,5 +1,6 @@
 package com.cs304.csfunding.service;
 
+import com.cs304.csfunding.api.GroupPageVO;
 import com.cs304.csfunding.api.ResearchGroupDTO;
 import com.cs304.csfunding.entity.ResearchGroup;
 import com.cs304.csfunding.mapper.ResearchGroupMapper;
@@ -32,7 +33,5 @@ public class ResearchGroupService {
     public List<ResearchGroup> testQueryByUser(int UserID){
         return researchGroupMapper.getResearchGroupByUser(UserID);
     }
-
-
 
 }
