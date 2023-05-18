@@ -20,57 +20,6 @@
         <el-table :data="tableData" style="width: 100%" border class="ParentTable" :row-class-name="tableRowClassName"
                   :summary-method="getSummaries" show-summary>
 
-            <el-table-column type="expand">
-
-                <template #default="props">
-                    <div style="display: flex;height: 200px; background-color: whitesmoke">
-                        <div style="flex: 1; text-align: center;display: flex; justify-content: center; align-items: center;">
-                            <h4 style="margin-right: 10px;">详细信息：</h4>
-                            <el-card style="width: 30%;" shadow="never">
-                                <h4>已使用经费: {{ props.row.sum - props.row.remain }}</h4>
-                                <h4>当前执行率: {{ props.row.rate }}</h4>
-                                <h4>剩余时间: {{ props.row.remainDay }}</h4>
-                            </el-card>
-                        </div>
-
-                        <div style="flex: 1; text-align: center;display: flex; justify-content: center; align-items: center;">
-                            <img src="@/img/user.png" width="580" height="120">
-                        </div>
-                    </div>
-
-<!--                    <div style="display: flex; justify-content: center; align-items: center; background-color: whitesmoke">-->
-<!--                        <h4 style="margin-right: 10px;">最近申请记录：</h4>-->
-<!--                        <el-table :data="props.row.applies" border class="ChildTable"-->
-<!--                                  style="width: 65%; margin-bottom: 20px">-->
-<!--                            <el-table-column prop="name" label="经费名称" align="center"/>-->
-<!--                            <el-table-column prop="researchGroup" label="课题组名称" align="center"/>-->
-<!--                            <el-table-column prop="applyPerson" label="申请人" align="center"/>-->
-<!--                            <el-table-column prop="amount" label="申请金额" align="center"/>-->
-<!--                            <el-table-column prop="state" label="申请状态" align="center">-->
-<!--                                <template #default="props">-->
-
-<!--                                    <el-tag type="error" size="small" plain v-if="props.row.state === 'fail'"-->
-<!--                                            effect="dark">-->
-<!--                                        申请失败-->
-<!--                                    </el-tag>-->
-
-<!--                                    <el-tag type="warning" size="small" plain v-if="props.row.state === 'submit'"-->
-<!--                                            effect="dark">-->
-<!--                                        未审核-->
-<!--                                    </el-tag>-->
-
-<!--                                    <el-tag type="success" size="small" plain v-if="props.row.state === 'pass'"-->
-<!--                                            effect="dark">-->
-<!--                                        申请通过-->
-<!--                                    </el-tag>-->
-
-<!--                                </template>-->
-<!--                            </el-table-column>-->
-<!--                        </el-table>-->
-<!--                    </div>-->
-                </template>
-            </el-table-column>
-
             <el-table-column prop="id" label="经费编号" align="center"/>
             <el-table-column prop="name" label="经费名称" align="center"/>
             <el-table-column prop="sum" label="经费总额" align="center"/>
@@ -91,6 +40,19 @@
 
                 </template>
             </el-table-column>
+          <el-table-column prop="operation" label="操作" align="center">
+            <template #default="props">
+              <el-button @click="BarChartVisible = !BarChartVisible" type="primary" size="small" plain>
+                {{ BarChartVisible ? '返回' : '月支出' }}
+              </el-button>
+              <el-button  type="primary" size="small" plain @click="RemainDay = props.row.remainDay;
+                                                                  Rate = props.row.remain/props.row.sum;
+                                                              UsedAmount = props.row.sum -
+                                                              props.row.remain;InfoVisible = true">
+                详情
+              </el-button>
+            </template>
+          </el-table-column>
         </el-table>
 
         <div class="Pagination">
@@ -108,6 +70,24 @@
             </el-button>
         </div>
 
+      <div class = "BarChart"
+           ref="chartContainer" :style="{ width: '800px', height: '500px',
+       display: BarChartVisible ? 'block' : 'none' }" >
+      </div>
+
+      <el-dialog v-model="InfoVisible" title="详细信息" width="30%" draggable >
+          <h4>已使用经费: {{UsedAmount}}</h4>
+          <h4>当前执行率: {{Rate}}</h4>
+          <h4>剩余时间: {{RemainDay}}</h4>
+        <template #footer>
+    <span class="dialog-footer" style="height: 20px">
+      <el-button type="danger" @click="InfoVisible = false;">
+        取消
+      </el-button>
+    </span>
+        </template>
+      </el-dialog>
+
     </div>
 </template>
 
@@ -123,55 +103,75 @@ import request from "@/util/request";
 import {useRoute} from "vue-router";
 import moment from "moment"
 
+
+import { ref } from 'vue';
+import * as echarts from 'echarts/core';
+import { BarChart } from 'echarts/charts';
+import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
+import { CanvasRenderer } from 'echarts/renderers';
+
+echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
+
+const chartContainer = ref<HTMLElement | null>(null);
+
+let BarChartVisible = ref(false)
+let InfoVisible = ref(false)
+let RemainDay = ref(0)
+let Rate = ref(0)
+let UsedAmount = ref(0)
+
+onMounted(() => {
+  if (chartContainer.value) {
+    const chart = echarts.init(chartContainer.value);
+
+    // Prepare data for the chart
+    const chartData = [
+      { name: '1', value: 100 },
+      { name: '2', value: 200 },
+      { name: '3', value: 150 },
+      { name: '4', value: 100 },
+      { name: '5', value: 200 },
+      { name: '6', value: 150 },
+      { name: '7', value: 100 },
+      { name: '8', value: 200 },
+      { name: '9', value: 150 },
+      { name: '10', value: 100 },
+      { name: '11', value: 200 },
+      { name: '12', value: 150 }
+    ];
+
+    // Configure the chart options
+    const options = {
+      title: {
+        text: '各月支出',
+      },
+      tooltip: {},
+      xAxis: {
+        type: 'category',
+        data: chartData.map((data) => data.name),
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          type: 'bar',
+          data: chartData.map((data) => data.value),
+        },
+      ],
+    };
+
+    // Set the options and render the chart
+    chart.setOption(options);
+  }
+});
+
+defineExpose({
+  chartContainer,
+});
+
 const route = useRoute()
 
-// const tableData : fund[] = [
-//   {
-//     id: 'xxx',
-//     name: '经费1',
-//     sum: 1000,
-//     remain: 500,
-//     start: 'xxxx-yy-dd',
-//     end: 'xxxx-yy-dd',
-//     remainDay: 5,
-//     applies: [
-//       {
-//         name: '经费1',
-//         researchGroup: '王',
-//         applyPerson: 'xxx',
-//         amount: 500,
-//         state: 'pass'
-//       },
-//       {
-//         name: '经费1',
-//         researchGroup: '王',
-//         applyPerson: 'xxx',
-//         amount: 500,
-//         state: 'pass'
-//       }
-//     ]
-//   },
-//   {
-//     id: 'xxx',
-//     name: '经费2',
-//     sum: 1000,
-//     remain: 0,
-//     start: 'xxxx-yy-dd',
-//     end: 'xxxx-yy-dd',
-//     remainDay: 5,
-//     applies:[]
-//   },
-//   {
-//     id: 'xxx',
-//     name: '经费3',
-//     sum: 1000,
-//     remain: 1000,
-//     start: 'xxxx-yy-dd',
-//     end: 'xxxx-yy-dd',
-//     remainDay: 5,
-//     applies:[]
-//   }
-// ]
 
 const tableData = reactive<fund[]>([])
 
@@ -283,7 +283,16 @@ const getSummaries = (param: SummaryMethodProps) => {
 </script>
 
 <style>
-.ChildTable {
+.BarChart {
+  position:absolute;
+  /* 水平垂直居中 */
+  top: 30%;
+  left: 23%;
 
+
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(100, 100, 100, 0.7);
+  z-index: 9999;
 }
 </style>
