@@ -1,4 +1,5 @@
 package com.cs304.csfunding.controller;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.api.User_ResearchGroupDTO;
 import com.cs304.csfunding.service.User_ResearchGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,14 @@ public class User_ResearchGroupController {
 
 
     @PostMapping(value = "/register/user_researchgroup")
-    public String testAddUserResearchGroup(@RequestBody User_ResearchGroupDTO user_researchGroupDTO) {
+    public Result testAddUserResearchGroup(@RequestBody User_ResearchGroupDTO user_researchGroupDTO) {
         System.out.println(user_researchGroupDTO.getUserUUID());
         System.out.println(user_researchGroupDTO.getResearchGroupUUID());
-        return user_researchGroupService.testInsert(user_researchGroupDTO);
+        return new Result(user_researchGroupService.testInsert(user_researchGroupDTO));
     }
 
     @GetMapping("/selectresearchgroupbyuser")
-    public List<Integer> getResearchGroupByUser(int user_UUID){
-        return user_researchGroupService.testQueryByUser(user_UUID);
+    public Result getResearchGroupByUser(int user_UUID){
+        return new Result(user_researchGroupService.testQueryByUser(user_UUID));
     }
 }

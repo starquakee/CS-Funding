@@ -2,8 +2,10 @@ package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.Fund_ApplyDTO;
 import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.api.User_ResearchGroupDTO;
 import com.cs304.csfunding.controller.Fund_ApplyController;
 import com.cs304.csfunding.service.Fund_ApplyService;
+import com.cs304.csfunding.service.User_ResearchGroupService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,34 +30,34 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
-public class Fund_ApplyControllerTest {
+public class User_ResearchGroupControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Mock
-    private Fund_ApplyService fund_applyService;
+    private User_ResearchGroupService user_researchGroupService;
 
     @InjectMocks
-    private Fund_ApplyController fund_applyController;
+    private User_ResearchGroupController user_researchGroupController;
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(fund_applyController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(user_researchGroupController).build();
     }
 
     @Test
-    public void testAddFundApply() throws Exception {
-        Fund_ApplyDTO fund_applyDTO = new Fund_ApplyDTO();
-        fund_applyDTO.setFundUUID(222);
-        fund_applyDTO.setApplyUUID(333);
+    public void testAddUserResearchGroup() throws Exception {
+        User_ResearchGroupDTO user_researchGroupDTO = new User_ResearchGroupDTO();
+        user_researchGroupDTO.setUserUUID(1);
+        user_researchGroupDTO.setResearchGroupUUID(2);
         ObjectMapper objectMapper = new ObjectMapper();
-        String content = objectMapper.writeValueAsString(fund_applyDTO);
+        String content = objectMapper.writeValueAsString(user_researchGroupDTO);
 
         // 设置fund_applyDTO的属性值
-        when(fund_applyService.testInsert(fund_applyDTO)).thenReturn("");
+        when(user_researchGroupService.testInsert(user_researchGroupDTO)).thenReturn("");
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/register/fund_apply")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/register/user_researchgroup")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -72,21 +74,25 @@ public class Fund_ApplyControllerTest {
     }
 
     @Test
-    public void testGetApplyByFund() throws Exception {
-        int fid = 1;
-        List<Integer> applyList = Arrays.asList(2); // 假设返回的申请列表
+    public void testgetResearchGroupByUser() throws Exception {
+        int uid = 7;
+        List<Integer> fundList = Arrays.asList(1);
 
-//        when(fund_applyService.testQueryByFund(fid)).thenReturn(applyList);
+        when(user_researchGroupService.testQueryByUser(uid)).thenReturn(fundList);
 
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.get("/apply-by-fund")
-                .param("fid", String.valueOf(fid))
-                .contentType(MediaType.APPLICATION_JSON));
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/selectresearchgroupbyuser")
+                        .param("user_UUID", String.valueOf(uid))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(print())
+                .andReturn();
 
-        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
-                .andDo(print());
+        String responseJson = result.getResponse().getContentAsString();
+        JsonNode jsonResponse = new ObjectMapper().readTree(responseJson);
+        JsonNode dataNode = jsonResponse.get("data");
+        System.out.println(1);
+        System.out.println(dataNode);
+        assertEquals(dataNode.toString(), fundList.toString());
 
-        verify(fund_applyService, times(1)).testQueryByFund(fid);
-        verifyNoMoreInteractions(fund_applyService);
     }
 }
