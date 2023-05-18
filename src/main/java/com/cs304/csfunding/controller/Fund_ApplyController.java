@@ -15,7 +15,6 @@ public class Fund_ApplyController {
 
     @PostMapping(value = "/register/fund_apply")
     public Result testAddFundApply(@RequestBody Fund_ApplyDTO fund_applyDTO) {
-        System.out.println(fund_applyDTO);
         return new Result(fund_applyService.testInsert(fund_applyDTO));
     }
 
