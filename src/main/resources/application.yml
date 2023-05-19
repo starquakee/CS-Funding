@@ -2,6 +2,7 @@ spring:
   datasource:
     username: root
     url: jdbc:mysql://10.16.41.156:3306/csfunding
+#    url: jdbc:mysql://localhost:3306/csfunding
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: 1234
 server:

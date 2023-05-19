@@ -1,5 +1,7 @@
 package com.cs304.csfunding.controller;
 import com.cs304.csfunding.api.ApplyDTO;
+import com.cs304.csfunding.api.ApplyVO;
+import com.cs304.csfunding.api.InspectDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
@@ -35,9 +37,12 @@ public class ApplyController {
 
     @PostMapping(value = "/register/apply")
     public Result AddApply(@RequestBody ApplyDTO applyDTO) {
-        //int uuid = HttpContextUtil.getRequestUuid();
-        int uuid = applyDTO.getUserID();
+        int uuid = HttpContextUtil.getRequestUuid();
+//        int uuid = applyDTO.getUserID();
+        applyDTO.setUserID(uuid);
         User user = userService.queryByUuid(uuid);
+        applyDTO.setState("submit");
+        applyDTO.setContentSummary("");
         List<ResearchGroup> rg = researchGroupService.testQueryByUser(user.getUuid()); //user's research group
         List<Integer> rg_uuid = new ArrayList<>();
         for (ResearchGroup researchGroup : rg) {
@@ -62,9 +67,11 @@ public class ApplyController {
 
     @PostMapping(value = "/register/resubmit")
     public Result ResubmitApply(@RequestBody ApplyDTO applyDTO) {
-        //int uuid = HttpContextUtil.getRequestUuid();
-        int uuid = applyDTO.getUserID();
+        int uuid = HttpContextUtil.getRequestUuid();
+        applyDTO.setUserID(uuid);
+//        int uuid = applyDTO.getUserID();
         User user = userService.queryByUuid(uuid);
+        applyDTO.setState("submit");
         List<ResearchGroup> rg = researchGroupService.testQueryByUser(user.getUuid()); //user's research group
         List<Integer> rg_uuid = new ArrayList<>();
         for (ResearchGroup researchGroup : rg) {
@@ -89,9 +96,12 @@ public class ApplyController {
     }
 
     @PostMapping(value="/testjudge")
-    public Result testJudgeApply(@RequestBody ApplyDTO applyDTO){
+    public Result testJudgeApply(@RequestBody InspectDTO inspectDTO){
         //change state by name
-        applyService.testJudgeByID(applyDTO.getState(),applyDTO.getRemark(), applyDTO.getUUID());
+        if (inspectDTO.isPass())
+            applyService.testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
+        else
+            applyService.testJudgeByID("fail", inspectDTO.getRemark(), inspectDTO.getAid());
         return new Result(200,"OK",null);
     }
 
@@ -127,7 +137,7 @@ public class ApplyController {
 
     @GetMapping("/apply-userid")
     public Result getSortApplyByUserID(int userID){
-        List<Apply> applies = applyService.testQueryByUserID(userID);
+        List<ApplyVO> applies = applyService.testQueryByUserID(userID);
         if (applies == null) {
             return new Result(404, "latest applies not found", null);
         } else {

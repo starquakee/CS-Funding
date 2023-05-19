@@ -33,4 +33,8 @@ public class ResearchGroupService {
         return researchGroupMapper.getResearchGroupByUser(UserID);
     }
 
+    public ResearchGroup queryResearchGroupById(int gid){
+        return researchGroupMapper.getResearchGroup(gid);
+    }
+
 }
