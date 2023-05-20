@@ -13,7 +13,8 @@
 
                                 <div class="info-header" style="height: 40px">
                                     <span>用户信息</span>
-                                    <el-button type="primary" :icon="Edit">修改密码</el-button>
+                                    <el-button type="primary" :icon="Edit"
+                                    @click="EditKeyVisible=true">修改密码</el-button>
 
                                 </div>
                                 <div style="height: 20px">
@@ -92,8 +93,8 @@
                             <el-container class="Notice">
                                 <el-header>
                                     通知
-                                    <el-button type="primary" :icon="Edit" style="margin-left: 220px"
-                                               v-if="userData.type!=='用户'">添加
+                                    <el-button @click="NoticeDialogVisible=true" type="primary" :icon="Edit" style="margin-left: 220px"
+                                               v-if="userData.type!=='用户'" >添加
                                     </el-button>
                                 </el-header>
                                 <el-main>
@@ -199,7 +200,7 @@
 
                                     <div class="function-button">
                                         <el-button type="primary" style="height: 50px; width: 50px"
-                                                   @click="ClickOnOutput; OutputDialogVisible=true"
+                                                   @click="ClickOnOutput; OutputDialogVisible=true;"
                                                    circle>
                                             <el-icon style="vertical-align: middle;" size="25px">
                                                 <Document/>
@@ -238,13 +239,13 @@
 
                                     <div class="function-button" v-if="userData.type!=='用户'">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle
-                                                   @click="NoticeDialogVisible=true">
+                                                   @click="EditResearchGroupVisible=true">
                                             <el-icon style="vertical-align: middle;" size="25px">
-                                                <Bell/>
+                                                <Edit/>
                                             </el-icon>
                                         </el-button>
                                         <br>
-                                        发布通知
+                                        增加/编辑课题组
                                     </div>
                                 </div>
                             </el-card>
@@ -340,12 +341,12 @@
 
                 </el-form>
                 <template #footer>
-      <span class="dialog-footer">
-        <el-button type="success" @click="FundDialogVisible = false">确认</el-button>
-        <el-button type="danger" @click="FundDialogVisible = false">
-          取消
-        </el-button>
-      </span>
+                  <span class="dialog-footer">
+                    <el-button type="success" @click="FundDialogVisible = false">确认</el-button>
+                    <el-button type="danger" @click="FundDialogVisible = false; ">
+                      取消
+                    </el-button>
+                  </span>
                 </template>
             </el-dialog>
 
@@ -371,13 +372,89 @@
                     </el-form-item>
                 </el-form>
                 <template #footer>
-      <span class="dialog-footer">
-        <el-button type="primary" @click="NoticeDialogVisible = false">一键发送</el-button>
-        <el-button type="success" @click="NoticeDialogVisible = false">发布通知</el-button>
-        <el-button type="danger" @click="NoticeDialogVisible = false">取消</el-button>
-      </span>
+                  <span class="dialog-footer">
+                    <el-button type="primary" @click="NoticeDialogVisible = false">一键发送</el-button>
+                    <el-button type="success" @click="NoticeDialogVisible = false">发布通知</el-button>
+                    <el-button type="danger" @click="NoticeDialogVisible = false">取消</el-button>
+                  </span>
                 </template>
             </el-dialog>
+
+          <el-dialog v-model="EditResearchGroupVisible" title="增加/编辑课题组" width="30%"
+                      draggable>
+
+            <el-form :model="EditResearchGroupForm" label-width="40px"
+                     label-position="top" rules="EditResearchGroupFormRule">
+              <el-form-item label="操作类型">
+              <el-select v-model="EditResearchGroupForm.Operation1" placeholder="经费名">
+                <el-option label="增加课题组" value="add"/>
+                <el-option label="编辑课题组" value="edit"/>
+              </el-select>
+              </el-form-item>
+              <el-form-item label="选择课题组" v-if="EditResearchGroupForm.Operation1==='edit'" >
+              <el-select v-model="EditResearchGroupForm.ResearchGroupName" placeholder="">
+                <el-option label="增加课题组" value="add"/>
+                <el-option label="编辑课题组" value="edit"/>
+              </el-select>
+              </el-form-item>
+              <el-form-item label="新建课题组" v-if="EditResearchGroupForm.Operation1==='add'">
+                <el-input v-model="EditResearchGroupForm.ResearchGroupName"/>
+              </el-form-item>
+              <el-form-item label="操作类型" v-if="EditResearchGroupForm.Operation1==='edit'">
+                <el-select v-model="EditResearchGroupForm.Operation2" >
+                  <el-option label="增加用户" value="add"/>
+                  <el-option label="删除用户" value="delete"/>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="用户" v-if="EditResearchGroupForm.Operation1==='edit'">
+                <el-select v-model="EditResearchGroupForm.Operation2">
+                  <el-option label="如果Operation2为add,在不负责管理这个课题组的users里选" value="add"/>
+                  <el-option label="如果Operation2为delete,在负责管理这个课题组的user里选" value="delete"/>
+                </el-select>
+              </el-form-item>
+
+
+            </el-form>
+            <template #footer>
+                  <span class="dialog-footer">
+                    <el-button type="success" @click="EditResearchGroupVisible= false">确定</el-button>
+                    <el-button type="danger" @click="EditResearchGroupVisible = false">取消</el-button>
+                  </span>
+            </template>
+          </el-dialog>
+
+          <el-dialog v-model="EditKeyVisible" title="修改密码" width="25%" draggable>
+
+            <el-form
+                ref="ruleFormRef"
+                :model="editKeyForm"
+                status-icon
+                :rules="rules"
+                label-width="120px"
+                class="demo-ruleForm"
+            >
+              <el-form-item label="原密码" prop="initialPass">
+                <el-input v-model.number="editKeyForm.initialPass" />
+              </el-form-item>
+              <el-form-item label="新密码" prop="pass">
+                <el-input v-model="editKeyForm.editPass" type="password" autocomplete="off" />
+              </el-form-item>
+              <el-form-item label="请重复" prop="checkPass">
+                <el-input
+                    v-model="editKeyForm.checkPass"
+                    type="password"
+                    autocomplete="off"
+                />
+              </el-form-item>
+
+              <el-form-item>
+                <el-button type="primary" @click="submitForm(ruleFormRef);"
+                >提交</el-button>
+                <el-button @click="resetForm(ruleFormRef)">重置</el-button>
+              </el-form-item>
+            </el-form>
+
+          </el-dialog>
 
         </el-container>
     </div>
@@ -484,13 +561,93 @@ import {
     UploadFilled, Document, View, Coin, Notification, HomeFilled
 } from '@element-plus/icons-vue'
 
+import {type FormInstance, type FormRules, ElMessage, ElNotification  } from 'element-plus'
+
+const ruleFormRef = ref<FormInstance>()
+
+const checkInitialPass = (rule: any, value: any, callback: any) => {
+  if (!value) {
+    return callback(new Error('请输入原密码'))
+  }
+  setTimeout(() => {
+    if (value != userData.key) {
+      callback(new Error('密码不正确'))
+    } else {
+      callback()
+    }
+  }, 1000)
+}
+
+const validatePass = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('新输入新密码'))
+  } else {
+    if (editKeyForm.checkPass !== '') {
+      if (!ruleFormRef.value) return
+      ruleFormRef.value.validateField('checkPass', () => null)
+    }
+    callback()
+  }
+}
+const validatePass2 = (rule: any, value: any, callback: any) => {
+  if (value === '') {
+    callback(new Error('请再次输入新密码'))
+  } else if (value !== editKeyForm.editPass) {
+    callback(new Error("两次密码不一致，请检查!"))
+  } else {
+    callback()
+  }
+}
+
+const editKeyForm = reactive({
+  editPass: '',
+  checkPass: '',
+  initialPass: '',
+})
+
+const rules = reactive<FormRules>({
+  pass: [{ validator: validatePass, trigger: 'blur' }],
+  checkPass: [{ validator: validatePass2, trigger: 'blur' }],
+  initialPass: [{ validator: checkInitialPass, trigger: 'blur' }],
+})
+
+const submitForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.validate((valid) => {
+    if (valid) {
+      SuccessMessage()
+      EditKeyVisible.value = false
+      console.log('submit!')
+    } else {
+      FailMessage()
+      console.log('error submit!')
+      return false
+    }
+  })
+}
+
+const SuccessMessage = () => {
+  ElMessage.success('提交成功')
+}
+
+const FailMessage = () => {
+  ElMessage.error('提交失败')
+}
+
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  formEl.resetFields()
+  editKeyForm.editPass = ''
+}
+
 const {isAdmin, userName} = storeToRefs(useUserStore());
 
 const userData = reactive({
     username: '',
     name: '',
     phoneNumber: '',
-    type: ''
+    type: '',
+    key: ''
 })
 
 const OutputForm = reactive({
@@ -517,9 +674,42 @@ const ResearchGroupForm = reactive({
     ResearchGroupName: ''
 })
 
+const EditResearchGroupForm = reactive({
+  Operation1: '',
+  ResearchGroupName: '',
+  Operation2: ''
+})
+
+const EditResearchGroupFormRule = reactive({
+  Operation1: [
+    {
+      required: true,
+      message: '请选择一种操作',
+      trigger: 'change',
+    },
+  ],
+  Operation2: [
+    {
+      required: true,
+      message: '请选择一种操作',
+      trigger: 'change',
+    },
+  ],
+  ResearchGroupName: [
+    {
+      required: true,
+      message: '请选择一个课题组',
+      trigger: 'change',
+    },
+  ]
+})
+
+
 let OutputDialogVisible = ref(false)
 let FundDialogVisible = ref(false)
 let NoticeDialogVisible = ref(false)
+let EditKeyVisible = ref(false)
+let EditResearchGroupVisible = ref(false)
 
 function getResearchGroup() {
     request({
@@ -548,6 +738,7 @@ function getUserData(){
         let ud = res.data.data;
         userData.username = ud.id;
         userData.name = ud.name;
+        userData.key = ud.key;
         userData.phoneNumber = ud.phoneNum;
         userData.type = ud.isAdmin ? '管理员' : '用户';
     })
