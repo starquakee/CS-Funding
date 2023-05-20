@@ -68,6 +68,7 @@ public class ApplyController {
     @PostMapping(value = "/register/resubmit")
     public Result ResubmitApply(@RequestBody ApplyDTO applyDTO) {
         int uuid = HttpContextUtil.getRequestUuid();
+        System.out.println(uuid);
         applyDTO.setUserID(uuid);
 //        int uuid = applyDTO.getUserID();
         User user = userService.queryByUuid(uuid);
