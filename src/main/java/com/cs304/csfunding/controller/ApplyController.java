@@ -1,5 +1,6 @@
 package com.cs304.csfunding.controller;
 import com.cs304.csfunding.api.ApplyDTO;
+import com.cs304.csfunding.api.FundDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
@@ -43,6 +44,11 @@ public class ApplyController {
         User user = userService.queryByUuid(uuid);
         List<ResearchGroup> rg = researchGroupService.testQueryByUser(user.getUuid()); //user's research group
         List<Integer> rg_uuid = new ArrayList<>();
+
+        if(rg.isEmpty()){
+            return new Result(410, "user belongs to no group", null);
+        }
+
         for (ResearchGroup researchGroup : rg) {
             rg_uuid.add(researchGroup.getUuid());
         }
@@ -60,6 +66,17 @@ public class ApplyController {
         }
         //insert
         applyService.testInsert(applyDTO);
+        //update correspond fund
+        FundDTO fd = new FundDTO();
+        fd.setBalance(fund.getBalance());
+        fd.setSum(fund.getSum()-applyDTO.getMoney());
+        fd.setUuid(fund.getUuid());
+        fd.setEndTime(fund.getEndTime());
+        fd.setFundNumber(fund.getFundNumber());
+        fd.setFundName(fund.getFundName());
+        fd.setRemainDays(fund.getRemainDays());
+        fd.setStartTime(fund.getStartTime());
+        fundService.testModify(fd);
         return new Result(200,"OK",null);
     }
 
