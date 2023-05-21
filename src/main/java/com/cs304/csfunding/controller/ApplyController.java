@@ -48,7 +48,6 @@ public class ApplyController {
         applyDTO.setUserID(uuid);
         User user = userService.queryByUuid(uuid);
         applyDTO.setState("submit");
-        applyDTO.setContentSummary("");
         List<ResearchGroup> rg = researchGroupService.testQueryByUser(user.getUuid()); //user's research group
         List<Integer> rg_uuid = new ArrayList<>();
 

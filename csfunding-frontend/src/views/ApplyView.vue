@@ -324,8 +324,7 @@ function onApplySubmit() {
     method: 'POST',
     data: apply
   }).then(res => {
-    // console.log(res)
-    // ApplyDialogVisible.value = false
+    ApplyDialogVisible.value = false
     getApplies()
   })
 }
