@@ -1,6 +1,7 @@
 package com.cs304.csfunding.service;
 
 import com.cs304.csfunding.api.ApplyDTO;
+import com.cs304.csfunding.api.ApplySearchDTO;
 import com.cs304.csfunding.api.ApplyVO;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
@@ -29,7 +30,6 @@ public class ApplyService {
     private ResearchGroup_FundService researchGroupFundService;
 
 
-
     public ApplyService(ApplyMapper applyMapper) {
         this.applyMapper = applyMapper;
     }
@@ -51,28 +51,53 @@ public class ApplyService {
         return "";
     }
 
-    public List<Apply> testQueryAll(){
+    public List<Apply> testQueryAll() {
         return applyMapper.getAllApply();
     }
 
-    public List<Apply> testQueryByFundID(int fundID){
+    public List<Apply> testQueryByFundID(int fundID) {
         return applyMapper.findApplyByFundID(fundID);
     }
 
-    public List<Apply> testQueryByResearchGroupID(int researchGroupID){
+    public List<Apply> testQueryByResearchGroupID(int researchGroupID) {
         return applyMapper.findApplyByResearchGroupID(researchGroupID);
     }
 
-    public List<ApplyVO> testQueryByUserID(int userID){
+    public List<ApplyVO> testQueryByUserID(int userID) {
         List<Apply> applies = applyMapper.findApplyByUserID(userID);
         return applies.stream().map(this::apply2VO).collect(Collectors.toList());
     }
 
-    public void testJudgeByName(String state, String remark, String name) {applyMapper.updateApplyByName(state, remark, name);}
-    public void testJudgeByID(String state,String remark, int uuid) {applyMapper.updateApplyByID(state, remark, uuid);}
-    public void testUpdateReSubmitted(int uuid){applyMapper.updateApplyByID("Resubmitted","",uuid);}
+    public List<ApplyVO> queryAllVO() {
+        List<Apply> applies = applyMapper.getAllApply();
+        return applies.stream().map(this::apply2VO).collect(Collectors.toList());
+    }
 
-    public ApplyVO apply2VO(Apply apply){
+    public List<ApplyVO> searchAllVO(ApplySearchDTO applySearchDTO) {
+        List<Apply> applies = applyMapper.searchApply(-1, applySearchDTO.getResearchGroup(),
+                applySearchDTO.getFundName(), applySearchDTO.getState());
+        return applies.stream().map(this::apply2VO).collect(Collectors.toList());
+    }
+
+    public List<ApplyVO> searchUserApplyVO(ApplySearchDTO applySearchDTO, int uid){
+        List<Apply> applies = applyMapper.searchApply(uid, applySearchDTO.getResearchGroup(),
+                applySearchDTO.getFundName(), applySearchDTO.getState());
+        return applies.stream().map(this::apply2VO).collect(Collectors.toList());
+    }
+
+    public void testJudgeByName(String state, String remark, String name) {
+        applyMapper.updateApplyByName(state, remark, name);
+    }
+
+    public void testJudgeByID(String state, String remark, int uuid) {
+        applyMapper.updateApplyByID(state, remark, uuid);
+    }
+
+    public void testUpdateReSubmitted(int uuid) {
+        applyMapper.updateApplyByID("resubmitted", "", uuid);
+    }
+
+    public ApplyVO apply2VO(Apply apply) {
         ApplyVO vo = new ApplyVO();
         User applier = userService.queryByUuid(apply.getUserID());
         Fund fund = fundService.queryByID(apply.getFundID());
@@ -87,6 +112,9 @@ public class ApplyService {
         vo.setState(apply.getState());
         vo.setType2(apply.getType2());
         vo.setType1(apply.getType1());
+        vo.setApplyId(apply.getUuid());
+        vo.setResearchGroupId(apply.getResearchGroupID());
+        vo.setBalance(fund.getBalance());
         return vo;
     }
 

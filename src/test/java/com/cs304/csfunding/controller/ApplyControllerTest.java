@@ -336,7 +336,7 @@ public class ApplyControllerTest {
         int money = 100; // 设置模拟的money
 
         ApplyDTO applyDTO = new ApplyDTO();
-        applyDTO.setUUID(uuid);
+        applyDTO.setApply(uuid);
         applyDTO.setResearchGroupID(researchGroupID);
         applyDTO.setFundID(fundID);
         applyDTO.setMoney(money);
@@ -373,7 +373,7 @@ public class ApplyControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
 
         // 验证调用applyService.testUpdateReSubmitted()方法的参数
-        verify(applyService).testUpdateReSubmitted(applyDTO.getUUID());
+        verify(applyService).testUpdateReSubmitted(applyDTO.getApply());
 
         // 验证调用applyService.testInsert()方法的参数
         verify(applyService).testInsert(applyDTO);

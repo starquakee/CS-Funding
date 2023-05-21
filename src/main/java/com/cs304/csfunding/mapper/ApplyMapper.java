@@ -24,9 +24,11 @@ public interface ApplyMapper {
     @Select("select * from apply where UserID=#{UserID} order by Time desc")
     List<Apply> findApplyByUserID(@Param("UserID") int userID);
 
-    @Update("update apply set State = #{state} Remark = #{remark} where UUID = #{UUID}")
+    @Update("update apply set State = #{state}, Remark = #{remark} where UUID = #{UUID}")
     void updateApplyByID(@Param("state")String state,@Param("remark") String remark,@Param("UUID")int uuid);
 
     @Update("update apply set State = #{state} where Name = #{Name}")
     void updateApplyByName(@Param("state")String state,@Param("remark") String remark,@Param("Name")String name);
+
+    List<Apply> searchApply(Integer userId, String researchGroup, String fundName, String state);
 }
