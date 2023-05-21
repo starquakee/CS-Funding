@@ -7,6 +7,7 @@ import VueCookies from 'vue-cookies'
 
 import './assets/main.css'
 import {useTokenStore} from "@/stores/token";
+import {useUserStore} from "@/stores/user";
 
 const app = createApp(App)
 app.use(createPinia())
@@ -14,7 +15,9 @@ app.use(router)
 app.use(VueCookies)
 app.mount('#app')
 
+const userStore = useUserStore()
 const store = useTokenStore()
+const {isAdmin, userName} = storeToRefs(userStore);
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth){
         if (store.token){
@@ -23,7 +26,10 @@ router.beforeEach((to, from, next) => {
             next({
                 path: '/login',
                 query: { redirect: to.fullPath }
-            })
+            });
+        }
+        if (!userName.value){
+            userStore.getUserData();
         }
     }
     next()

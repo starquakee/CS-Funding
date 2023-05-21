@@ -29,10 +29,16 @@ public class ResearchGroupService {
         return researchGroupMapper.getAllResearchGroup();
     }
 
+    public List<ResearchGroup> testQueryByName(String teacherName){
+        return researchGroupMapper.getAllResearchGroupByName(teacherName);
+    }
+
     public List<ResearchGroup> testQueryByUser(int UserID){
         return researchGroupMapper.getResearchGroupByUser(UserID);
     }
 
-
+    public ResearchGroup queryResearchGroupById(int gid){
+        return researchGroupMapper.getResearchGroup(gid);
+    }
 
 }

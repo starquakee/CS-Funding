@@ -25,8 +25,8 @@ public class User_ResearchGroupService {
         User_ResearchGroup user_researchGroup = new User_ResearchGroup();
         user_researchGroup.setUser_UUID(user_researchGroupDTO.getUserUUID());
         user_researchGroup.setResearchGroup_UUID(user_researchGroupDTO.getResearchGroupUUID());
-        System.out.println(user_researchGroupDTO.getUserUUID());
-        System.out.println(user_researchGroupDTO.getResearchGroupUUID());
+//        System.out.println(user_researchGroupDTO.getUserUUID());
+//        System.out.println(user_researchGroupDTO.getResearchGroupUUID());
         user_researchGroupMapper.addUser_ResearchGroup(user_researchGroup);
         return "";
     }

@@ -6,6 +6,7 @@ import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.mapper.FundMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -37,6 +38,10 @@ public class FundService {
 
     public Fund queryByID(int uuid) {
         return fundMapper.getFundByID(uuid);
+    }
+
+    public List<Fund> queryVague(String FundNumber,String FundName) {
+        return fundMapper.getFundVague(FundNumber,FundName);
     }
 
     public void testDelete(int uuid) {

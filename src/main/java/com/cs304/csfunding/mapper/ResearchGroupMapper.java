@@ -17,10 +17,14 @@ public interface ResearchGroupMapper {
     @Select("select * from researchgroup")
     List<ResearchGroup> getAllResearchGroup();
 
+    @Select("select * from researchgroup where Teacher=#{Teacher}")
+    List<ResearchGroup> getAllResearchGroupByName(@Param("Teacher") String Teacher);
+
     @Select("select r.* from user_researchgroup u_r join researchgroup r on u_r.ResearchGroup_UUID=r.UUID where u_r.User_UUID=#{UUID}")
     List<ResearchGroup> getResearchGroupByUser(@Param("UUID") int UUID);
 
-
+    @Select("select * from researchgroup where `UUID`=${UUID}")
+    ResearchGroup getResearchGroup(int UUID);
 
 
 }
