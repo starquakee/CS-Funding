@@ -4,8 +4,8 @@ import lombok.Data;
 @Data
 public class Notice {
     private String content;
-    private String time;
+    private String Time;
     private int uuid;
-    private int noticeFrom;
-    private int noticeTo;
+    private int noticefrom;
+    private int noticeto;
 }

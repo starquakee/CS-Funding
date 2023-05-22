@@ -55,6 +55,9 @@ public class ApplyService {
         return applyMapper.getAllApply();
     }
 
+    public List<Apply> testQueryByID(int UUID){
+        return applyMapper.findApplyByID(UUID);
+    }
     public List<Apply> testQueryByFundID(int fundID){
         return applyMapper.findApplyByFundID(fundID);
     }

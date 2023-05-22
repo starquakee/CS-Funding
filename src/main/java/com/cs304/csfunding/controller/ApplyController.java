@@ -1,9 +1,5 @@
 package com.cs304.csfunding.controller;
-import com.cs304.csfunding.api.ApplyDTO;
-import com.cs304.csfunding.api.FundDTO;
-import com.cs304.csfunding.api.ApplyVO;
-import com.cs304.csfunding.api.InspectDTO;
-import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.api.*;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.entity.ResearchGroup;
@@ -23,6 +19,8 @@ public class ApplyController {
     private ApplyService applyService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private  NoticeService noticeService;
     @Autowired
     private ResearchGroupService researchGroupService;
     @Autowired
@@ -69,23 +67,22 @@ public class ApplyController {
         //insert
         applyService.testInsert(applyDTO);
         //update correspond fund
-        FundDTO fd = new FundDTO();
-        fd.setBalance(fund.getBalance());
-        fd.setSum(fund.getSum()-applyDTO.getMoney());
-        fd.setUuid(fund.getUuid());
-        fd.setEndTime(fund.getEndTime());
-        fd.setFundNumber(fund.getFundNumber());
-        fd.setFundName(fund.getFundName());
-        fd.setRemainDays(fund.getRemainDays());
-        fd.setStartTime(fund.getStartTime());
-        fundService.testModify(fd);
+//        FundDTO fd = new FundDTO();
+//        fd.setBalance(fund.getBalance());
+//        fd.setSum(fund.getSum()-applyDTO.getMoney());
+//        fd.setUuid(fund.getUuid());
+//        fd.setEndTime(fund.getEndTime());
+//        fd.setFundNumber(fund.getFundNumber());
+//        fd.setFundName(fund.getFundName());
+//        fd.setRemainDays(fund.getRemainDays());
+//        fd.setStartTime(fund.getStartTime());
+//        fundService.testModify(fd);
         return new Result(200,"OK",null);
     }
 
     @PostMapping(value = "/register/resubmit")
     public Result ResubmitApply(@RequestBody ApplyDTO applyDTO) {
         int uuid = HttpContextUtil.getRequestUuid();
-        System.out.println(uuid);
         applyDTO.setUserID(uuid);
 //        int uuid = applyDTO.getUserID();
         User user = userService.queryByUuid(uuid);
@@ -116,10 +113,37 @@ public class ApplyController {
     @PostMapping(value="/testjudge")
     public Result testJudgeApply(@RequestBody InspectDTO inspectDTO){
         //change state by name
-        if (inspectDTO.isPass())
+        if (inspectDTO.isPass()) {
             applyService.testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
-        else
+            List<Apply> applies = applyService.testQueryByID(inspectDTO.getAid());
+            Apply apply = applies.get(0);
+            Fund fund = fundService.queryByID(apply.getFundID());
+            FundDTO fd = new FundDTO();
+            fd.setBalance(fund.getBalance());
+            fd.setSum(fund.getSum()-apply.getMoney());
+            fd.setUuid(fund.getUuid());
+            fd.setEndTime(fund.getEndTime());
+            fd.setFundNumber(fund.getFundNumber());
+            fd.setFundName(fund.getFundName());
+            fd.setRemainDays(fund.getRemainDays());
+            fd.setStartTime(fund.getStartTime());
+            fundService.testModify(fd);
+
+            NoticeDTO nd = new NoticeDTO();
+            nd.setContent(apply.getName()+" is passed");
+            nd.setNoticeFrom(HttpContextUtil.getRequestUuid());
+            nd.setNoticeTo(apply.getUserID());
+            noticeService.testInsert(nd);
+        }else {
             applyService.testJudgeByID("fail", inspectDTO.getRemark(), inspectDTO.getAid());
+            List<Apply> applies = applyService.testQueryByID(inspectDTO.getAid());
+            Apply apply = applies.get(0);
+            NoticeDTO nd = new NoticeDTO();
+            nd.setContent(apply.getName() + " failed to pass");
+            nd.setNoticeFrom(HttpContextUtil.getRequestUuid());
+            nd.setNoticeTo(apply.getUserID());
+            noticeService.testInsert(nd);
+        }
         return new Result(200,"OK",null);
     }
 

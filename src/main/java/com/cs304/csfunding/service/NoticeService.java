@@ -17,10 +17,10 @@ public class NoticeService {
 
     public String testInsert(NoticeDTO noticeDTO) {
         Notice notice = new Notice();
-        notice.setContent(notice.getContent());
+        notice.setContent(noticeDTO.getContent());
         notice.setTime(Long.toString(System.currentTimeMillis()));
-        notice.setNoticeFrom(noticeDTO.getNoticeFrom());
-        notice.setNoticeTo(notice.getNoticeTo());
+        notice.setNoticefrom(noticeDTO.getNoticeFrom());
+        notice.setNoticeto(noticeDTO.getNoticeTo());
         noticeMapper.addNotice(notice);
         return "";
     }
@@ -30,6 +30,7 @@ public class NoticeService {
     }
 
     public Notice testQueryByID(int uuid) { return noticeMapper.queryNoticeByID(uuid); }
+    public List<Notice> testQueryByNoticeTo(int uuid) { return noticeMapper.queryNoticeByNoticeTo(uuid); }
 
     public void testDeleteByID(int uuid) { noticeMapper.deleteNotice(uuid); }
 }
