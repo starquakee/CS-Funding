@@ -12,5 +12,4 @@ public class FundDTO {
     private String startTime;
     private String endTime;
     private int uuid;
-
 }

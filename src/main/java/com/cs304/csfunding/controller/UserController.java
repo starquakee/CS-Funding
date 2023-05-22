@@ -40,7 +40,6 @@ public class UserController {
         } else {
             return new Result(user);
         }
-
     }
 
     @GetMapping("/current-user")
