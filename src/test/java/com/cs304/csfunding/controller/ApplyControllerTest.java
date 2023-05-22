@@ -101,11 +101,13 @@ public class ApplyControllerTest {
     @Test
     public void testAddApply_shouldReturnForbidden_whenUserNotBelongToResearchGroup() throws Exception {
         ApplyDTO applyDTO = new ApplyDTO();
-        applyDTO.setUserID(1);
+        applyDTO.setUserID(9);
         applyDTO.setResearchGroupID(2);
 
         User user = new User();
-        user.setUuid(1);
+        user.setUuid(9);
+
+
 
         when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
         when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Collections.singletonList(2));
@@ -113,7 +115,8 @@ public class ApplyControllerTest {
 
         mockMvc.perform(post("/register/apply")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userID\": 1, \"researchGroupID\": 2}"))
+                        .header("Authorization","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoxMCwibmFtZSI6IueuoeeQhuWRmCIsImV4cCI6MTY4NDc3OTk2NSwiaWF0IjoxNjg0NzYxOTY1fQ.lxAE0dyqrM7yQgvLeLySjTx1525ai51cV_Zyno9q6Dg")
+                        .content("{\"userID\": 9, \"researchGroupID\": 2}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("user doesn't belong to the research group"));
 

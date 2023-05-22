@@ -44,6 +44,7 @@ public class ApplyController {
     @PostMapping(value = "/register/apply")
     public Result AddApply(@RequestBody ApplyDTO applyDTO) {
         int uuid = HttpContextUtil.getRequestUuid();
+        System.out.println("uuid: "+uuid);
 //        int uuid = applyDTO.getUserID();
         applyDTO.setUserID(uuid);
         User user = userService.queryByUuid(uuid);
