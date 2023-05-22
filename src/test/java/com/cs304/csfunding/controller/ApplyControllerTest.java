@@ -18,7 +18,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -44,16 +46,39 @@ public class ApplyControllerTest {
     private ResearchGroup_FundService researchGroupFundService;
     @Mock
     private FundService fundService;
+    @Mock
+    private LoginService loginService;
 
     @InjectMocks
     private ApplyController applyController;
 
+    @InjectMocks
+    private LoginController loginController;
+
     private MockMvc mockMvc;
 
+//    private String name;
+//    private String key;
+
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
+        MockMvc loginMvc = MockMvcBuilders.standaloneSetup(loginController).build();
         mockMvc = MockMvcBuilders.standaloneSetup(applyController).build();
+        MvcResult result = loginMvc.perform(post("/api/login")
+                .contentType(MediaType.APPLICATION_JSON)
+
+                .content("{" +
+                        "    \"name\": \"admin\"," +
+                        "    \"key\": \"123\"" +
+                        "}")
+        ).andReturn();
+        System.out.println(result.getResponse());
+    }
+
+    @Test
+    public void emptyTest(){
+
     }
 
     @Test
@@ -233,6 +258,7 @@ public class ApplyControllerTest {
         // 验证调用applyService.testJudgeByID方法的参数
         verify(applyService).testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
     }
+
     @Test
     public void testgetSortApplyByUserID() throws Exception {
         InspectDTO inspectDTO = new InspectDTO();
@@ -260,8 +286,9 @@ public class ApplyControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);
     }
+
     @Test
-    public void testgetApplyByResearchGroupID() throws Exception{
+    public void testgetApplyByResearchGroupID() throws Exception {
         List<Apply> mockApplies = new ArrayList<>(); // 设置模拟的Apply列表
         int researchGroupID = 1;
 
@@ -278,7 +305,7 @@ public class ApplyControllerTest {
     }
 
     @Test
-    public void testgetApplyByResearchGroupID_NotFound() throws Exception{
+    public void testgetApplyByResearchGroupID_NotFound() throws Exception {
         int researchGroupID = 1;
 
         // 模拟调用testQueryAll方法并返回模拟的Apply列表
@@ -295,7 +322,7 @@ public class ApplyControllerTest {
     }
 
     @Test
-    public void testgetApplyByFundID() throws Exception{
+    public void testgetApplyByFundID() throws Exception {
         List<Apply> mockApplies = new ArrayList<>(); // 设置模拟的Apply列表
         int researchGroupID = 1;
 
@@ -312,7 +339,7 @@ public class ApplyControllerTest {
     }
 
     @Test
-    public void testgetApplyByFundID_NotFound() throws Exception{
+    public void testgetApplyByFundID_NotFound() throws Exception {
         int researchGroupID = 1;
 
         // 模拟调用testQueryAll方法并返回模拟的Apply列表
