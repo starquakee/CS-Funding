@@ -11,7 +11,7 @@ export const useUserStore = defineStore('user', () => {
             url: '/current-user',
             method: 'get'
         }).then(res => {
-            // console.log(res);
+            console.log(res.data.data);
             let ud = res.data.data;
             isAdmin.value = ud.isAdmin;
             userName.value = ud.name;

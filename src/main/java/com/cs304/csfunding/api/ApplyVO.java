@@ -14,4 +14,7 @@ public class ApplyVO {
     String summary;
     String remark;
     int fundNumber;
+    int applyId;
+    int researchGroupId;
+    float balance;
 }

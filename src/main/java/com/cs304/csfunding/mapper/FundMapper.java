@@ -19,7 +19,7 @@ public interface FundMapper {
     @Select("select * from fund where UUID=#{UUID}")
     Fund getFundByID(@Param("UUID") int uuid);
 
-    @Select("select * from fund where FundNumber like '%#{FundNumber}%' and FundName like '%#{FundName}%'")
+    @Select("select * from fund where FundNumber like CONCAT('%', #{FundNumber}, '%') and FundName like CONCAT('%', #{FundName}, '%')")
     List<Fund> getFundVague(@Param("FundNumber") String FundNumber, @Param("FundName") String FundName);
 
     @Update("update fund set FundNumber=#{FundNumber}, FundName=#{FundName}, Sum=#{Sum}, Balance=#{Balance}, RemainDays=#{RemainDays}, StartTime=#{StartTime}, EndTime=#{EndTime} where UUID=#{uuid}")

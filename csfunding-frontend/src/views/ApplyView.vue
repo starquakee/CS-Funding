@@ -2,31 +2,31 @@
 
   <div class="SelectForm">
     <div style="height: 10px"></div>
-    <el-form :inline="true" :model="SearchForm" class="demo-form-inline">
+    <el-form :inline="true" :model="searchForm" class="demo-form-inline">
       <el-form-item label="课题组">
-        <el-input v-model="SearchForm.ResearchGroup" placeholder="课题组名"/>
+        <el-input v-model="searchForm.researchGroup" placeholder="课题组名"/>
       </el-form-item>
       <el-form-item label="经费">
-        <el-input v-model="SearchForm.FundName" placeholder="经费名"/>
+        <el-input v-model="searchForm.fundName" placeholder="经费名"/>
       </el-form-item>
       <el-form-item label="状态">
-        <el-select v-model="SearchForm.State" placeholder="申请状态">
+        <el-select v-model="searchForm.state" placeholder="申请状态">
+          <el-option label="全部" value=""/>
           <el-option label="未审核" value="submit"/>
           <el-option label="已通过" value="pass"/>
           <el-option label="未通过" value="fail"/>
+          <el-option label="重提交" value="resubmitted"/>
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+        <el-button type="primary" @click="onQuery">查询</el-button>
       </el-form-item>
     </el-form>
   </div>
 
   <div style="height: 50px">
     <div style="height: 8px"></div>
-    <el-button type="primary" @click="ClickOnSubmit; ApplyDialogVisible=true
-                            ApplyForm.money = null; ApplyForm.type = '';
-                            ApplyForm.fundName = []" style="margin-left: 5px">
+    <el-button type="primary" @click="ClickOnSubmit(null)" style="margin-left: 5px">
       新增申请
     </el-button>
   </div>
@@ -65,20 +65,19 @@
                     ViewDialogVisible = true" type="primary" size="small" plain>
             查看
           </el-button>
-          <el-button @click="ClickOnCheck();
+          <el-button @click="ClickOnCheck(props.row);
                   CheckDialogVisible = true" type="primary" size="small" plain
                      v-if="props.row.state === 'submit' && isAdmin">
             审核
           </el-button>
 
-          <el-button @click="ClickOnCheck();
+          <el-button @click="ClickOnCheck(props.row);
                 CheckDialogVisible = true" type="primary" size="small" plain
-                     v-if="props.row.state !== 'submit' && !isAdmin">
+                     v-if="props.row.state !== 'submit' && isAdmin">
             修改
           </el-button>
 
-          <el-button @click="ClickOnSubmit; ApplyDialogVisible=true; ApplyForm.money = props.row.money;
-                            ApplyForm.type = props.row.type; ApplyForm.fundName = props.row.fundName"
+          <el-button @click="ClickOnSubmit(props.row)"
                      type="warning" size="small" plain
                      v-if="props.row.state === 'fail' && !isAdmin">
             重新提交
@@ -110,8 +109,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="金额">
-        <el-input-number v-model="ApplyForm.money" :placeholder="leftMoneyText" :controls="false" :max="balance"
-                         min="0"/>
+        <el-input-number v-model="ApplyForm.money" :placeholder="leftMoneyText" :controls="false" :max="balance" :min=0 />
       </el-form-item>
 
       <el-form-item label="说明">
@@ -160,7 +158,7 @@
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button type="success" @click="CheckDialogVisible = false">确认</el-button>
+        <el-button type="success" @click="onCheckSubmit()">确认</el-button>
         <el-button type="danger" @click="CheckDialogVisible = false">
           取消
         </el-button>
@@ -188,7 +186,7 @@
 </template>
 
 <script lang="ts" setup>
-import {onMounted, reactive} from 'vue'
+import {onMounted, reactive, toRaw} from 'vue'
 import {ref} from 'vue'
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/stores/user";
@@ -214,15 +212,36 @@ const {isAdmin, userName} = storeToRefs(useUserStore());
 
 const groupOption = reactive([])
 
+let inspectId = -1;
+
 function getApplies() {
+  // console.log(isAdmin.value)
+  tableData.splice(0);
+  // console.log(searchForm);
+  let search = toRaw(searchForm);
+  if (search.state == '')
+    search.state = null
   if (!isAdmin.value) {
     request({
-      url: '/my-apply',
-      method: 'get'
+      url: '/search-my-apply',
+      method: 'post',
+      data: search
     }).then(res => {
       let rd = res.data.data;
-      rd.forEach((item: any)=>{
-        console.log(item)
+      rd.forEach((item: any) => {
+        // console.log(item)
+        tableData.push(item);
+      })
+    })
+  } else {
+    request({
+      url: '/search-all-apply',
+      method: 'post',
+      data: search
+    }).then(res => {
+      let rd = res.data.data;
+      rd.forEach((item: any) => {
+        // console.log(item)
         tableData.push(item);
       })
     })
@@ -253,22 +272,26 @@ function getGroups() {
   })
 }
 
-onMounted(() => {
+onMounted(async () => {
+  while (!userName.value) {
+    await new Promise(f => setTimeout(f, 100))
+  }
   getApplies();
   getGroups();
 })
 
-const SearchForm = reactive({
-  ResearchGroup: '',
-  FundName: '',
-  State: ''
+const searchForm = reactive({
+  researchGroup: '',
+  fundName: '',
+  state: ''
 })
 
 const ApplyForm = reactive({
   fundName: [],
-  type: '',
+  type: [],
   money: null,
-  summary: ''
+  summary: '',
+  resubmitId: -1
 })
 
 const CheckForm = reactive({
@@ -276,8 +299,8 @@ const CheckForm = reactive({
   comment: ''
 })
 
-const onSubmit = () => {
-  console.log('submit!')
+const onQuery = () => {
+  getApplies()
 }
 
 function onApplySubmit() {
@@ -293,16 +316,35 @@ function onApplySubmit() {
     state: null,
     contentSummary: ApplyForm.summary,
     remark: null,
-    UUID: null,
+    apply: ApplyForm.resubmitId,
   }
+  console.log(apply)
   request({
     url: '/register/apply',
     method: 'POST',
     data: apply
   }).then(res => {
-    console.log(res)
     ApplyDialogVisible.value = false
+    getApplies()
   })
+}
+
+function onCheckSubmit() {
+  console.log(CheckForm);
+  let inspect = {
+    aid: inspectId,
+    remark: CheckForm.comment,
+    pass: CheckForm.state == '通过'
+  }
+  request({
+    url: '/inspect-apply',
+    method: "post",
+    data: inspect
+  }).then(res => {
+    console.log(res);
+    getApplies();
+  })
+  CheckDialogVisible.value = false;
 }
 
 function onFundChange() {
@@ -315,12 +357,36 @@ function ClickOnView() {
 
 }
 
-function ClickOnSubmit() {
-
+function ClickOnSubmit(row: any) {
+  ApplyDialogVisible.value = true;
+  if (row == null){
+    ApplyForm.money = null;
+    ApplyForm.type = [];
+    ApplyForm.fundName = [];
+    ApplyForm.summary = '';
+    ApplyForm.resubmitId = -1;
+  } else {
+    console.log(row);
+    ApplyForm.fundName = [row.researchGroupId, {balance: row.balance, uuid: row.fundNumber}];
+    onFundChange()
+    ApplyForm.money = row.money;
+    ApplyForm.type = [row.type1, row.type2];
+    ApplyForm.summary = row.summary;
+    ApplyForm.resubmitId = row.applyId;
+  }
+  console.log(ApplyForm);
 }
 
-function ClickOnCheck() {
-
+function ClickOnCheck(row: any) {
+  console.log(row)
+  inspectId = row.applyId;
+  if (row.state == 'pass')
+    CheckForm.state = '通过';
+  else if (row.state == 'fail')
+    CheckForm.state = '不通过';
+  else
+    CheckForm.state = '';
+  CheckForm.comment = row.remark;
 }
 
 interface Apply {
