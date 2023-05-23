@@ -15,6 +15,9 @@ public interface ApplyMapper {
     @Select("select * from apply")
     List<Apply> getAllApply();
 
+    @Select("select * from apply where UUID=#{UUID}")
+    List<Apply> findApplyByID(@Param("UUID") int UUID);
+
     @Select("select * from apply where FundID=#{FundID}")
     List<Apply> findApplyByFundID(@Param("FundID") int fundID);
 
@@ -23,6 +26,7 @@ public interface ApplyMapper {
 
     @Select("select * from apply where UserID=#{UserID} order by Time desc")
     List<Apply> findApplyByUserID(@Param("UserID") int userID);
+
 
     @Update("update apply set State = #{state}, Remark = #{remark} where UUID = #{UUID}")
     void updateApplyByID(@Param("state")String state,@Param("remark") String remark,@Param("UUID")int uuid);

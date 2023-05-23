@@ -4,6 +4,7 @@ import com.cs304.csfunding.api.NoticeDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Notice;
 import com.cs304.csfunding.service.NoticeService;
+import com.cs304.csfunding.util.HttpContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,9 @@ public class NoticeController {
 
     @PostMapping(value = "/register/notice")
     public String testAddNotice(@RequestBody NoticeDTO noticeDTO) {
+        int uuid = HttpContextUtil.getRequestUuid();
+        noticeDTO.setNoticeFrom(uuid);
+        noticeDTO.setNoticeTo(-1);
         return noticeService.testInsert(noticeDTO);
     }
 
@@ -48,5 +52,12 @@ public class NoticeController {
         } else {
             return new Result(200,"success",notice);
         }
+    }
+
+    @GetMapping("/get/usernotice")
+    public Result getNoticeByUserID(){
+        int userID = HttpContextUtil.getRequestUuid();
+        List<Notice> notices = noticeService.testQueryByNoticeTo(userID);
+        return new Result(notices);
     }
 }

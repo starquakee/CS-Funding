@@ -16,6 +16,12 @@ public interface NoticeMapper {
     @Select("select * from notice where UUID = #{UUID}")
     Notice queryNoticeByID(@Param("UUID") int uuid);
 
+    @Select("select * from notice where noticeto = #{noticeTo} or noticeto = -1")
+    List<Notice> queryNoticeByNoticeTo(@Param("noticeTo") int noticeTo);
+
+    @Select("select * from notice where noticeFrom = #{noticeFrom}")
+    List<Notice> queryNoticeByNoticeFrom(@Param("noticeFrom") int noticeFrom);
+
     @Delete("delete from notice where uuid = #{uuid}")
     void deleteNotice(int uuid);
 }
