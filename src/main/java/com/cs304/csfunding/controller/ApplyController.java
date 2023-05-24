@@ -74,6 +74,9 @@ public class ApplyController {
         }
         //insert
         applyService.testInsert(applyDTO);
+        if (applyDTO.getApply() != -1){
+            applyService.testUpdateReSubmitted(applyDTO.getApply());
+        }
         //update correspond fund
 //        FundDTO fd = new FundDTO();
 //        fd.setBalance(fund.getBalance());
