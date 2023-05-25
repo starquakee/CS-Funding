@@ -38,4 +38,4 @@ Run the image in container
 ![tupian](final-delivery-img/containerization.png)
 The proof for the success of containerization:
 ![tupian](final-delivery-img/test%20containerization.png)
-The first try is failed by the wrong instruction. The second try is a success because 415 means the CsFunding System is running properly.
+The first try is failed by the wrong instruction. The second try is an approximate success because 415 means the CsFunding System is running properly. The third try is a success because we login into the system successfully and get a token from container.
