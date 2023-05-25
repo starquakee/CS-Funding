@@ -16,6 +16,9 @@
             </el-form>
         </div>
 
+      <div class="PieChart" ref="chartDom" :style="{ width: '800px', height: '400px'}" >
+      </div>
+
 
         <el-table :data="tableData" style="width: 100%" border class="ParentTable" :row-class-name="tableRowClassName"
                   :summary-method="getSummaries" show-summary>
@@ -105,12 +108,105 @@ import moment from "moment"
 
 
 import { ref } from 'vue';
-import * as echarts from 'echarts/core';
-import { BarChart } from 'echarts/charts';
-import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components';
-import { CanvasRenderer } from 'echarts/renderers';
+import * as echarts from 'echarts';
 
-echarts.use([TitleComponent, TooltipComponent, GridComponent, BarChart, CanvasRenderer]);
+
+const chartDom = ref<HTMLElement | null>(null);
+onMounted(() => {
+if (chartDom.value) {
+  const myChart = echarts.init(chartDom.value);
+  let option;
+
+  option = {
+    title: {
+      text: 'Nightingale Chart',
+      subtext: 'Fake Data',
+      left: 'center'
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+    legend: {
+      left: 'center',
+      top: 'bottom',
+      data: [
+        'rose1',
+        'rose2',
+        'rose3',
+        'rose4',
+        'rose5',
+        'rose6',
+        'rose7',
+        'rose8'
+      ]
+    },
+    toolbox: {
+      show: true,
+      feature: {
+        mark: {show: true},
+        dataView: {show: true, readOnly: false},
+        restore: {show: true},
+        saveAsImage: {show: true}
+      }
+    },
+    series: [
+      {
+        name: 'Radius Mode',
+        type: 'pie',
+        radius: [20, 140],
+        center: ['20%', '50%'],
+        roseType: 'radius',
+        itemStyle: {
+          borderRadius: 5
+        },
+        label: {
+          show: true
+        },
+        emphasis: {
+          label: {
+            show: true
+          }
+        },
+        data: [
+          {value: 40, name: 'rose 1'},
+          {value: 33, name: 'rose 2'},
+          {value: 28, name: 'rose 3'},
+          {value: 22, name: 'rose 4'},
+          {value: 20, name: 'rose 5'},
+          {value: 15, name: 'rose 6'},
+          {value: 12, name: 'rose 7'},
+          {value: 10, name: 'rose 8'}
+        ]
+      },
+      {
+        name: 'Area Mode',
+        type: 'pie',
+        radius: [20, 140],
+        center: ['75%', '50%'],
+        roseType: 'area',
+        itemStyle: {
+          borderRadius: 5
+        },
+        data: [
+          {value: 30, name: 'rose 1'},
+          {value: 28, name: 'rose 2'},
+          {value: 26, name: 'rose 3'},
+          {value: 24, name: 'rose 4'},
+          {value: 22, name: 'rose 5'},
+          {value: 20, name: 'rose 6'},
+          {value: 18, name: 'rose 7'},
+          {value: 16, name: 'rose 8'}
+        ]
+      },
+
+    ]
+  };
+
+  option && myChart.setOption(option);
+}
+});
+
 
 const chartContainer = ref<HTMLElement | null>(null);
 
@@ -288,11 +384,12 @@ const getSummaries = (param: SummaryMethodProps) => {
   /* 水平垂直居中 */
   top: 30%;
   left: 23%;
-
-
   width: 100vw;
   height: 100vh;
   background-color: rgba(100, 100, 100, 0.7);
   z-index: 9999;
+}
+.PieChart {
+  left: 23%;
 }
 </style>
