@@ -197,6 +197,10 @@ function setToken() {
         store.clearToken()
     }
 }
+
+function send_email() {
+
+}
 </script>
 
 
