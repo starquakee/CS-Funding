@@ -45,6 +45,7 @@ public class UserController {
     @GetMapping("/current-user")
     public Result getCurrentUser() {
         int uuid = HttpContextUtil.getRequestUuid();
+        System.out.println(uuid);
         User user = userService.queryByUuid(uuid);
         if (user == null) {
             return new Result(404, "user not found", null);

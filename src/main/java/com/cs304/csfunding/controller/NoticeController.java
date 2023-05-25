@@ -57,6 +57,7 @@ public class NoticeController {
     @GetMapping("/get/usernotice")
     public Result getNoticeByUserID(){
         int userID = HttpContextUtil.getRequestUuid();
+        System.out.println(userID);
         List<Notice> notices = noticeService.testQueryByNoticeTo(userID);
         return new Result(notices);
     }
