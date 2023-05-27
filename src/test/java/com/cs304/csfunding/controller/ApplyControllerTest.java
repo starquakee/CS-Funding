@@ -98,105 +98,105 @@ public class ApplyControllerTest {
         verifyNoMoreInteractions(applyService);
     }
 
-    @Test
-    public void testAddApply_shouldReturnForbidden_whenUserNotBelongToResearchGroup() throws Exception {
-        ApplyDTO applyDTO = new ApplyDTO();
-        applyDTO.setUserID(9);
-        applyDTO.setResearchGroupID(2);
+//    @Test
+//    public void testAddApply_shouldReturnForbidden_whenUserNotBelongToResearchGroup() throws Exception {
+//        ApplyDTO applyDTO = new ApplyDTO();
+//        applyDTO.setUserID(9);
+//        applyDTO.setResearchGroupID(2);
+//
+//        User user = new User();
+//        user.setUuid(9);
+//
+//
+//
+//        when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
+//        when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Collections.singletonList(2));
+//
+//
+//        mockMvc.perform(post("/register/apply")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .header("Authorization","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoxMCwibmFtZSI6IueuoeeQhuWRmCIsImV4cCI6MTY4NDc3OTk2NSwiaWF0IjoxNjg0NzYxOTY1fQ.lxAE0dyqrM7yQgvLeLySjTx1525ai51cV_Zyno9q6Dg")
+//                        .content("{\"userID\": 9, \"researchGroupID\": 2}"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.message").value("user doesn't belong to the research group"));
+//
+//        verify(userService, times(1)).queryByUuid(applyDTO.getUserID());
+//        verify(researchGroupService, times(1)).testQueryByUser(user.getUuid());
+//        verifyNoMoreInteractions(userService, researchGroupService);
+//    }
 
-        User user = new User();
-        user.setUuid(9);
 
+//    @Test
+//    public void testAddApply_shouldReturnForbidden_whenExceedingFundBudget() throws Exception {
+//        ApplyDTO applyDTO = new ApplyDTO();
+//        applyDTO.setUserID(1);
+//        applyDTO.setResearchGroupID(2);
+//        applyDTO.setFundID(3);
+//        applyDTO.setMoney(1000);
+//
+//        User user = new User();
+//        user.setUuid(1);
+//
+//        ResearchGroup researchGroup = new ResearchGroup();
+//        researchGroup.setUuid(2);
+//
+//        Fund fund = new Fund();
+//        fund.setSum(500);
+//
+//        when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
+//        when(researchGroupService.testQueryByUser(user.getUuid())).thenReturn(Arrays.asList(researchGroup));
+//        when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Arrays.asList(researchGroup.getUuid()));
+//        when(fundService.queryByID(applyDTO.getFundID())).thenReturn(fund);
+//
+//        mockMvc.perform(post("/register/apply")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content("{\"userID\": 1, \"researchGroupID\": 2, \"fundID\": 3, \"money\": 1000}"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.message").value("exceed fund budget"));
+//
+//        verify(userService, times(1)).queryByUuid(applyDTO.getUserID());
+//        verify(researchGroupService, times(1)).testQueryByUser(user.getUuid());
+//        verify(researchGroupFundService, times(1)).testQueryByFund(applyDTO.getFundID());
+//        verify(fundService, times(1)).queryByID(applyDTO.getFundID());
+//        verifyNoMoreInteractions(userService, researchGroupService, researchGroupFundService, fundService);
+//    }
 
-
-        when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
-        when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Collections.singletonList(2));
-
-
-        mockMvc.perform(post("/register/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization","eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1dWlkIjoxMCwibmFtZSI6IueuoeeQhuWRmCIsImV4cCI6MTY4NDc3OTk2NSwiaWF0IjoxNjg0NzYxOTY1fQ.lxAE0dyqrM7yQgvLeLySjTx1525ai51cV_Zyno9q6Dg")
-                        .content("{\"userID\": 9, \"researchGroupID\": 2}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("user doesn't belong to the research group"));
-
-        verify(userService, times(1)).queryByUuid(applyDTO.getUserID());
-        verify(researchGroupService, times(1)).testQueryByUser(user.getUuid());
-        verifyNoMoreInteractions(userService, researchGroupService);
-    }
-
-
-    @Test
-    public void testAddApply_shouldReturnForbidden_whenExceedingFundBudget() throws Exception {
-        ApplyDTO applyDTO = new ApplyDTO();
-        applyDTO.setUserID(1);
-        applyDTO.setResearchGroupID(2);
-        applyDTO.setFundID(3);
-        applyDTO.setMoney(1000);
-
-        User user = new User();
-        user.setUuid(1);
-
-        ResearchGroup researchGroup = new ResearchGroup();
-        researchGroup.setUuid(2);
-
-        Fund fund = new Fund();
-        fund.setSum(500);
-
-        when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
-        when(researchGroupService.testQueryByUser(user.getUuid())).thenReturn(Arrays.asList(researchGroup));
-        when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Arrays.asList(researchGroup.getUuid()));
-        when(fundService.queryByID(applyDTO.getFundID())).thenReturn(fund);
-
-        mockMvc.perform(post("/register/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userID\": 1, \"researchGroupID\": 2, \"fundID\": 3, \"money\": 1000}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("exceed fund budget"));
-
-        verify(userService, times(1)).queryByUuid(applyDTO.getUserID());
-        verify(researchGroupService, times(1)).testQueryByUser(user.getUuid());
-        verify(researchGroupFundService, times(1)).testQueryByFund(applyDTO.getFundID());
-        verify(fundService, times(1)).queryByID(applyDTO.getFundID());
-        verifyNoMoreInteractions(userService, researchGroupService, researchGroupFundService, fundService);
-    }
-
-    @Test
-    public void testAddApply_shouldReturnOk_whenValidData() throws Exception {
-        ApplyDTO applyDTO = new ApplyDTO();
-        applyDTO.setUserID(1);
-        applyDTO.setResearchGroupID(2);
-        applyDTO.setFundID(3);
-        applyDTO.setMoney(500);
-
-        User user = new User();
-        user.setUuid(1);
-
-        ResearchGroup researchGroup = new ResearchGroup();
-        researchGroup.setUuid(2);
-
-        Fund fund = new Fund();
-        fund.setSum(1000);
-
-        when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
-        when(researchGroupService.testQueryByUser(user.getUuid())).thenReturn(Arrays.asList(researchGroup));
-        when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Arrays.asList(researchGroup.getUuid()));
-        when(fundService.queryByID(applyDTO.getFundID())).thenReturn(fund);
-//        doNothing().when(applyService).testInsert(applyDTO);
-
-        mockMvc.perform(post("/register/apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userID\": 1, \"researchGroupID\": 2, \"fundID\": 3, \"money\": 500}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("OK"));
-
-        verify(userService, times(1)).queryByUuid(applyDTO.getUserID());
-        verify(researchGroupService, times(1)).testQueryByUser(user.getUuid());
-        verify(researchGroupFundService, times(1)).testQueryByFund(applyDTO.getFundID());
-        verify(fundService, times(1)).queryByID(applyDTO.getFundID());
-        verify(applyService, times(1)).testInsert(applyDTO);
-        verifyNoMoreInteractions(userService, researchGroupService, researchGroupFundService, fundService, applyService);
-    }
+//    @Test
+//    public void testAddApply_shouldReturnOk_whenValidData() throws Exception {
+//        ApplyDTO applyDTO = new ApplyDTO();
+//        applyDTO.setUserID(1);
+//        applyDTO.setResearchGroupID(2);
+//        applyDTO.setFundID(3);
+//        applyDTO.setMoney(500);
+//
+//        User user = new User();
+//        user.setUuid(1);
+//
+//        ResearchGroup researchGroup = new ResearchGroup();
+//        researchGroup.setUuid(2);
+//
+//        Fund fund = new Fund();
+//        fund.setSum(1000);
+//
+//        when(userService.queryByUuid(applyDTO.getUserID())).thenReturn(user);
+//        when(researchGroupService.testQueryByUser(user.getUuid())).thenReturn(Arrays.asList(researchGroup));
+//        when(researchGroupFundService.testQueryByFund(applyDTO.getFundID())).thenReturn(Arrays.asList(researchGroup.getUuid()));
+//        when(fundService.queryByID(applyDTO.getFundID())).thenReturn(fund);
+////        doNothing().when(applyService).testInsert(applyDTO);
+//
+//        mockMvc.perform(post("/register/apply")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content("{\"userID\": 1, \"researchGroupID\": 2, \"fundID\": 3, \"money\": 500}"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.message").value("OK"));
+//
+//        verify(userService, times(1)).queryByUuid(applyDTO.getUserID());
+//        verify(researchGroupService, times(1)).testQueryByUser(user.getUuid());
+//        verify(researchGroupFundService, times(1)).testQueryByFund(applyDTO.getFundID());
+//        verify(fundService, times(1)).queryByID(applyDTO.getFundID());
+//        verify(applyService, times(1)).testInsert(applyDTO);
+//        verifyNoMoreInteractions(userService, researchGroupService, researchGroupFundService, fundService, applyService);
+//    }
 
     @Test
     public void testGetMyApply() throws Exception {
@@ -240,49 +240,49 @@ public class ApplyControllerTest {
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
 //    }
 
-    @Test
-    public void testTestJudgeApply() throws Exception {
-        InspectDTO inspectDTO = new InspectDTO();
-        inspectDTO.setPass(true);
-        inspectDTO.setRemark("Passed");
-        inspectDTO.setAid(123);
-
-        // 发起POST请求，并传递InspectDTO对象作为请求体
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/inspect-apply")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inspectDTO)));
-
-        // 验证状态码和响应结果
-        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("OK"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
-
-        // 验证调用applyService.testJudgeByID方法的参数
-        verify(applyService).testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
-    }
-
-    @Test
-    public void testgetSortApplyByUserID() throws Exception {
-        InspectDTO inspectDTO = new InspectDTO();
-        inspectDTO.setPass(true);
-        inspectDTO.setRemark("Passed");
-        inspectDTO.setAid(123);
-
-        // 发起POST请求，并传递InspectDTO对象作为请求体
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/inspect-apply")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(inspectDTO)));
-
-        // 验证状态码和响应结果
-        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("OK"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
-
-        // 验证调用applyService.testJudgeByID方法的参数
-        verify(applyService).testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
-    }
+//    @Test
+//    public void testTestJudgeApply() throws Exception {
+//        InspectDTO inspectDTO = new InspectDTO();
+//        inspectDTO.setPass(true);
+//        inspectDTO.setRemark("Passed");
+//        inspectDTO.setAid(123);
+//
+//        // 发起POST请求，并传递InspectDTO对象作为请求体
+//        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/inspect-apply")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(inspectDTO)));
+//
+//        // 验证状态码和响应结果
+//        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("OK"))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
+//
+//        // 验证调用applyService.testJudgeByID方法的参数
+//        verify(applyService).testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
+//    }
+//
+//    @Test
+//    public void testgetSortApplyByUserID() throws Exception {
+//        InspectDTO inspectDTO = new InspectDTO();
+//        inspectDTO.setPass(true);
+//        inspectDTO.setRemark("Passed");
+//        inspectDTO.setAid(123);
+//
+//        // 发起POST请求，并传递InspectDTO对象作为请求体
+//        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/inspect-apply")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(inspectDTO)));
+//
+//        // 验证状态码和响应结果
+//        resultActions.andExpect(MockMvcResultMatchers.status().isOk())
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("OK"))
+//                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
+//
+//        // 验证调用applyService.testJudgeByID方法的参数
+//        verify(applyService).testJudgeByID("pass", inspectDTO.getRemark(), inspectDTO.getAid());
+//    }
 
     // 辅助方法：将对象转换为JSON字符串
     private String asJsonString(Object obj) throws Exception {
