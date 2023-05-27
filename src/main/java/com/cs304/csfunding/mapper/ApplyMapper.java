@@ -35,4 +35,10 @@ public interface ApplyMapper {
     void updateApplyByName(@Param("state")String state,@Param("remark") String remark,@Param("Name")String name);
 
     List<Apply> searchApply(Integer userId, String researchGroup, String fundName, String state);
+
+    @Select("select * from apply order by `Time` desc limit #{num}")
+    List<Apply> recentApply(int num);
+
+    @Select("select * from apply where UserID=#{uid} order by `Time` desc limit #{num}")
+    List<Apply> recentApplyUser(int num, int uid);
 }

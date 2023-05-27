@@ -23,9 +23,9 @@
                                 <div class="info-divide">
 
                                     <div style="margin-top: 15px; margin-left: 15px">
-                                        <img src="@/img/user.png" width="80" height="100" v-if="userData.type==='用户'">
+                                        <img src="@/img/user.png" width="80" height="100" v-if="!isAdmin">
                                         <img src="@/img/admin.png" width="80" height="100"
-                                             v-if="userData.type!=='用户'">
+                                             v-if="isAdmin">
                                     </div>
 
                                     <div style="font-size: 16px">
@@ -94,13 +94,13 @@
                                 <el-header>
                                     通知
                                     <el-button @click="NoticeDialogVisible=true" type="primary" :icon="Edit" style="margin-left: 220px"
-                                               v-if="userData.type!=='用户'" >添加
+                                               v-if="isAdmin" >添加
                                     </el-button>
                                 </el-header>
                                 <el-main>
-                                    <el-table :data="Notices" style="width: 95%" class="GroupTable">
-                                        <el-table-column prop="notice" label="通知内容" width="210px"/>
-                                        <el-table-column v-if="userData.type!=='用户'">
+                                    <el-table :data="notices" style="width: 95%" class="GroupTable">
+                                        <el-table-column prop="content" label="通知内容" width="210px"/>
+                                        <el-table-column v-if="isAdmin">
                                             <el-button type="warning" size="small" plain>
                                                 修改
                                             </el-button>
@@ -132,11 +132,11 @@
                                     <el-button type="primary" :icon="Search" style="margin-left: 588px"
                                                @click="AllApply">查看全部
                                     </el-button>
-                                    <el-table :data="RecentApply" style="width: 100%">
-                                        <el-table-column prop="name" align="center" label="经费名称"/>
+                                    <el-table :data="recentApply" style="width: 100%">
+                                        <el-table-column prop="fundName" align="center" label="经费名称"/>
                                         <el-table-column prop="researchGroup" align="center" label="课题组名称"/>
                                         <el-table-column prop="applyPerson" align="center" label="申请人"/>
-                                        <el-table-column prop="amount" align="center" label="申请金额"/>
+                                        <el-table-column prop="money" align="center" label="申请金额"/>
                                         <el-table-column align="center" label="申请状态">
                                             <template #default="props">
 
@@ -177,7 +177,7 @@
 
                                 <div class="info-divide" style="height: 85px">
 
-                                    <div class="function-button" v-if="userData.type==='用户'">
+                                    <div class="function-button" v-if="!isAdmin">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle
                                                    @click="AllApply">
                                             <el-icon style="vertical-align: middle;" size="25px">
@@ -188,7 +188,7 @@
                                         我的申请
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type!=='用户'" @click="AllApply">
+                                    <div class="function-button" v-if="isAdmin" @click="AllApply">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle>
                                             <el-icon style="vertical-align: middle;" size="25px">
                                                 <View/>
@@ -213,7 +213,7 @@
 
                                 </div>
                                 <div class="info-divide" style="height: 70px">
-                                    <div class="function-button" v-if="userData.type==='用户'">
+                                    <div class="function-button" v-if="!isAdmin">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle>
                                             <el-icon style="vertical-align: middle;" size="25px">
                                                 <Edit/>
@@ -223,10 +223,10 @@
                                         编辑信息
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type==='用户'">
+                                    <div class="function-button" v-if="!isAdmin">
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type!=='用户'">
+                                    <div class="function-button" v-if="isAdmin">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle
                                                    @click="FundDialogVisible=true">
                                             <el-icon style="vertical-align: middle;" size="25px">
@@ -237,7 +237,7 @@
                                         增添经费
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type!=='用户'">
+                                    <div class="function-button" v-if="isAdmin">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle
                                                    @click="EditResearchGroupVisible=true">
                                             <el-icon style="vertical-align: middle;" size="25px">
@@ -711,6 +711,47 @@ let NoticeDialogVisible = ref(false)
 let EditKeyVisible = ref(false)
 let EditResearchGroupVisible = ref(false)
 
+function getRecentApply() {
+  let url = ''
+  if (isAdmin.value){
+    url = '/all-recent-apply'
+  } else {
+    url = '/my-recent-apply'
+  }
+  request({
+    url: url,
+    method: "GET"
+  }).then(res => {
+    // console.log(res);
+    let rd = res.data.data
+    rd.forEach((item: any) => {
+      recentApply.push(item)
+    })
+  })
+}
+
+function getNotice() {
+  let url = ''
+  if (isAdmin.value){
+    url = '/get-all-notice'
+  } else {
+    url = '/my-notice'
+  }
+  request({
+    url: url,
+    method: "GET"
+  }).then(res => {
+    // console.log(res);
+    let rd = res.data.data
+    let idx = 0
+    rd.forEach((item: any) => {
+      if (idx < 3)
+        notices.push(item)
+      idx += 1;
+    })
+  })
+}
+
 function getResearchGroup() {
     request({
         url: '/get-all-research-groups',
@@ -744,47 +785,21 @@ function getUserData(){
     })
 }
 
-onMounted(() => {
+onMounted(async () => {
     getUserData();
+    while (!userName.value) {
+      await new Promise(f => setTimeout(f, 100))
+    }
     getResearchGroup();
+    getRecentApply();
+    getNotice();
 })
 
 const researchGroup = reactive([])
 
-const RecentApply = [
-    {
-        name: '经费1',
-        researchGroup: '王',
-        applyPerson: 'xxx',
-        amount: 500,
-        state: 'pass'
-    },
-    {
-        name: '经费2',
-        researchGroup: '李',
-        applyPerson: 'xxx',
-        amount: 2000,
-        state: 'pass'
-    },
-    {
-        name: '经费3',
-        researchGroup: '李',
-        applyPerson: 'xxx',
-        amount: 3000,
-        state: 'submit'
-    }
+const recentApply = reactive([]);
 
-]
-
-const Notices = [
-    {
-        notice: "系统已上线"
-    },
-    {
-        notice: "已收到提交"
-    },
-
-]
+const notices = reactive([])
 
 function AllApply() {
     router.push({path: '/apply'})
