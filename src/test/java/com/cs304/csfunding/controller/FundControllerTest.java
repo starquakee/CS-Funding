@@ -172,13 +172,15 @@ public class FundControllerTest {
     public void testGetFundVague_fundFound() throws Exception {
         String fundNumber = "ABC";
         String fundName = "XYZ";
+        String researchGroupId = "qaz";
         List<Fund> funds = Arrays.asList(new Fund(), new Fund()); // Create a list of Fund objects with test data
 
-        when(fundService.queryVague(fundNumber, fundName)).thenReturn(funds);
+        when(fundService.queryVague(fundNumber, fundName, researchGroupId)).thenReturn(funds);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/get-fund-vague")
                         .param("FundNumber", fundNumber)
-                        .param("FundName", fundName))
+                        .param("FundName", fundName)
+                        .param("researchGroupId", researchGroupId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("success"))
@@ -190,12 +192,14 @@ public class FundControllerTest {
     public void testGetFundVague_noFundFound() throws Exception {
         String fundNumber = "ABC";
         String fundName = "XYZ";
+        String researchGroupId = "qaz";
 
-        when(fundService.queryVague(fundNumber, fundName)).thenReturn(null);
+        when(fundService.queryVague(fundNumber, fundName, researchGroupId)).thenReturn(null);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/get-fund-vague")
                         .param("FundNumber", fundNumber)
-                        .param("FundName", fundName))
+                        .param("FundName", fundName)
+                        .param("researchGroupId", researchGroupId))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("fund not found"))

@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
 
-    @PostMapping(value = "/register/user")
+    @PostMapping(value = "/add-user")
     public String testAddUser(@RequestBody UserDTO userDTO) {
         return userService.testInsert(userDTO);
     }

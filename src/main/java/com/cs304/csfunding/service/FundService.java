@@ -40,8 +40,8 @@ public class FundService {
         return fundMapper.getFundByID(uuid);
     }
 
-    public List<Fund> queryVague(String FundNumber,String FundName) {
-        return fundMapper.getFundVague(FundNumber,FundName);
+    public List<Fund> queryVague(String FundNumber,String FundName, String researchGroupId) {
+        return fundMapper.getFundVague(FundNumber,FundName,researchGroupId);
     }
 
     public void testDelete(int uuid) {

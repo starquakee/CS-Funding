@@ -16,7 +16,7 @@ public class ResearchGroup_FundController {
     private ResearchGroup_FundService researchGroup_fundService;
 
 
-    @PostMapping(value = "/register/research-group_fund")
+    @PostMapping(value = "/add-research-group_fund")
     public Result testAddResearchGroupFund(@RequestBody ResearchGroup_FundDTO researchGroup_fundDTO) {
         return new Result(researchGroup_fundService.testInsert(researchGroup_fundDTO));
     }

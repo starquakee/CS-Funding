@@ -11,7 +11,7 @@
                     <el-input v-model="SearchForm.FundName" placeholder="经费名称"/>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                    <el-button type="primary" @click="onQuery">查询</el-button>
                 </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="PieChartVisible=!PieChartVisible">{{PieChartVisible?'隐藏':'显示'}}</el-button>
@@ -91,7 +91,7 @@
 
 <script lang="ts" setup>
 
-import {onMounted, reactive} from "vue";
+import {onMounted, reactive, toRaw} from "vue";
 import type {TableColumnCtx} from 'element-plus'
 import {
     Delete, Edit, Search, Share, Upload, Bell, Back,
@@ -104,6 +104,8 @@ import moment from "moment"
 
 import { ref } from 'vue';
 import * as echarts from 'echarts';
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/stores/user";
 
 const PieChartVisible = ref(false)
 const chartDom = ref<HTMLElement | null>(null);
@@ -272,7 +274,7 @@ function getFundData(fid: any) {
     }).then(res => {
         let rd = res.data.data;
         let fd: fund = {
-            id: rd.uuid,
+            id: rd.fundNumber,
             name: rd.fundName,
             sum: rd.sum,
             remain: rd.balance,
@@ -297,6 +299,33 @@ function getTableData(gid: any) {
     })
 }
 
+function onQuery(){
+  // console.log(isAdmin.value)
+  tableData.splice(0);
+  // console.log(searchForm);
+  let search = toRaw(SearchForm);
+    request({
+      url: '/get-fund-vague',
+      method: 'get',
+      params: search,
+    }).then(res => {
+      let rd = res.data.data;
+      rd.forEach((item: any) => {
+        let rd = item
+        let fd: fund = {
+          id: rd.fundNumber,
+          name: rd.fundName,
+          sum: rd.sum,
+          remain: rd.balance,
+          start: moment.unix(rd.startTime / 1000).format('YYYY-MM-DD'),
+          end: moment.unix(rd.endTime / 1000).format('YYYY-MM-DD'),
+          remainDay: rd.remainDays,
+          applies: []
+        };
+        tableData.push(fd)
+      })
+      })
+}
 
 const selectedPath = ref('');
 
@@ -318,6 +347,7 @@ onMounted(() => {
 const SearchForm = reactive({
     FundNumber: '',
     FundName: '',
+    researchGroupId: route.query.gid,
 })
 
 interface fund {
