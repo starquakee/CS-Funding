@@ -17,7 +17,7 @@ public interface ResearchGroupMapper {
     @Select("select * from researchgroup")
     List<ResearchGroup> getAllResearchGroup();
 
-    @Select("select * from researchgroup where Teacher=CONCAT('%', #{Teacher}, '%')")
+    @Select("select * from researchgroup where Teacher like CONCAT('%', #{Teacher}, '%')")
     List<ResearchGroup> getAllResearchGroupByName(String Teacher);
 
     @Select("select r.* from user_researchgroup u_r join researchgroup r on u_r.ResearchGroup_UUID=r.UUID where u_r.User_UUID=#{UUID}")

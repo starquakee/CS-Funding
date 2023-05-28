@@ -51,7 +51,7 @@
                                         </div>
                                         <div>
                                             <el-form :inline="true" :model="ResearchGroupForm" class="demo-form-inline"
-                                                     style="margin-top: 10px">
+                                                     style="margin-top: 10px" v-if="userData.type!=='用户'">
 
                                                 <el-form-item label-width="1px">
                                                     <el-input v-model="ResearchGroupForm.ResearchGroupName"
@@ -62,7 +62,7 @@
 
 
                                         </div>
-                                        <el-button type="primary" style="margin-top: 25px">查询</el-button>
+                                        <el-button @click="onQuery" v-if="userData.type!=='用户'" type="primary" style="margin-top: 25px">查询</el-button>
                                     </div>
 
                                 </el-header>
@@ -560,7 +560,7 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/stores/user";
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, reactive, ref, toRaw} from 'vue'
 import router from "@/router";
 import request from "@/util/request";
 import {
@@ -571,6 +571,7 @@ import {
 import {type FormInstance, type FormRules, ElMessage, ElNotification  } from 'element-plus'
 
 import { InfoFilled } from '@element-plus/icons-vue'
+import moment from "moment/moment";
 
 const confirmDeleteResearchGroup = () => {
   console.log('confirm!')
@@ -694,8 +695,36 @@ const FundForm = reactive({
 })
 
 const ResearchGroupForm = reactive({
-    ResearchGroupName: ''
+    ResearchGroupName: '',
 })
+
+function onQuery(){
+  // console.log(isAdmin.value)
+  researchGroup.splice(0);
+  // console.log(searchForm);
+  let search = toRaw(ResearchGroupForm);
+  request({
+    url: '/get-research-groups-by-name',
+    method: 'Get',
+    params: {
+      teacherName: ResearchGroupForm.ResearchGroupName
+    },
+  }).then(res => {
+    console.log(res)
+    let rd = res.data.data;
+    console.log(rd)
+    rd.forEach((item: any) => {
+      let add = {
+        name: item.teacher,
+        sum: item.allFund,
+        uuid: item.uuid
+      }
+      researchGroup.push(add)
+    })
+  })
+}
+
+
 
 const EditResearchGroupForm = reactive({
   Operation1: '',

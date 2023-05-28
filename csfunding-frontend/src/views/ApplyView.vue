@@ -65,7 +65,7 @@
 
           <el-button @click="ClickOnView(); Type1 = props.row.type1; Type2 = props.row.type2;
                     FundNumber = props.row.fundNumber; FundName = props.row.fundName;
-                    Summary = props.row.summary;
+                    Summary = props.row.summary; Remark = props.row.remark;
                     ViewDialogVisible = true" type="primary" size="small" plain>
             查看
           </el-button>
@@ -131,6 +131,8 @@
       <div>申请类型：{{ Type1 }}-{{ Type2 }}</div>
       <br>
       <div>说明：{{ Summary }}</div>
+      <br>
+      <div>评语：{{ Remark }}</div>
 
     <template #footer>
       <span class="dialog-footer" style="height: 20px">
@@ -190,6 +192,7 @@ const Type2 = ref("")
 const Summary = ref("")
 const leftMoneyText = ref("剩余经费0")
 const balance = ref(0)
+const Remark = ref("")
 
 const {isAdmin, userName} = storeToRefs(useUserStore());
 

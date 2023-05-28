@@ -44,7 +44,7 @@ public class ResearchGroupController {
     }
 
     @GetMapping("/get-research-groups-by-name")
-    public Result getResearchGroupByName(String teacherName) {
+    public Result getResearchGroupByName(@RequestParam String teacherName) {
         List<ResearchGroup> researchgroups = researchGroupService.testQueryByName(teacherName);
         if (researchgroups == null) {
             return new Result(404, "researchgroups not found", null);
