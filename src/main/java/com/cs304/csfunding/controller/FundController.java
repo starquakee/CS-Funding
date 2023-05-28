@@ -17,12 +17,12 @@ public class FundController {
     private FundService fundService;
 
 
-    @PostMapping(value = "/register/fund")
+    @PostMapping(value = "/add-fund")
     public String testAddFund(@RequestBody FundDTO fundDTO) {
         return fundService.testInsert(fundDTO);
     }
 
-    @PostMapping(value = "/modify/fund")
+    @PostMapping(value = "/modify-fund")
     public Result testModifyFund(@RequestBody FundDTO fundDTO) {
         Fund fund = fundService.queryByID(fundDTO.getUuid());
         if (fund == null) {
@@ -32,7 +32,7 @@ public class FundController {
         }
     }
 
-    @GetMapping("delete/fund")
+    @GetMapping("delete-fund")
     public Result testDeleteFund(@RequestParam int uuid) {
         Fund fund = fundService.queryByID(uuid);
         if (fund == null) {
@@ -43,7 +43,7 @@ public class FundController {
         }
     }
 
-    @GetMapping("/getallfunds")
+    @GetMapping("/get-all-funds")
     public Result getAllFund(){
         List<Fund> funds = fundService.testQueryAll();
         if (funds == null) {

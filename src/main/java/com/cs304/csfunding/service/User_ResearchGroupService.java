@@ -21,6 +21,14 @@ public class User_ResearchGroupService {
         this.user_researchGroupMapper = user_researchGroupMapper;
     }
 
+    public String delete(User_ResearchGroupDTO user_researchGroupDTO){
+        User_ResearchGroup user_researchGroup = new User_ResearchGroup();
+        user_researchGroup.setUser_UUID(user_researchGroupDTO.getUserUUID());
+        user_researchGroup.setResearchGroup_UUID(user_researchGroupDTO.getResearchGroupUUID());
+        user_researchGroupMapper.deleteUserGroup(user_researchGroup);
+        return "OK";
+    }
+
     public String testInsert(User_ResearchGroupDTO user_researchGroupDTO) {
         User_ResearchGroup user_researchGroup = new User_ResearchGroup();
         user_researchGroup.setUser_UUID(user_researchGroupDTO.getUserUUID());
@@ -35,5 +43,11 @@ public class User_ResearchGroupService {
         return user_researchGroupMapper.findResearchGroupByUser(user);
     }
 
+    public List<User> queryUserByGroup(int gid){
+        return user_researchGroupMapper.findUserByGroup(gid);
+    }
 
+    public List<User> queryUserNotInGroup(int gid){
+        return user_researchGroupMapper.findUserNotInGroup(gid);
+    }
 }

@@ -306,7 +306,7 @@ function onApplySubmit() {
   }
   console.log(apply)
   request({
-    url: '/register/apply',
+    url: '/add-apply',
     method: 'POST',
     data: apply
   }).then(res => {

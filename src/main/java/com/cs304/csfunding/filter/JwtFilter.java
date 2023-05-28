@@ -24,7 +24,7 @@ public class JwtFilter implements Filter {
         response.setCharacterEncoding("UTF-8");
         //获取header里的token
         String token = request.getHeader("authorization");
-        if (request.getRequestURI().equals("/api/login")) {
+        if (this.bypassUri(request.getRequestURI())) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         } else if ("OPTIONS".equals(request.getMethod())) {              //除了 OPTIONS请求以外, 其它请求应该被JWT检查
@@ -49,5 +49,11 @@ public class JwtFilter implements Filter {
         request.setAttribute("uuid", uuid);
         request.setAttribute("name", name);
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private boolean bypassUri(String uri){
+        if (uri.equals("/api/login")) return true;
+        else if (uri.startsWith("/register/")) return true;
+        else return false;
     }
 }

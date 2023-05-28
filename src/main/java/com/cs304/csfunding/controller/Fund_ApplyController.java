@@ -13,7 +13,7 @@ public class Fund_ApplyController {
     private Fund_ApplyService fund_applyService;
 
 
-    @PostMapping(value = "/register/fund_apply")
+    @PostMapping(value = "/add-fund_apply")
     public Result testAddFundApply(@RequestBody Fund_ApplyDTO fund_applyDTO) {
         return new Result(fund_applyService.testInsert(fund_applyDTO));
     }

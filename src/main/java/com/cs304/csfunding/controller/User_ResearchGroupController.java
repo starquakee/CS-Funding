@@ -9,7 +9,9 @@ import com.cs304.csfunding.util.HttpContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class User_ResearchGroupController {
@@ -19,11 +21,14 @@ public class User_ResearchGroupController {
     private ResearchGroupService researchGroupService;
 
 
-    @PostMapping(value = "/register/user_researchgroup")
-    public Result testAddUserResearchGroup(@RequestBody User_ResearchGroupDTO user_researchGroupDTO) {
-        System.out.println(user_researchGroupDTO.getUserUUID());
-        System.out.println(user_researchGroupDTO.getResearchGroupUUID());
+    @PostMapping(value = "/add-user_group")
+    public Result addUserResearchGroup(@RequestBody User_ResearchGroupDTO user_researchGroupDTO) {
         return new Result(user_researchGroupService.testInsert(user_researchGroupDTO));
+    }
+
+    @PostMapping("/delete-user_group")
+    public Result removeUserGroup(@RequestParam User_ResearchGroupDTO user_researchGroupDTO) {
+        return new Result(user_researchGroupService.delete(user_researchGroupDTO));
     }
 
     @GetMapping("/selectresearchgroupbyuser")
@@ -42,5 +47,18 @@ public class User_ResearchGroupController {
     @GetMapping("/current-group-id")
     public Result getCurrentGroup() {
         return getResearchGroupByUser(HttpContextUtil.getRequestUuid());
+    }
+
+    @GetMapping("/user-by-researchGroup")
+    public Result getUserByGroup(@RequestParam int gid){
+        return new Result(user_researchGroupService.queryUserByGroup(gid));
+    }
+
+    @GetMapping("/all-user-group")
+    public Result getAllUserByGroup(@RequestParam int gid){
+        Map<String, Object> res = new HashMap<>();
+        res.put("in", user_researchGroupService.queryUserByGroup(gid));
+        res.put("not", user_researchGroupService.queryUserNotInGroup(gid));
+        return new Result(res);
     }
 }

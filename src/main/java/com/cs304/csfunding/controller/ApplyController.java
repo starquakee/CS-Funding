@@ -38,12 +38,12 @@ public class ApplyController {
     Logger logger = LoggerFactory.getLogger(ApplyController.class);
 
 
-    @PostMapping(value = "/register/testapply")
-    public String testAddApply(@RequestBody ApplyDTO applyDTO) {
-        return applyService.testInsert(applyDTO);
-    }
+//    @PostMapping(value = "/add-apply")
+//    public String testAddApply(@RequestBody ApplyDTO applyDTO) {
+//        return applyService.testInsert(applyDTO);
+//    }
 
-    @PostMapping(value = "/register/apply")
+    @PostMapping(value = "/add-apply")
     public Result AddApply(@RequestBody ApplyDTO applyDTO) {
         int uuid = HttpContextUtil.getRequestUuid();
         System.out.println("uuid: " + uuid);

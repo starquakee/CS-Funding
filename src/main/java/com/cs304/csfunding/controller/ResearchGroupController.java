@@ -27,10 +27,10 @@ public class ResearchGroupController {
     private ResearchGroup_FundService researchGroup_fundService;
 
 
-    @PostMapping(value = "/register/researchgroup")
-    public String testAddResearchGroup(@RequestBody ResearchGroupDTO researchGroupDTO) {
+    @PostMapping(value = "/add-researchgroup")
+    public Result testAddResearchGroup(@RequestBody ResearchGroupDTO researchGroupDTO) {
         System.out.println(researchGroupDTO);
-        return researchGroupService.testInsert(researchGroupDTO);
+        return new Result(researchGroupService.testInsert(researchGroupDTO));
     }
 
     @GetMapping("/get-all-research-groups")

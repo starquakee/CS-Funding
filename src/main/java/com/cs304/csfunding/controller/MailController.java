@@ -1,5 +1,9 @@
 package com.cs304.csfunding.controller;
 
+import com.cs304.csfunding.api.MailSendDTO;
+import com.cs304.csfunding.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,11 +17,25 @@ import javax.mail.internet.*;
 @RestController
 public class MailController {
 
-    @PostMapping("/send-mail")
-    public void send(@RequestBody String to) throws MessagingException, IOException {
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/register/invoke-mail-func")
+    public void invokeTest(){
+        userService.addMailCode("", "");
+    }
+
+    @PostMapping("/register/send-mail")
+    public String sendMail(@RequestBody MailSendDTO sendDTO) throws MessagingException, IOException {
+        String code = send(sendDTO.getMail());
+        userService.addMailCode(sendDTO.getReg(), code);
+        return "OK";
+    }
+
+    public static String send(String mail) throws MessagingException, IOException {
         // read properties
         Properties props = new Properties();
-        try (InputStream in = Objects.requireNonNull(MailController.class.getResource("mail.properties")).openStream()) {
+        try (InputStream in = Objects.requireNonNull(MailController.class.getClassLoader().getResource("mail.properties")).openStream()) {
             props.load(in);
         }
 
@@ -26,13 +44,13 @@ public class MailController {
         String subject = "财务系统注册";
         String password = "336699Xyd";
 
-        Session mailSession = Session.getDefaultInstance(props);
+        Session mailSession = Session.getInstance(props);
         MimeMessage message = new MimeMessage(mailSession);
         // TODO 1: check the MimeMessage API to figure out how to set the sender, receiver, subject, and email body
         Random rnd = new Random();
         String code = String.format("%06d", rnd.nextInt(999999));
         message.setFrom(new InternetAddress(from));
-        message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        message.setRecipient(Message.RecipientType.TO, new InternetAddress(mail));
         message.setSubject(subject);
         message.setText("你的验证码是" + code);
 
@@ -44,6 +62,7 @@ public class MailController {
         transport.close();
         System.out.println("Message sent successfully.");
 
+        return code;
     }
 
 }
