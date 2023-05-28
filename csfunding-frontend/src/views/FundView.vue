@@ -14,12 +14,17 @@
                     <el-button type="primary" @click="onSubmit">查询</el-button>
                 </el-form-item>
               <el-form-item>
+                <el-button type="primary" @click="PieChartVisible=!PieChartVisible">{{PieChartVisible?'隐藏':'显示'}}</el-button>
+              </el-form-item>
+              <el-form-item>
                 <el-button type="primary" @click="openFolderDialog">导出表格</el-button>
               </el-form-item>
             </el-form>
         </div>
 
-      <div class="PieChart" ref="chartDom" :style="{ width: '800px', height: '400px'}" >
+
+      <div class="PieChart" ref="chartDom" :style="{ width: '800px', height: '400px', name,
+                                display: PieChartVisible ? 'block' : 'none'}" >
       </div>
 
 
@@ -100,7 +105,7 @@ import moment from "moment"
 import { ref } from 'vue';
 import * as echarts from 'echarts';
 
-
+const PieChartVisible = ref(false)
 const chartDom = ref<HTMLElement | null>(null);
 onMounted(() => {
 if (chartDom.value) {
