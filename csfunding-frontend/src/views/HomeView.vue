@@ -63,7 +63,7 @@
 
 
                     </div>
-                    <el-button type="primary" style="margin-top: 25px">查询</el-button>
+                    <el-button @click="onQuery" type="primary" style="margin-top: 25px">查询</el-button>
                   </div>
 
                 </el-header>
@@ -566,7 +566,7 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/stores/user";
-import {onMounted, reactive, ref} from 'vue'
+import {onMounted, reactive, ref, toRaw} from 'vue'
 import router from "@/router";
 import request from "@/util/request";
 import {Coin, Edit, InfoFilled, Search, UploadFilled, View} from '@element-plus/icons-vue'
@@ -660,6 +660,33 @@ const fundDialogVisible = ref(false)
 const noticeDialogVisible = ref(false)
 const editKeyVisible = ref(false)
 const editResearchGroupVisible = ref(false)
+
+function onQuery(){
+  // console.log(isAdmin.value)
+  researchGroup.splice(0);
+  // console.log(searchForm);
+  let search = toRaw(ResearchGroupForm);
+  request({
+    url: '/get-research-groups-by-name',
+    method: 'Get',
+    params: {
+      teacherName: ResearchGroupForm.ResearchGroupName
+    },
+  }).then(res => {
+    console.log(res)
+    let rd = res.data.data;
+    console.log(rd)
+    rd.forEach((item: any) => {
+      let add = {
+        name: item.teacher,
+        sum: item.allFund,
+        uuid: item.uuid
+      }
+      researchGroup.push(add)
+    })
+  })
+}
+
 
 function editResearchGroupSubmit() {
   console.log(EditResearchGroupForm)
