@@ -3,11 +3,11 @@
   <div class="SelectForm">
     <div style="height: 10px"></div>
     <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-      <el-form-item label="课题组">
-        <el-input v-model="searchForm.researchGroup" placeholder="课题组名"/>
-      </el-form-item>
       <el-form-item label="经费">
         <el-input v-model="searchForm.fundName" placeholder="经费名"/>
+      </el-form-item>
+      <el-form-item label="课题组">
+        <el-input v-model="searchForm.researchGroup" placeholder="课题组名"/>
       </el-form-item>
       <el-form-item label="状态">
         <el-select v-model="searchForm.state" placeholder="申请状态">
@@ -24,7 +24,7 @@
     </el-form>
   </div>
 
-  <div style="height: 50px">
+  <div style="height: 50px" v-if="!isAdmin">
     <div style="height: 8px"></div>
     <el-button type="primary" @click="ClickOnSubmit(null)" style="margin-left: 5px">
       新增申请
@@ -42,6 +42,10 @@
 
           <el-tag type="error" size="small" plain v-if="props.row.state === 'fail'" effect="dark">
             申请失败
+          </el-tag>
+
+          <el-tag type="primary" size="small" plain v-if="props.row.state === 'resubmitted'" effect="dark">
+            重新提交
           </el-tag>
 
           <el-tag type="warning" size="small" plain v-if="props.row.state === 'submit'" effect="dark">
@@ -69,12 +73,6 @@
                   CheckDialogVisible = true" type="primary" size="small" plain
                      v-if="props.row.state === 'submit' && isAdmin">
             审核
-          </el-button>
-
-          <el-button @click="ClickOnCheck(props.row);
-                CheckDialogVisible = true" type="primary" size="small" plain
-                     v-if="props.row.state !== 'submit' && isAdmin">
-            修改
           </el-button>
 
           <el-button @click="ClickOnSubmit(props.row)"
@@ -127,13 +125,13 @@
   </el-dialog>
 
   <el-dialog v-model="ViewDialogVisible" title="查看申请" width="30%" draggable class="ApplyDialog">
-    <el-card>
+
       <div>经费信息：{{ FundNumber }}-{{ FundName }}</div>
       <br>
       <div>申请类型：{{ Type1 }}-{{ Type2 }}</div>
       <br>
       <div>说明：{{ Summary }}</div>
-    </el-card>
+
     <template #footer>
       <span class="dialog-footer" style="height: 20px">
         <el-button type="danger" @click="ViewDialogVisible = false;">
@@ -166,21 +164,6 @@
     </template>
   </el-dialog>
 
-
-  <div class="Pagination">
-    <el-pagination background layout="prev, pager, next" :total="1000"/>
-  </div>
-
-
-  <div class="Bottom">
-    <div style="height: 5px"></div>
-    <el-button style="background-color: #8f000b; border: #8f000b">
-      <el-icon style="vertical-align: middle;" size="25px">
-        <Back/>
-      </el-icon>
-      <font style="color: white">返回主页</font>
-    </el-button>
-  </div>
 
 
 </template>
