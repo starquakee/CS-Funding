@@ -64,8 +64,8 @@ public class FundController {
     }
 
     @GetMapping("/get-fund-vague")
-    public Result getFundVague(@RequestParam String FundNumber,@RequestParam String FundName) {
-        List<Fund> fund = fundService.queryVague(FundNumber,FundName);
+    public Result getFundVague(@RequestParam String FundNumber,@RequestParam String FundName,@RequestParam String researchGroupId) {
+        List<Fund> fund = fundService.queryVague(FundNumber,FundName,researchGroupId);
         if (fund == null) {
             return new Result(404, "fund not found", null);
         } else {
