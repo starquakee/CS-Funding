@@ -250,7 +250,7 @@ public class FundController {
 
 
 
-        FileOutputStream fileOut = new FileOutputStream("data.xlsx");
+        FileOutputStream fileOut = new FileOutputStream("data2.xlsx");
         workbook.write(fileOut);
         fileOut.close();
         return new Result(200);

@@ -100,6 +100,7 @@ import {
 import request from "@/util/request";
 import {useRoute} from "vue-router";
 import moment from "moment"
+import axios from 'axios';
 
 
 import { ref } from 'vue';
@@ -335,6 +336,13 @@ const openFolderDialog = async () => {
     selectedPath.value = folderHandle.name;
   } catch (error) {
     console.error('Error opening folder dialog:', error);
+  } finally {
+    request({
+      url: '/get-excel',
+      method: 'Get',
+    }).then(res => {
+    })
+
   }
 };
 
