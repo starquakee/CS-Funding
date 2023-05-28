@@ -98,44 +98,31 @@ public class FundController {
             return new Result(404, "fund not found", null);
         } else {
             List<Apply> applies = applyService.testQueryByFundID(uuid);
-            Map<String, Float> map = new HashMap<>();
+            Map<Integer, Float> map = new HashMap<>();
+            for (int i = 0; i < 12; i++) {
+                map.put(i+1, 0F);
+            }
             long timeMill = System.currentTimeMillis();
 
-            System.out.println();
-            System.out.println(timeMill);
-
-            // 从timemill中获得现在的月份
             Calendar calendar = Calendar.getInstance();
             calendar.setTimeInMillis(timeMill);
-
-            System.out.println(calendar.getTime());
-
             int currentMonth = calendar.get(Calendar.MONTH) + 1;
+            int currentYear = calendar.get(Calendar.YEAR);
+            int applyMonth;
 
-            System.out.println(currentMonth);
-
-            // 计算过去12个月的费用
             for (Apply apply : applies) {
                 String time = apply.getTime();
                 // Convert the time string to a Date object
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Date applyDate;
-                try {
-                    applyDate = sdf.parse(time);
-                } catch (ParseException e) {
-                    return new Result(500, "Error parsing date", null);
+                calendar.setTimeInMillis(Long.parseLong(time));
+                if (calendar.get(Calendar.YEAR)==currentYear-1 && calendar.get(Calendar.MONTH)+1>currentMonth) {
+                    applyMonth = calendar.get(Calendar.MONTH) + 1;
+                } else if (calendar.get(Calendar.YEAR)==currentYear) {
+                    applyMonth = calendar.get(Calendar.MONTH) + 1;
+                } else {
+                    continue;
                 }
-
-                calendar.setTime(applyDate);
-                int applyMonth = calendar.get(Calendar.MONTH) + 1;
-                int monthDifference = currentMonth - applyMonth;
-                if (monthDifference >= 0 && monthDifference < 12) {
-                    String monthKey = "Month_" + applyMonth;
-                    map.putIfAbsent(monthKey, 0f);
-                    map.put(monthKey, map.get(monthKey) + apply.getMoney());
-                }
+                map.put(applyMonth, map.get(applyMonth)+apply.getMoney());
             }
-
             return new Result(200, "success", map);
         }
     }
