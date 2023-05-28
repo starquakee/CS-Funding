@@ -23,9 +23,9 @@
                                 <div class="info-divide">
 
                                     <div style="margin-top: 15px; margin-left: 15px">
-                                        <img src="@/img/user.png" width="80" height="100" v-if="userData.type==='用户'">
+                                        <img src="@/img/user.png" width="80" height="100" v-if="!isAdmin">
                                         <img src="@/img/admin.png" width="80" height="100"
-                                             v-if="userData.type!=='用户'">
+                                             v-if="isAdmin">
                                     </div>
 
                                     <div style="font-size: 16px">
@@ -74,9 +74,21 @@
                                                 <el-button @click="FundByResearchGroup(props.row)" type="primary" size="small" plain>
                                                     查看
                                                 </el-button>
-                                                <el-button type="danger" size="small" plain>
+                                              <el-popconfirm
+                                                  confirm-button-text="确认"
+                                                  cancel-button-text="取消"
+                                                  :icon="InfoFilled"
+                                                  icon-color="#626AEF"
+                                                  title="确定删除此项?"
+                                                  @confirm="confirmDeleteResearchGroup"
+                                                  @cancel="cancelDeleteResearchGroup"
+                                              >
+                                                <template #reference>
+                                                  <el-button v-if="isAdmin" type="danger" size="small" plain>
                                                     删除
-                                                </el-button>
+                                                  </el-button>
+                                                </template>
+                                              </el-popconfirm>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -94,19 +106,31 @@
                                 <el-header>
                                     通知
                                     <el-button @click="NoticeDialogVisible=true" type="primary" :icon="Edit" style="margin-left: 220px"
-                                               v-if="userData.type!=='用户'" >添加
+                                               v-if="isAdmin" >添加
                                     </el-button>
                                 </el-header>
                                 <el-main>
-                                    <el-table :data="Notices" style="width: 95%" class="GroupTable">
-                                        <el-table-column prop="notice" label="通知内容" width="210px"/>
-                                        <el-table-column v-if="userData.type!=='用户'">
+                                    <el-table :data="notices" style="width: 95%" class="GroupTable">
+                                        <el-table-column prop="content" label="通知内容" width="210px"/>
+                                        <el-table-column v-if="isAdmin">
                                             <el-button type="warning" size="small" plain>
                                                 修改
                                             </el-button>
-                                            <el-button type="danger" size="small" plain>
+                                          <el-popconfirm
+                                              confirm-button-text="确认"
+                                              cancel-button-text="取消"
+                                              :icon="InfoFilled"
+                                              icon-color="#626AEF"
+                                              title="确定删除此项?"
+                                              @confirm="confirmDeleteNotice"
+                                              @cancel="cancelDeleteNotice"
+                                          >
+                                            <template #reference>
+                                              <el-button v-if="isAdmin" type="danger" size="small" plain>
                                                 删除
-                                            </el-button>
+                                              </el-button>
+                                            </template>
+                                          </el-popconfirm>
                                         </el-table-column>
 
                                     </el-table>
@@ -132,17 +156,21 @@
                                     <el-button type="primary" :icon="Search" style="margin-left: 588px"
                                                @click="AllApply">查看全部
                                     </el-button>
-                                    <el-table :data="RecentApply" style="width: 100%">
-                                        <el-table-column prop="name" align="center" label="经费名称"/>
+                                    <el-table :data="recentApply" style="width: 100%">
+                                        <el-table-column prop="fundName" align="center" label="经费名称"/>
                                         <el-table-column prop="researchGroup" align="center" label="课题组名称"/>
                                         <el-table-column prop="applyPerson" align="center" label="申请人"/>
-                                        <el-table-column prop="amount" align="center" label="申请金额"/>
+                                        <el-table-column prop="money" align="center" label="申请金额"/>
                                         <el-table-column align="center" label="申请状态">
                                             <template #default="props">
 
                                                 <el-tag type="error" size="small" plain
                                                         v-if="props.row.state === 'fail'" effect="dark">
                                                     申请失败
+                                                </el-tag>
+
+                                                <el-tag type="primary" size="small" plain v-if="props.row.state === 'resubmitted'" effect="dark">
+                                                  重新提交
                                                 </el-tag>
 
                                                 <el-tag type="warning" size="small" plain
@@ -177,7 +205,7 @@
 
                                 <div class="info-divide" style="height: 85px">
 
-                                    <div class="function-button" v-if="userData.type==='用户'">
+                                    <div class="function-button" v-if="!isAdmin">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle
                                                    @click="AllApply">
                                             <el-icon style="vertical-align: middle;" size="25px">
@@ -188,7 +216,10 @@
                                         我的申请
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type!=='用户'" @click="AllApply">
+                                  <div class="function-button" v-if="!isAdmin">
+                                  </div>
+
+                                    <div class="function-button" v-if="isAdmin" @click="AllApply">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle>
                                             <el-icon style="vertical-align: middle;" size="25px">
                                                 <View/>
@@ -198,35 +229,27 @@
                                         审核申请
                                     </div>
 
-                                    <div class="function-button">
-                                        <el-button type="primary" style="height: 50px; width: 50px"
-                                                   @click="ClickOnOutput; OutputDialogVisible=true;"
-                                                   circle>
-                                            <el-icon style="vertical-align: middle;" size="25px">
-                                                <Document/>
-                                            </el-icon>
-                                        </el-button>
-                                        <br>
-                                        导出文件
-
-                                    </div>
+                                  <div class="function-button" v-if="isAdmin">
+                                    <el-button type="primary" style="height: 50px; width: 50px" circle
+                                               @click="EditResearchGroupVisible=true">
+                                      <el-icon style="vertical-align: middle;" size="25px">
+                                        <Edit/>
+                                      </el-icon>
+                                    </el-button>
+                                    <br>
+                                    增加/编辑课题组
+                                  </div>
 
                                 </div>
                                 <div class="info-divide" style="height: 70px">
-                                    <div class="function-button" v-if="userData.type==='用户'">
-                                        <el-button type="primary" style="height: 50px; width: 50px" circle>
-                                            <el-icon style="vertical-align: middle;" size="25px">
-                                                <Edit/>
-                                            </el-icon>
-                                        </el-button>
-                                        <br>
-                                        编辑信息
+                                    <div class="function-button" v-if="!isAdmin">
+
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type==='用户'">
+                                    <div class="function-button" v-if="!isAdmin">
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type!=='用户'">
+                                    <div class="function-button" v-if="isAdmin">
                                         <el-button type="primary" style="height: 50px; width: 50px" circle
                                                    @click="FundDialogVisible=true">
                                             <el-icon style="vertical-align: middle;" size="25px">
@@ -237,15 +260,8 @@
                                         增添经费
                                     </div>
 
-                                    <div class="function-button" v-if="userData.type!=='用户'">
-                                        <el-button type="primary" style="height: 50px; width: 50px" circle
-                                                   @click="EditResearchGroupVisible=true">
-                                            <el-icon style="vertical-align: middle;" size="25px">
-                                                <Edit/>
-                                            </el-icon>
-                                        </el-button>
-                                        <br>
-                                        增加/编辑课题组
+                                    <div class="function-button" v-if="isAdmin">
+
                                     </div>
                                 </div>
                             </el-card>
@@ -353,19 +369,11 @@
             <el-dialog v-model="NoticeDialogVisible" title="发布通知" width="30%" draggable>
 
                 <el-form :model="NoticeForm" label-width="40px" label-position="top">
-                    <el-form-item label="不达标课题组/经费">
-                        <el-col :span="11">
+                    <el-form-item label="课题组">
                             <el-select v-model="NoticeForm.researchGroup" placeholder="课题组名">
                                 <el-option label="Zone one" value="shanghai"/>
                                 <el-option label="Zone two" value="beijing"/>
                             </el-select>
-                        </el-col>
-                        <el-col :span="11">
-                            <el-select v-model="NoticeForm.fund" placeholder="经费名">
-                                <el-option label="Zone one" value="shanghai"/>
-                                <el-option label="Zone two" value="beijing"/>
-                            </el-select>
-                        </el-col>
                     </el-form-item>
                     <el-form-item label="备注">
                         <el-input v-model="NoticeForm.notice" type="textarea"/>
@@ -373,7 +381,6 @@
                 </el-form>
                 <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="primary" @click="NoticeDialogVisible = false">一键发送</el-button>
                     <el-button type="success" @click="NoticeDialogVisible = false">发布通知</el-button>
                     <el-button type="danger" @click="NoticeDialogVisible = false">取消</el-button>
                   </span>
@@ -563,6 +570,22 @@ import {
 
 import {type FormInstance, type FormRules, ElMessage, ElNotification  } from 'element-plus'
 
+import { InfoFilled } from '@element-plus/icons-vue'
+
+const confirmDeleteResearchGroup = () => {
+  console.log('confirm!')
+}
+const cancelDeleteResearchGroup = () => {
+  console.log('cancel!')
+}
+
+const confirmDeleteNotice = () => {
+  console.log('confirm!')
+}
+const cancelDeleteNotice = () => {
+  console.log('cancel!')
+}
+
 const ruleFormRef = ref<FormInstance>()
 
 const checkInitialPass = (rule: any, value: any, callback: any) => {
@@ -711,6 +734,47 @@ let NoticeDialogVisible = ref(false)
 let EditKeyVisible = ref(false)
 let EditResearchGroupVisible = ref(false)
 
+function getRecentApply() {
+  let url = ''
+  if (isAdmin.value){
+    url = '/all-recent-apply'
+  } else {
+    url = '/my-recent-apply'
+  }
+  request({
+    url: url,
+    method: "GET"
+  }).then(res => {
+    // console.log(res);
+    let rd = res.data.data
+    rd.forEach((item: any) => {
+      recentApply.push(item)
+    })
+  })
+}
+
+function getNotice() {
+  let url = ''
+  if (isAdmin.value){
+    url = '/get-all-notice'
+  } else {
+    url = '/my-notice'
+  }
+  request({
+    url: url,
+    method: "GET"
+  }).then(res => {
+    // console.log(res);
+    let rd = res.data.data
+    let idx = 0
+    rd.forEach((item: any) => {
+      if (idx < 3)
+        notices.push(item)
+      idx += 1;
+    })
+  })
+}
+
 function getResearchGroup() {
     request({
         url: '/get-all-research-groups',
@@ -744,47 +808,21 @@ function getUserData(){
     })
 }
 
-onMounted(() => {
+onMounted(async () => {
     getUserData();
+    while (!userName.value) {
+      await new Promise(f => setTimeout(f, 100))
+    }
     getResearchGroup();
+    getRecentApply();
+    getNotice();
 })
 
 const researchGroup = reactive([])
 
-const RecentApply = [
-    {
-        name: '经费1',
-        researchGroup: '王',
-        applyPerson: 'xxx',
-        amount: 500,
-        state: 'pass'
-    },
-    {
-        name: '经费2',
-        researchGroup: '李',
-        applyPerson: 'xxx',
-        amount: 2000,
-        state: 'pass'
-    },
-    {
-        name: '经费3',
-        researchGroup: '李',
-        applyPerson: 'xxx',
-        amount: 3000,
-        state: 'submit'
-    }
+const recentApply = reactive([]);
 
-]
-
-const Notices = [
-    {
-        notice: "系统已上线"
-    },
-    {
-        notice: "已收到提交"
-    },
-
-]
+const notices = reactive([])
 
 function AllApply() {
     router.push({path: '/apply'})

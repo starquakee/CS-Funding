@@ -101,6 +101,14 @@ public class ApplyService {
         applyMapper.updateApplyByID("resubmitted", "", uuid);
     }
 
+    public List<ApplyVO> allRecentApply(){
+        return applyMapper.recentApply(3).stream().map(this::apply2VO).collect(Collectors.toList());
+    }
+
+    public List<ApplyVO> userRecentApply(int uid){
+        return applyMapper.recentApplyUser(3, uid).stream().map(this::apply2VO).collect(Collectors.toList());
+    }
+
     public ApplyVO apply2VO(Apply apply) {
         ApplyVO vo = new ApplyVO();
         User applier = userService.queryByUuid(apply.getUserID());

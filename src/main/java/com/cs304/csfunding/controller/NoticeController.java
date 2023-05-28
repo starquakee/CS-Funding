@@ -15,16 +15,16 @@ public class NoticeController {
     @Autowired
     private NoticeService noticeService;
 
-    @PostMapping(value = "/register/notice")
-    public String testAddNotice(@RequestBody NoticeDTO noticeDTO) {
+    @PostMapping(value = "/register-notice")
+    public Result addNotice(@RequestBody NoticeDTO noticeDTO) {
         int uuid = HttpContextUtil.getRequestUuid();
         noticeDTO.setNoticeFrom(uuid);
         noticeDTO.setNoticeTo(-1);
-        return noticeService.testInsert(noticeDTO);
+        return new Result(noticeService.testInsert(noticeDTO));
     }
 
-    @GetMapping("delete/notice")
-    public Result testDeleteNotice(@RequestParam int uuid) {
+    @GetMapping("/delete-notice")
+    public Result deleteNotice(@RequestParam int uuid) {
         Notice notice = noticeService.testQueryByID(uuid);
         if (notice == null) {
             return new Result(404, "notice not found", null);
@@ -34,8 +34,8 @@ public class NoticeController {
         }
     }
 
-    @GetMapping("/getallnotices")
-    public Result testGetAllNotice(){
+    @GetMapping("/get-all-notice")
+    public Result getAllNotice(){
         List<Notice> notices = noticeService.testQueryAll();
         if (notices == null) {
             return new Result(404, "notice not found", null);
@@ -44,7 +44,7 @@ public class NoticeController {
         }
     }
 
-    @GetMapping("/get/notice")
+    @GetMapping("/get-notice")
     public Result testGetNoticeByID(@RequestParam int uuid){
         Notice notice = noticeService.testQueryByID(uuid);
         if (notice == null) {
@@ -54,10 +54,9 @@ public class NoticeController {
         }
     }
 
-    @GetMapping("/get/usernotice")
+    @GetMapping("/my-notice")
     public Result getNoticeByUserID(){
         int userID = HttpContextUtil.getRequestUuid();
-        System.out.println(userID);
         List<Notice> notices = noticeService.testQueryByNoticeTo(userID);
         return new Result(notices);
     }

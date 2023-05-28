@@ -13,10 +13,18 @@
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit">查询</el-button>
                 </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="PieChartVisible=!PieChartVisible">{{PieChartVisible?'隐藏':'显示'}}</el-button>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="openFolderDialog">导出表格</el-button>
+              </el-form-item>
             </el-form>
         </div>
 
-      <div class="PieChart" ref="chartDom" :style="{ width: '800px', height: '400px'}" >
+
+      <div class="PieChart" ref="chartDom" :style="{ width: '800px', height: '400px', name,
+                                display: PieChartVisible ? 'block' : 'none'}" >
       </div>
 
 
@@ -58,20 +66,7 @@
           </el-table-column>
         </el-table>
 
-        <div class="Pagination">
-            <el-pagination background layout="prev, pager, next" :total="1000"/>
-        </div>
 
-
-        <div class="Bottom">
-            <div style="height: 5px"></div>
-            <el-button style="background-color: #8f000b; border: #8f000b">
-                <el-icon style="vertical-align: middle;" size="25px">
-                    <Back/>
-                </el-icon>
-                <font style="color: white">返回主页</font>
-            </el-button>
-        </div>
 
       <div class = "BarChart"
            ref="chartContainer" :style="{ width: '800px', height: '500px',
@@ -110,7 +105,7 @@ import moment from "moment"
 import { ref } from 'vue';
 import * as echarts from 'echarts';
 
-
+const PieChartVisible = ref(false)
 const chartDom = ref<HTMLElement | null>(null);
 onMounted(() => {
 if (chartDom.value) {
@@ -119,8 +114,7 @@ if (chartDom.value) {
 
   option = {
     title: {
-      text: 'Nightingale Chart',
-      subtext: 'Fake Data',
+      text: '课题组中经费使用情况',
       left: 'center'
     },
     tooltip: {
@@ -152,7 +146,7 @@ if (chartDom.value) {
     },
     series: [
       {
-        name: 'Radius Mode',
+        name: '经费总额',
         type: 'pie',
         radius: [20, 140],
         center: ['20%', '50%'],
@@ -180,7 +174,7 @@ if (chartDom.value) {
         ]
       },
       {
-        name: 'Area Mode',
+        name: '剩余经费',
         type: 'pie',
         radius: [20, 140],
         center: ['75%', '50%'],
@@ -302,6 +296,19 @@ function getTableData(gid: any) {
         })
     })
 }
+
+
+const selectedPath = ref('');
+
+const openFolderDialog = async () => {
+  try {
+    const folderHandle = await window.showDirectoryPicker();
+    selectedPath.value = folderHandle.name;
+  } catch (error) {
+    console.error('Error opening folder dialog:', error);
+  }
+};
+
 
 onMounted(() => {
     getTableData(route.query.gid);

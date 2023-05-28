@@ -58,11 +58,11 @@ __onWindowResize()
 
     <div class="Bottom" v-if=router.currentRoute.value.meta.requireAuth>
         <div style="height: 5px"></div>
-        <el-button style="background-color: #8f000b; border: #8f000b" @cllick="backHome">
+        <el-button style="background-color: #8f000b; border: #8f000b" @click="backHome">
             <el-icon style="vertical-align: middle;" size="25px">
                 <HomeFilled/>
             </el-icon>
-            <font style="color: white; margin-left: 5px; margin-top: 3px">主页</font>
+            <span style="color: white; margin-left: 5px; margin-top: 3px">主页</span>
         </el-button>
     </div>
 
