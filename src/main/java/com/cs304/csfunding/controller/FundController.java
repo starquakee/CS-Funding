@@ -161,19 +161,15 @@ public class FundController {
         dataCell.setCellValue("经费授权有效期");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("经费总额");
-        for (int i = 0; i < 12; i++) {
-            dataCell = dataRow.createCell(5+i);
-            dataCell.setCellValue(1+i);
-        }
-        dataCell = dataRow.createCell(17);
+        dataCell = dataRow.createCell(5);
         dataCell.setCellValue("已使用经费");
-        dataCell = dataRow.createCell(18);
+        dataCell = dataRow.createCell(6);
         dataCell.setCellValue("经费余额");
-        dataCell = dataRow.createCell(19);
+        dataCell = dataRow.createCell(7);
         dataCell.setCellValue("剩余时间天数");
-        dataCell = dataRow.createCell(20);
+        dataCell = dataRow.createCell(8);
         dataCell.setCellValue("当前执行率");
-        dataCell = dataRow.createCell(21);
+        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("当前是否达标");
 
         dataRow = sheet.createRow(2);
@@ -187,15 +183,13 @@ public class FundController {
         dataCell.setCellValue("300.0");
         dataCell = dataRow.createCell(5);
         dataCell.setCellValue("100.0");
-        dataCell = dataRow.createCell(17);
-        dataCell.setCellValue("100.0");
-        dataCell = dataRow.createCell(18);
+        dataCell = dataRow.createCell(6);
         dataCell.setCellValue("200.0");
-        dataCell = dataRow.createCell(19);
+        dataCell = dataRow.createCell(7);
         dataCell.setCellValue("0");
-        dataCell = dataRow.createCell(20);
+        dataCell = dataRow.createCell(8);
         dataCell.setCellValue("33%");
-        dataCell = dataRow.createCell(21);
+        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("否");
 
         dataRow = sheet.createRow(3);
@@ -207,19 +201,15 @@ public class FundController {
         dataCell.setCellValue("2020.03.01-2021.02.02");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("100.0");
-        dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("20.0");
-        dataCell = dataRow.createCell(9);
-        dataCell.setCellValue("60.0");
-        dataCell = dataRow.createCell(17);
+        dataCell = dataRow.createCell(5);
         dataCell.setCellValue("80.0");
-        dataCell = dataRow.createCell(18);
+        dataCell = dataRow.createCell(6);
         dataCell.setCellValue("20.0");
-        dataCell = dataRow.createCell(19);
+        dataCell = dataRow.createCell(7);
         dataCell.setCellValue("340");
-        dataCell = dataRow.createCell(20);
+        dataCell = dataRow.createCell(8);
         dataCell.setCellValue("80%");
-        dataCell = dataRow.createCell(21);
+        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("是");
 
         dataRow = sheet.createRow(4);
@@ -231,57 +221,29 @@ public class FundController {
         dataCell.setCellValue("2020.05.01-2020.10.03");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("500.0");
-        dataCell = dataRow.createCell(6);
-        dataCell.setCellValue("60.0");
-        dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("40.0");
-        dataCell = dataRow.createCell(8);
-        dataCell.setCellValue("40.0");
-        dataCell = dataRow.createCell(10);
-        dataCell.setCellValue("60.0");
-        dataCell = dataRow.createCell(17);
+        dataCell = dataRow.createCell(5);
         dataCell.setCellValue("200.0");
-        dataCell = dataRow.createCell(18);
+        dataCell = dataRow.createCell(6);
         dataCell.setCellValue("300.0");
-        dataCell = dataRow.createCell(19);
+        dataCell = dataRow.createCell(7);
         dataCell.setCellValue("220");
-        dataCell = dataRow.createCell(20);
+        dataCell = dataRow.createCell(8);
         dataCell.setCellValue("40%");
-        dataCell = dataRow.createCell(21);
+        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("是");
-
-        dataRow = sheet.createRow(5);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue(4);
-
-        dataRow = sheet.createRow(6);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue(5);
-
-        dataRow = sheet.createRow(7);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue(6);
-
-        dataRow = sheet.createRow(8);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue(7);
-
-        dataRow = sheet.createRow(9);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue(8);
 
         dataRow = sheet.createRow(10);
         dataCell = dataRow.createCell(0);
         dataCell.setCellValue("合计");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("900.0");
-        dataCell = dataRow.createCell(17);
+        dataCell = dataRow.createCell(5);
         dataCell.setCellValue("380.0");
-        dataCell = dataRow.createCell(18);
+        dataCell = dataRow.createCell(6);
         dataCell.setCellValue("520.0");
-        dataCell = dataRow.createCell(20);
+        dataCell = dataRow.createCell(8);
         dataCell.setCellValue("42%");
-        dataCell = dataRow.createCell(21);
+        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("否");
 
         dataRow = sheet.createRow(12);
