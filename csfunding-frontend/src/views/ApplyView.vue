@@ -126,7 +126,7 @@
 
   <el-dialog v-model="ViewDialogVisible" title="查看申请" width="30%" draggable class="ApplyDialog">
 
-      <div>经费信息：{{ FundNumber }}-{{ FundName }}</div>
+      <div>经费信息：{{ FundName }}</div>
       <br>
       <div>申请类型：{{ Type1 }}-{{ Type2 }}</div>
       <br>

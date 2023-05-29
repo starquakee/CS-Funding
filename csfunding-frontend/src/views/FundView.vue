@@ -57,8 +57,9 @@
           <el-button @click="onBarChartClick(props.row)" type="primary" size="small" plain>
             {{ BarChartVisible ? '返回' : '月支出' }}
           </el-button>
-          <el-button type="primary" size="small" plain @click="RemainDay = props.row.remainDay;
-                                                                  Rate = props.row.remain/props.row.sum;
+          <el-button  type="primary" size="small" plain @click="EndDay = props.row.endTimeStamp;
+                                                                StartDay = props.row.startTimeStamp;
+                                                                  Rate = 1 - props.row.remain/props.row.sum;
                                                               UsedAmount = props.row.sum -
                                                               props.row.remain;InfoVisible = true">
             详情
@@ -77,9 +78,10 @@
       </div>
     </div>
     <el-dialog v-model="InfoVisible" title="详细信息" width="30%" draggable>
-      <h4>已使用经费: {{ UsedAmount }}</h4>
-      <h4>当前执行率: {{ Rate }}</h4>
-      <h4>剩余时间: {{ RemainDay }}</h4>
+      <h4>已使用经费: {{UsedAmount}}</h4>
+      <h4>当前执行率: {{Rate}}</h4>
+      <h4>剩余时间: {{ ((EndDay - now) - (EndDay - now) % (3600 * 24)) / (3600 * 24) }}天</h4>
+      <h4>进行时间: {{ ((now - StartDay) - (now - StartDay) % (3600 * 24)) / (3600 * 24) }}天</h4>
       <template #footer>
     <span class="dialog-footer" style="height: 20px">
       <el-button type="danger" @click="InfoVisible = false;">
@@ -208,6 +210,8 @@ let RemainDay = ref(0)
 let Rate = ref(0)
 let UsedAmount = ref(0)
 let chart: echarts.ECharts
+let EndDay = ref(0)
+let StartDay = ref(0)
 
 function onBarChartClick(row: any) {
   request({
@@ -287,6 +291,8 @@ function getFundData(fid: any) {
       name: rd.fundName,
       sum: rd.sum,
       remain: rd.balance,
+      startTimeStamp: rd.startTime / 1000,
+      endTimeStamp: rd.endTime / 1000,
       start: moment.unix(rd.startTime / 1000).format('YYYY-MM-DD'),
       end: moment.unix(rd.endTime / 1000).format('YYYY-MM-DD'),
       remainDay: rd.remainDays,
@@ -328,6 +334,8 @@ function onQuery() {
         name: rd.fundName,
         sum: rd.sum,
         remain: rd.balance,
+        startTimeStamp: rd.startTime / 1000,
+        endTimeStamp: rd.endTime / 1000,
         start: moment.unix(rd.startTime / 1000).format('YYYY-MM-DD'),
         end: moment.unix(rd.endTime / 1000).format('YYYY-MM-DD'),
         remainDay: rd.remainDays,
@@ -350,6 +358,9 @@ const openFolderDialog = async () => {
     request({
       url: '/get-excel',
       method: 'Get',
+      params: {
+        path: selectedPath.value
+      },
     }).then(res => {
     })
 
@@ -369,12 +380,16 @@ const SearchForm = reactive({
   researchGroupId: route.query.gid,
 })
 
+const now = new Date().getTime() / 1000
+
 interface fund {
   uuid: number,
   id: string,
   name: string,
   sum: number,
   remain: number,
+  startTimeStamp: number,
+  endTimeStamp: number,
   start: string,
   end: string,
   remainDay: number,

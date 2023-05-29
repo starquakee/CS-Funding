@@ -152,7 +152,7 @@ public class FundController {
     }
 
     @GetMapping("/get-excel")
-    public Result getExcel() throws IOException {
+    public Result getExcel(@RequestParam String path) throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
         Sheet sheet = workbook.createSheet("多项经费使用一览表");
@@ -274,7 +274,7 @@ public class FundController {
 
 
 
-        FileOutputStream fileOut = new FileOutputStream("data2.xlsx");
+        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Xieyudong\\Desktop\\"+path+"\\data2.xlsx");
         workbook.write(fileOut);
         fileOut.close();
         return new Result(200);
