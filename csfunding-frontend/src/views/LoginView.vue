@@ -208,6 +208,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         reg: reg,
       }).then(res=>{
         console.log(res);
+        registerSuccess.value = true;
       })
     } else {
       console.log('error submit!')
