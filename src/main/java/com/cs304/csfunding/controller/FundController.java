@@ -274,9 +274,6 @@ public class FundController {
         dataCell = dataRow.createCell(1);
         dataCell.setCellValue("部份经费如有三年期使用，再细分为每年可使用的额度");
 
-
-
-
         FileOutputStream fileOut = new FileOutputStream("data2.xlsx");
         workbook.write(fileOut);
         fileOut.close();
