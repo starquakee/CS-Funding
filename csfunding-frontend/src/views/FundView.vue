@@ -70,8 +70,8 @@
 
     <div class="BarChart"
          v-show="BarChartVisible">
-      <div style="height: 10%; width: 100%;">
-        <el-icon><Close /></el-icon>
+      <div style="height: 10%; width: 100%; text-align: right">
+        <el-icon size="50" style="padding: 5px" @click="BarChartVisible=false"><Close /></el-icon>
       </div>
       <div style="height: 55vh; width: 60vw" ref="chartContainer">
 

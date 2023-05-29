@@ -72,7 +72,8 @@ import {useRoute} from "vue-router";
 import {useTokenStore} from "@/stores/token";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/stores/user";
-import type {FormInstance, FormRules} from 'element-plus'
+import type {FormInstance, FormRules} from 'element-plus';
+import {sha256} from "js-sha256";
 
 const ruleFormRef = ref<FormInstance>()
 
@@ -109,6 +110,10 @@ function generateString(length: number) {
   }
 
   return result;
+}
+
+function hash(string: any) {
+  return sha256(string);
 }
 
 async function sendEmail() {
@@ -208,7 +213,10 @@ onMounted(() => {
 
 function doLogin() {
   let url = "http://localhost:8081/api/login";
-  axios.post(url, loginForm).then(res => {
+  axios.post(url, {
+    name: loginForm.name,
+    key: hash(loginForm.key)
+  }).then(res => {
     if (res.data.code === 200) {
       store.setToken(res.data.data.token);
       isAdmin.value = res.data.data.isAdmin;
@@ -218,28 +226,6 @@ function doLogin() {
       loginFail.value = true;
     }
   });
-  // router.push('/home')
-  // axios.post(url, form).then(resp => {
-  //
-  //     code = resp.data.code
-  //     person = resp.data.data.name
-  //     phoneNum = resp.data.data.phoneNum
-  //     isAdmin = resp.data.data.isAdmin
-  //
-  //     console.log(code, person)
-  //
-  //     if (code === 200) {
-  //         router.push({
-  //             path: '/home', query: {
-  //                 username: form.name,
-  //                 name: person,
-  //                 phoneNumber: phoneNum,
-  //                 isAdmin: isAdmin
-  //             }
-  //         });
-  //     }
-  // })
-
 
 }
 
