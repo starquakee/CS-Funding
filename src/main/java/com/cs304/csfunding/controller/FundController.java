@@ -202,7 +202,7 @@ public class FundController {
         dataCell = dataRow.createCell(2);
         dataCell.setCellValue("高水平2（G001XX）");
         dataCell = dataRow.createCell(3);
-        dataCell.setCellValue("2022.05.29-2023.06.28");
+        dataCell.setCellValue("2023.05.29-2023.06.28");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("1000");
         dataCell = dataRow.createCell(5);
@@ -218,7 +218,7 @@ public class FundController {
         dataCell = dataRow.createCell(2);
         dataCell.setCellValue("高水平3（G002XX）");
         dataCell = dataRow.createCell(3);
-        dataCell.setCellValue("2022.05.15-2023.06.21");
+        dataCell.setCellValue("2023.05.15-2023.06.21");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("1500");
         dataCell = dataRow.createCell(5);
@@ -234,7 +234,7 @@ public class FundController {
         dataCell = dataRow.createCell(2);
         dataCell.setCellValue("高水平4（G003XX）");
         dataCell = dataRow.createCell(3);
-        dataCell.setCellValue("2022.05.15-2023.6.21");
+        dataCell.setCellValue("2023.05.15-2023.6.21");
         dataCell = dataRow.createCell(4);
         dataCell.setCellValue("2000");
         dataCell = dataRow.createCell(5);
