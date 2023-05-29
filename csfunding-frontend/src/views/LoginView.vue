@@ -80,6 +80,9 @@ const ruleFormRef = ref<FormInstance>()
 const store = useTokenStore();
 const route = useRoute();
 
+let mailSha="";
+let reg = ''
+
 const loginForm = reactive({
   name: "",
   key: "",
@@ -119,17 +122,19 @@ function hash(string: any) {
 async function sendEmail() {
   if (!isSend.value && registerForm.e_mail.includes('sustech.edu')) {
     // send mail
-
+    reg = generateString(10);
     axios.post("http://localhost:8081/register/send-mail", {
       mail: registerForm.e_mail,
-      reg: generateString(10)
-    }).then(res => console.log(res));
-    // isSend.value = true;
-    // for (let i = 60; i > 0; i--) {
-    //   sendTimeout.value = i;
-    //   await new Promise(f => setTimeout(f, 1000));
-    // }
-    // isSend.value = false;
+      reg: reg
+    }).then(res => {
+      mailSha = res.data.data;
+    });
+    isSend.value = true;
+    for (let i = 5; i > 0; i--) {
+      sendTimeout.value = i;
+      await new Promise(f => setTimeout(f, 1000));
+    }
+    isSend.value = false;
   }
 }
 
@@ -152,7 +157,7 @@ const checkValid = (rule: any, value: any, callback: any) => {
   }
   setTimeout(() => {
 
-    if (value != "12345") {
+    if (sha256(value) != mailSha) {
       callback(new Error('验证码错误'))
     } else {
       callback()
@@ -194,7 +199,16 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate((valid) => {
     if (valid) {
       console.log('submit!')
-      registerSuccess.value = true
+      let url = "http://localhost:8081/register/user";
+      axios.post(url, {
+        userId: registerForm.userId,
+        name: registerForm.name,
+        register_key: sha256(registerForm.register_key),
+        validCode: registerForm.valid_code,
+        reg: reg,
+      }).then(res=>{
+        console.log(res);
+      })
     } else {
       console.log('error submit!')
       return false

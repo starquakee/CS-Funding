@@ -1,5 +1,6 @@
 package com.cs304.csfunding.controller;
 
+import com.cs304.csfunding.api.RegisterDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.api.UserDTO;
 import com.cs304.csfunding.entity.User;
@@ -15,6 +16,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @PostMapping("/register/user")
+    public Result registerUser(@RequestBody RegisterDTO register){
+        if(!userService.checkReg(register.getReg(), register.getValidCode()))
+            return new Result(403, "Mail code not match", null);
+        userService.addUser(register);
+        return new Result("OK");
+    }
 
 
     @PostMapping(value = "/add-user")

@@ -309,7 +309,7 @@
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="onSubmitFund">确认</el-button>
+                    <el-button type="success" @click="onSubmitFund;fundDialogVisible = false;">确认</el-button>
                     <el-button type="danger" @click="fundDialogVisible = false; ">
                       取消
                     </el-button>
@@ -338,7 +338,7 @@
         <el-form :model="EditResearchGroupForm" label-width="40px"
                  label-position="top" rules="EditResearchGroupFormRule">
           <el-form-item label="操作类型">
-            <el-select v-model="EditResearchGroupForm.Operation1" placeholder="经费名">
+            <el-select v-model="EditResearchGroupForm.Operation1">
               <el-option label="增加课题组" value="add"/>
               <el-option label="编辑课题组" value="edit"/>
             </el-select>

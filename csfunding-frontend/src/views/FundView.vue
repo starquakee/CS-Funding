@@ -125,14 +125,10 @@ function initRoseChart() {
         left: 'center',
         top: 'bottom',
         data: [
-          'rose1',
-          'rose2',
-          'rose3',
-          'rose4',
-          'rose5',
-          'rose6',
-          'rose7',
-          'rose8'
+          '高水平1',
+          '高水平2',
+          '高水平3',
+          '高水平4'
         ]
       },
       toolbox: {
@@ -150,7 +146,7 @@ function initRoseChart() {
           type: 'pie',
           radius: [20, 140],
           center: ['20%', '50%'],
-          roseType: 'radius',
+          roseType: 'area',
           itemStyle: {
             borderRadius: 5
           },
@@ -163,14 +159,10 @@ function initRoseChart() {
             }
           },
           data: [
-            {value: 40, name: 'rose 1'},
-            {value: 33, name: 'rose 2'},
-            {value: 28, name: 'rose 3'},
-            {value: 22, name: 'rose 4'},
-            {value: 20, name: 'rose 5'},
-            {value: 15, name: 'rose 6'},
-            {value: 12, name: 'rose 7'},
-            {value: 10, name: 'rose 8'}
+            {value: 500, name: '高水平1'},
+            {value: 1000, name: '高水平2'},
+            {value: 1500, name: '高水平3'},
+            {value: 2000, name: '高水平4'},
           ]
         },
         {
@@ -183,14 +175,10 @@ function initRoseChart() {
             borderRadius: 5
           },
           data: [
-            {value: 30, name: 'rose 1'},
-            {value: 28, name: 'rose 2'},
-            {value: 26, name: 'rose 3'},
-            {value: 24, name: 'rose 4'},
-            {value: 22, name: 'rose 5'},
-            {value: 20, name: 'rose 6'},
-            {value: 18, name: 'rose 7'},
-            {value: 16, name: 'rose 8'}
+            {value: 200, name: '高水平1'},
+            {value: 300, name: '高水平2'},
+            {value: 800, name: '高水平3'},
+            {value: 1500, name: '高水平4'},
           ]
         },
 
