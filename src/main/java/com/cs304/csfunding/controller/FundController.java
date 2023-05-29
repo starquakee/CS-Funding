@@ -115,9 +115,9 @@ public class FundController {
             return new Result(404, "fund not found", null);
         } else {
             List<Apply> applies = applyService.testQueryByFundID(uuid);
-            ArrayList<BarChartVO> chart = new ArrayList<>();
+            Map<Integer, Integer> map = new HashMap<>();
             for (int i = 0; i < 12; i++) {
-                chart.add(new BarChartVO(i+1, 0F));
+                map.put(i+1, 0);
             }
             long timeMill = System.currentTimeMillis();
 
@@ -138,9 +138,16 @@ public class FundController {
                 } else {
                     continue;
                 }
-                chart.get(applyMonth - 1).setValue(chart.get(applyMonth - 1).getValue()+apply.getMoney());
+                map.put(applyMonth, map.get(applyMonth)+apply.getMoney());
             }
-            return new Result(200, "success", chart);
+            List<Map<String, Integer>> res = new ArrayList<>();
+            for (int i = 0; i < 12; i++) {
+                Map<String, Integer> m = new HashMap<>();
+                m.put("name", i+1);
+                m.put("value", map.get(i+1));
+                res.add(m);
+            }
+            return new Result(200, "success", res);
         }
     }
 
