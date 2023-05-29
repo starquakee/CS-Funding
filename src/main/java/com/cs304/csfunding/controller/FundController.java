@@ -210,7 +210,7 @@ public class FundController {
         dataCell = dataRow.createCell(6);
         dataCell.setCellValue("300");
         dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("否");
+        dataCell.setCellValue("是");
 
         dataRow = sheet.createRow(4);
         dataCell = dataRow.createCell(0);
@@ -228,7 +228,7 @@ public class FundController {
         dataCell = dataRow.createCell(7);
         dataCell.setCellValue("否");
 
-        dataRow = sheet.createRow(4);
+        dataRow = sheet.createRow(5);
         dataCell = dataRow.createCell(0);
         dataCell.setCellValue(3);
         dataCell = dataRow.createCell(2);
@@ -245,22 +245,7 @@ public class FundController {
         dataCell.setCellValue("否");
 
 
-        dataRow = sheet.createRow(7);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue("备注");
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("1、经费中只要有一个经费不达标，则为不达标");
-
-        dataRow = sheet.createRow(8);
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("2、提醒：当剩余天数<60天&剩余金额>20&执行率<");
-
-        dataRow = sheet.createRow(9);
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("部份经费如有三年期使用，再细分为每年可使用的额度");
-
-
-        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Xieyudong\\Desktop\\" + path + "\\data.xlsx");
+        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Xieyudong\\Desktop\\"+path+"\\data.xlsx");
         workbook.write(fileOut);
         fileOut.close();
         return new Result(200);

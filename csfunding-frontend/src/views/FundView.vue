@@ -40,13 +40,11 @@
       <el-table-column prop="end" label="结束时间" align="center"/>
       <el-table-column prop="state" label="是否达标" align="center">
         <template #default="props">
-          <el-tag type="error" size="small" plain v-if="props.row.remainDay < 60
-                                                 && props.row.remain/props.row.sum > 0.2" effect="dark">
+          <el-tag type="error" size="small" plain v-if="props.row.remain/props.row.sum > 0.5" effect="dark">
             不合格
           </el-tag>
 
-          <el-tag type="success" size="small" plain v-if="!(props.row.remainDay < 60
-                                                 && props.row.remain/props.row.sum > 0.2)" effect="dark">
+          <el-tag type="success" size="small" plain v-if="props.row.remain/props.row.sum < 0.5" effect="dark">
             合格
           </el-tag>
 
@@ -399,7 +397,7 @@ const tableRowClassName = (
           row: fund
           rowIndex: number
         }) => {
-  if (row.remainDay < 60 && row.remain / row.sum > 0.2) {
+  if (row.remain / row.sum > 0.5) {
     return 'warning-row'
   }
   return 'success-row'
