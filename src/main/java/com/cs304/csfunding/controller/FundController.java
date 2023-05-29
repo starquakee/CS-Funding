@@ -117,7 +117,7 @@ public class FundController {
             List<Apply> applies = applyService.testQueryByFundID(uuid);
             Map<Integer, Integer> map = new HashMap<>();
             for (int i = 0; i < 12; i++) {
-                map.put(i+1, 0);
+                map.put(i + 1, 0);
             }
             long timeMill = System.currentTimeMillis();
 
@@ -128,23 +128,25 @@ public class FundController {
             int applyMonth;
 
             for (Apply apply : applies) {
+                if (!apply.getState().equals("pass"))
+                    continue;
                 String time = apply.getTime();
                 // Convert the time string to a Date object
                 calendar.setTimeInMillis(Long.parseLong(time));
-                if (calendar.get(Calendar.YEAR)==currentYear-1 && calendar.get(Calendar.MONTH)+1>currentMonth) {
+                if (calendar.get(Calendar.YEAR) == currentYear - 1 && calendar.get(Calendar.MONTH) + 1 > currentMonth) {
                     applyMonth = calendar.get(Calendar.MONTH) + 1;
-                } else if (calendar.get(Calendar.YEAR)==currentYear) {
+                } else if (calendar.get(Calendar.YEAR) == currentYear) {
                     applyMonth = calendar.get(Calendar.MONTH) + 1;
                 } else {
                     continue;
                 }
-                map.put(applyMonth, map.get(applyMonth)+apply.getMoney());
+                map.put(applyMonth, map.get(applyMonth) + apply.getMoney());
             }
             List<Map<String, Integer>> res = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
                 Map<String, Integer> m = new HashMap<>();
-                m.put("name", i+1);
-                m.put("value", map.get(i+1));
+                m.put("name", (i + currentMonth) % 12 + 1);
+                m.put("value", map.get((i + currentMonth) % 12 + 1));
                 res.add(m);
             }
             return new Result(200, "success", res);
@@ -258,9 +260,7 @@ public class FundController {
         dataCell.setCellValue("部份经费如有三年期使用，再细分为每年可使用的额度");
 
 
-
-
-        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Xieyudong\\Desktop\\"+path+"\\data.xlsx");
+        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Xieyudong\\Desktop\\" + path + "\\data.xlsx");
         workbook.write(fileOut);
         fileOut.close();
         return new Result(200);
