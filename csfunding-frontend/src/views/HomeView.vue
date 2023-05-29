@@ -309,7 +309,7 @@
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="onSubmitFund;fundDialogVisible = false;">确认</el-button>
+                    <el-button type="success" @click="onSubmitFund(); fundDialogVisible = false">确认</el-button>
                     <el-button type="danger" @click="fundDialogVisible = false; ">
                       取消
                     </el-button>
@@ -374,7 +374,7 @@
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="editResearchGroupSubmit;editResearchGroupVisible = false">确定</el-button>
+                    <el-button type="success" @click="editResearchGroupSubmit(); editResearchGroupVisible = false">确定</el-button>
                     <el-button type="danger" @click="editResearchGroupVisible = false">取消</el-button>
                   </span>
         </template>
