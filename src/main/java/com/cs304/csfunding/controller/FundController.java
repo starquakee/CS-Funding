@@ -1,9 +1,6 @@
 package com.cs304.csfunding.controller;
 
-import com.cs304.csfunding.api.FundDTO;
-import com.cs304.csfunding.api.FundInsertDTO;
-import com.cs304.csfunding.api.ResearchGroup_FundDTO;
-import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.api.*;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.service.ApplyService;
@@ -118,9 +115,9 @@ public class FundController {
             return new Result(404, "fund not found", null);
         } else {
             List<Apply> applies = applyService.testQueryByFundID(uuid);
-            Map<Integer, Float> map = new HashMap<>();
+            ArrayList<BarChartVO> chart = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
-                map.put(i+1, 0F);
+                chart.add(new BarChartVO(i+1, 0F));
             }
             long timeMill = System.currentTimeMillis();
 
@@ -141,9 +138,9 @@ public class FundController {
                 } else {
                     continue;
                 }
-                map.put(applyMonth, map.get(applyMonth)+apply.getMoney());
+                chart.get(applyMonth - 1).setValue(chart.get(applyMonth - 1).getValue()+apply.getMoney());
             }
-            return new Result(200, "success", map);
+            return new Result(200, "success", chart);
         }
     }
 
