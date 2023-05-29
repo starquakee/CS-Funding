@@ -287,6 +287,7 @@ function getFundData(fid: any) {
   }).then(res => {
     let rd = res.data.data;
     let fd: fund = {
+      uuid: rd.uuid,
       id: rd.fundNumber,
       name: rd.fundName,
       sum: rd.sum,
