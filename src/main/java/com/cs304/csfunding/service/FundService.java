@@ -1,6 +1,7 @@
 package com.cs304.csfunding.service;
 
 import com.cs304.csfunding.api.FundDTO;
+import com.cs304.csfunding.api.FundInsertDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.mapper.FundMapper;
@@ -19,17 +20,17 @@ public class FundService {
         this.fundMapper = fundMapper;
     }
 
-    public String testInsert(FundDTO fundDTO) {
+    public int testInsert(FundInsertDTO fundDTO) {
         Fund ff = new Fund();
         ff.setFundNumber(fundDTO.getFundNumber());
         ff.setFundName(fundDTO.getFundName());
-        ff.setBalance(fundDTO.getBalance());
+        ff.setBalance(0);
         ff.setSum(fundDTO.getSum());
-        ff.setRemainDays(fundDTO.getRemainDays());
+        ff.setRemainDays(0);
         ff.setStartTime(fundDTO.getStartTime());
         ff.setEndTime(fundDTO.getEndTime());
         fundMapper.addFund(ff);
-        return "";
+        return fundMapper.latestFundId();
     }
 
     public List<Fund> testQueryAll(){

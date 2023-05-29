@@ -1,11 +1,17 @@
 package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.FundDTO;
+import com.cs304.csfunding.api.FundInsertDTO;
+import com.cs304.csfunding.api.ResearchGroup_FundDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.service.ApplyService;
 import com.cs304.csfunding.service.FundService;
+import com.cs304.csfunding.service.ResearchGroupService;
+import com.cs304.csfunding.service.ResearchGroup_FundService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.cs304.csfunding.service.Fund_ApplyService;
 
 import java.io.FileOutputStream;
@@ -34,10 +40,24 @@ public class FundController {
     @Autowired
     private ApplyService applyService;
 
+    @Autowired
+    private ResearchGroup_FundService researchGroup_fundService;
+    @Autowired
+    private ResearchGroupService researchGroupService;
+
+    Logger logger = LoggerFactory.getLogger(FundController.class);
+
 
     @PostMapping(value = "/add-fund")
-    public String testAddFund(@RequestBody FundDTO fundDTO) {
-        return fundService.testInsert(fundDTO);
+    public Result testAddFund(@RequestBody FundInsertDTO fundDTO) {
+        int id = fundService.testInsert(fundDTO);
+        logger.info(Integer.toString(id));
+        ResearchGroup_FundDTO r_f = new ResearchGroup_FundDTO();
+        r_f.setFundUUID(id);
+        r_f.setResearchGroupUUID(fundDTO.getResearchGroup());
+        researchGroup_fundService.testInsert(r_f);
+        researchGroupService.addResearchGroupFund(fundDTO.getResearchGroup(), fundDTO.getSum());
+        return new Result("OK");
     }
 
     @PostMapping(value = "/modify-fund")
@@ -57,12 +77,12 @@ public class FundController {
             return new Result(404, "fund not found", null);
         } else {
             fundService.testDelete(uuid);
-            return new Result(200,"success",null);
+            return new Result(200, "success", null);
         }
     }
 
     @GetMapping("/get-all-funds")
-    public Result getAllFund(){
+    public Result getAllFund() {
         List<Fund> funds = fundService.testQueryAll();
         if (funds == null) {
             return new Result(404, "funds not found", null);
@@ -77,17 +97,17 @@ public class FundController {
         if (fund == null) {
             return new Result(404, "fund not found", null);
         } else {
-            return new Result(200,"success",fund);
+            return new Result(200, "success", fund);
         }
     }
 
     @GetMapping("/get-fund-vague")
-    public Result getFundVague(@RequestParam String FundNumber,@RequestParam String FundName,@RequestParam String researchGroupId) {
-        List<Fund> fund = fundService.queryVague(FundNumber,FundName,researchGroupId);
+    public Result getFundVague(@RequestParam String FundNumber, @RequestParam String FundName, @RequestParam String researchGroupId) {
+        List<Fund> fund = fundService.queryVague(FundNumber, FundName, researchGroupId);
         if (fund == null) {
             return new Result(404, "fund not found", null);
         } else {
-            return new Result(200,"success",fund);
+            return new Result(200, "success", fund);
         }
     }
 

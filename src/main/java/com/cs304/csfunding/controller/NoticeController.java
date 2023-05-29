@@ -17,10 +17,7 @@ public class NoticeController {
 
     @PostMapping(value = "/register-notice")
     public Result addNotice(@RequestBody NoticeDTO noticeDTO) {
-        int uuid = HttpContextUtil.getRequestUuid();
-        noticeDTO.setNoticeFrom(uuid);
-        noticeDTO.setNoticeTo(-1);
-        return new Result(noticeService.testInsert(noticeDTO));
+        return new Result(noticeService.testInsert(noticeDTO, -1));
     }
 
     @GetMapping("/delete-notice")

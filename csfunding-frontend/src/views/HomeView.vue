@@ -309,8 +309,10 @@
         <el-form :model="FundForm" label-width="120px">
           <el-form-item label="课题组名称">
             <el-select v-model="FundForm.researchGroup" placeholder="经费名称">
-              <el-option label="王" value="王"/>
-              <el-option label="李" value="李"/>
+              <el-option v-for="item in researchGroup"
+                         :key="item.uuid"
+                         :label="item.name"
+                         :value="item.uuid"/>
             </el-select>
 
           </el-form-item>
@@ -330,37 +332,19 @@
           </el-form-item>
 
           <el-form-item label="起止时间">
-            <el-col :span="11">
-              <el-form-item prop="date1">
-                <el-date-picker
-                    v-model="FundForm.start"
-                    type="date"
-                    label="Pick a date"
-                    placeholder="Pick a date"
-                    style="width: 100%"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col class="text-center" :span="2">
-              <span class="text-gray-500"></span>
-            </el-col>
-            <el-col :span="11">
-              <el-form-item prop="date2">
-                <el-time-picker
-                    v-model="FundForm.end"
-                    type="date"
-                    label="Pick a date"
-                    placeholder="Pick a date"
-                    style="width: 100%"
-                />
-              </el-form-item>
-            </el-col>
+            <el-date-picker
+                v-model="FundForm.date"
+                type="daterange"
+                range-separator="To"
+                start-placeholder="Start date"
+                end-placeholder="End date"
+            />
           </el-form-item>
 
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="fundDialogVisible = false">确认</el-button>
+                    <el-button type="success" @click="onSubmitFund">确认</el-button>
                     <el-button type="danger" @click="fundDialogVisible = false; ">
                       取消
                     </el-button>
@@ -371,19 +355,13 @@
       <el-dialog v-model="noticeDialogVisible" title="发布通知" width="30%" draggable>
 
         <el-form :model="NoticeForm" label-width="40px" label-position="top">
-          <el-form-item label="课题组">
-            <el-select v-model="NoticeForm.researchGroup" placeholder="课题组名">
-              <el-option label="Zone one" value="shanghai"/>
-              <el-option label="Zone two" value="beijing"/>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="备注">
+          <el-form-item label="通知内容">
             <el-input v-model="NoticeForm.notice" type="textarea"/>
           </el-form-item>
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="noticeDialogVisible = false">发布通知</el-button>
+                    <el-button type="success" @click="onSubmitNotice">发布通知</el-button>
                     <el-button type="danger" @click="noticeDialogVisible = false">取消</el-button>
                   </span>
         </template>
@@ -591,16 +569,13 @@ const OutputForm = reactive({
 
 const NoticeForm = reactive({
   notice: '',
-  researchGroup: '',
-  fund: ''
 })
 
 const FundForm = reactive({
   researchGroup: '',
   fundName: '',
   fundNumber: '',
-  start: Date,
-  end: Date,
+  date: [],
   sum: 0
 })
 
@@ -687,6 +662,35 @@ function onQuery(){
   })
 }
 
+
+function onSubmitFund(){
+  console.log(FundForm);
+  // fundDialogVisible.value = false;
+  request({
+    url: '/add-fund',
+    method: "POST",
+    data: {
+      fundNumber: FundForm.fundNumber,
+      fundName: FundForm.fundName,
+      sum: FundForm.sum,
+      startTime: FundForm.date[0].valueOf(),
+      endTime: FundForm.date[1].valueOf(),
+      researchGroup: FundForm.researchGroup
+    }
+  })
+}
+
+function onSubmitNotice(){
+  request({
+    url: '/register-notice',
+    method: "POST",
+    data: {
+      content: NoticeForm.notice
+    }
+  }).then (r => getNotice())
+  NoticeForm.notice = ""
+  noticeDialogVisible.value = false
+}
 
 function editResearchGroupSubmit() {
   console.log(EditResearchGroupForm)

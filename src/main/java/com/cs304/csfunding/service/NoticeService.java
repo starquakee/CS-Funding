@@ -3,6 +3,7 @@ package com.cs304.csfunding.service;
 import com.cs304.csfunding.api.NoticeDTO;
 import com.cs304.csfunding.entity.Notice;
 import com.cs304.csfunding.mapper.NoticeMapper;
+import com.cs304.csfunding.util.HttpContextUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +16,12 @@ public class NoticeService {
 
     public NoticeService(NoticeMapper noticeMapper) {this.noticeMapper = noticeMapper;}
 
-    public String testInsert(NoticeDTO noticeDTO) {
+    public String testInsert(NoticeDTO noticeDTO, int to) {
         Notice notice = new Notice();
         notice.setContent(noticeDTO.getContent());
         notice.setTime(Long.toString(System.currentTimeMillis()));
-        notice.setNoticefrom(noticeDTO.getNoticeFrom());
-        notice.setNoticeto(noticeDTO.getNoticeTo());
+        notice.setNoticefrom(HttpContextUtil.getRequestUuid());
+        notice.setNoticeto(to);
         noticeMapper.addNotice(notice);
         return "";
     }

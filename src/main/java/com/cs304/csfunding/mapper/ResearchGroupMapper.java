@@ -1,10 +1,7 @@
 package com.cs304.csfunding.mapper;
 
 import com.cs304.csfunding.entity.ResearchGroup;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,6 +22,9 @@ public interface ResearchGroupMapper {
 
     @Select("select * from researchgroup where `UUID`=${UUID}")
     ResearchGroup getResearchGroup(int UUID);
+
+    @Update("update researchgroup set `AllFund`=#{fund} where `UUID`=#{gid}")
+    void modifyGroupFundCnt(int gid, float fund);
 
 
 }

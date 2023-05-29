@@ -102,19 +102,15 @@ public class ApplyController {
             fundService.testModify(fd);
 
             NoticeDTO nd = new NoticeDTO();
-            nd.setContent(apply.getName() + " is passed");
-            nd.setNoticeFrom(HttpContextUtil.getRequestUuid());
-            nd.setNoticeTo(apply.getUserID());
-            noticeService.testInsert(nd);
+            nd.setContent("Your apply for " + apply.getType2() + " is passed");
+            noticeService.testInsert(nd, apply.getUserID());
         } else {
             applyService.testJudgeByID("fail", inspectDTO.getRemark(), inspectDTO.getAid());
             List<Apply> applies = applyService.testQueryByID(inspectDTO.getAid());
             Apply apply = applies.get(0);
             NoticeDTO nd = new NoticeDTO();
             nd.setContent(apply.getName() + " failed to pass");
-            nd.setNoticeFrom(HttpContextUtil.getRequestUuid());
-            nd.setNoticeTo(apply.getUserID());
-            noticeService.testInsert(nd);
+            noticeService.testInsert(nd, apply.getUserID());
         }
         return new Result(200, "OK", null);
     }

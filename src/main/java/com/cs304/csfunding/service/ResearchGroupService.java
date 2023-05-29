@@ -37,6 +37,11 @@ public class ResearchGroupService {
         return researchGroupMapper.getResearchGroupByUser(UserID);
     }
 
+    public void addResearchGroupFund(int gid, float addon){
+        ResearchGroup researchGroup = researchGroupMapper.getResearchGroup(gid);
+        researchGroupMapper.modifyGroupFundCnt(gid, researchGroup.getAllFund() + addon);
+    }
+
     public ResearchGroup queryResearchGroupById(int gid){
         return researchGroupMapper.getResearchGroup(gid);
     }

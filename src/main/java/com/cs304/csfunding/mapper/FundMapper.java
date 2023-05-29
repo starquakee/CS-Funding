@@ -13,6 +13,9 @@ public interface FundMapper {
     @Insert("insert into fund(FundNumber, FundName, Sum, Balance, RemainDays, StartTime, EndTime) values (#{FundNumber}, #{FundName}, #{Sum}, #{Balance}, #{RemainDays}, #{StartTime}, #{EndTime})")
     void addFund(Fund fund);
 
+    @Select("select max(`UUID`) from fund")
+    int latestFundId();
+
     @Select("select * from fund")
     List<Fund> getAllFund();
 
