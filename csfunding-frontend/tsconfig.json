@@ -5,6 +5,11 @@
     "src/**/*",
     "src/**/*.vue"
   ],
+//  "exclude": [
+//    "src/**/*.ts",
+//    "src/**/*.tsx",
+//    "src/**/*.vue"
+//  ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {

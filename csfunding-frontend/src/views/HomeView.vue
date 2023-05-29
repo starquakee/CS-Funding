@@ -515,6 +515,7 @@ import request from "@/util/request";
 import {Coin, Edit, InfoFilled, Search, UploadFilled, View} from '@element-plus/icons-vue'
 
 import {ElMessage, type FormInstance, type FormRules} from 'element-plus'
+import {sha256} from "js-sha256";
 
 const ruleFormRef = ref<FormInstance>()
 const {isAdmin, userName} = storeToRefs(useUserStore());
@@ -735,7 +736,7 @@ function checkInitialPass(rule: any, value: any, callback: any) {
     return callback(new Error('请输入原密码'))
   }
   setTimeout(() => {
-    if (value != userData.key) {
+    if (sha256(value) != userData.key) {
       callback(new Error('密码不正确'))
     } else {
       callback()
