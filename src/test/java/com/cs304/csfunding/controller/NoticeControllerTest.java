@@ -42,13 +42,13 @@ public class NoticeControllerTest {
     public void testAddNotice() throws Exception {
         NoticeDTO noticeDTO = new NoticeDTO(); // Create a NoticeDTO object with test data
 
-        when(noticeService.testInsert(noticeDTO)).thenReturn("success");
+        when(noticeService.testInsert(noticeDTO,1)).thenReturn("");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/notice")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register-notice")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(noticeDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(""));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isEmpty());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class NoticeControllerTest {
 
         when(noticeService.testQueryByID(uuid)).thenReturn(notice);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/delete/notice")
+        mockMvc.perform(MockMvcRequestBuilders.get("/delete-notice")
                         .param("uuid", String.valueOf(uuid)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
@@ -72,7 +72,7 @@ public class NoticeControllerTest {
 
         when(noticeService.testQueryByID(uuid)).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/delete/notice")
+        mockMvc.perform(MockMvcRequestBuilders.get("/delete-notice")
                         .param("uuid", String.valueOf(uuid)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
@@ -86,7 +86,7 @@ public class NoticeControllerTest {
 
         when(noticeService.testQueryAll()).thenReturn(notices);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/getallnotices"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-all-notice"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("success"))
@@ -101,7 +101,7 @@ public class NoticeControllerTest {
 
         when(noticeService.testQueryByID(uuid)).thenReturn(notice);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/get/notice")
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-notice")
                         .param("uuid", String.valueOf(uuid)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
@@ -115,7 +115,7 @@ public class NoticeControllerTest {
 
         when(noticeService.testQueryByID(uuid)).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/get/notice")
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-notice")
                         .param("uuid", String.valueOf(uuid)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
@@ -130,7 +130,7 @@ public class NoticeControllerTest {
 
         when(noticeService.testQueryByNoticeTo(userId)).thenReturn(notices);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/get/usernotice"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/my-notice"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("success"))

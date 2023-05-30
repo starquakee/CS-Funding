@@ -55,7 +55,7 @@ public class Fund_ApplyControllerTest {
         when(fund_applyService.testInsert(fund_applyDTO)).thenReturn("");
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/register/fund_apply")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/add-fund_apply")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())

@@ -1,6 +1,7 @@
 package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.FundDTO;
+import com.cs304.csfunding.api.FundInsertDTO;
 import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.controller.ApplyController;
 import com.cs304.csfunding.controller.FundController;
@@ -42,11 +43,11 @@ public class FundControllerTest {
 
     @Test
     public void testAddFund() throws Exception {
-        FundDTO fundDTO = new FundDTO(); // Create a FundDTO object with test data
+        FundInsertDTO fundDTO = new FundInsertDTO(); // Create a FundDTO object with test data
 
-        when(fundService.testInsert(fundDTO)).thenReturn("success");
+        when(fundService.testInsert(fundDTO)).thenReturn(0);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/fund")
+        mockMvc.perform(MockMvcRequestBuilders.post("/add-fund")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(fundDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -61,7 +62,7 @@ public class FundControllerTest {
         when(fundService.queryByID(fundDTO.getUuid())).thenReturn(fund);
         when(fundService.testModify(fundDTO)).thenReturn(new Result(200, "success", null));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/modify/fund")
+        mockMvc.perform(MockMvcRequestBuilders.post("/modify-fund")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(fundDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -76,7 +77,7 @@ public class FundControllerTest {
 
         when(fundService.queryByID(fundDTO.getUuid())).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/modify/fund")
+        mockMvc.perform(MockMvcRequestBuilders.post("/modify-fund")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(fundDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -92,7 +93,7 @@ public class FundControllerTest {
 
         when(fundService.queryByID(uuid)).thenReturn(fund);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/delete/fund")
+        mockMvc.perform(MockMvcRequestBuilders.get("/delete-fund")
                         .param("uuid", String.valueOf(uuid)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
@@ -106,7 +107,7 @@ public class FundControllerTest {
 
         when(fundService.queryByID(uuid)).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/delete/fund")
+        mockMvc.perform(MockMvcRequestBuilders.get("/delete-fund")
                         .param("uuid", String.valueOf(uuid)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
@@ -120,7 +121,7 @@ public class FundControllerTest {
 
         when(fundService.testQueryAll()).thenReturn(funds);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/getallfunds"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-all-funds"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(200))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("success"))
@@ -132,7 +133,7 @@ public class FundControllerTest {
     public void testGetAllFund_noFundsFound() throws Exception {
         when(fundService.testQueryAll()).thenReturn(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/getallfunds"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/get-all-funds"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.code").value(404))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.message").value("funds not found"))

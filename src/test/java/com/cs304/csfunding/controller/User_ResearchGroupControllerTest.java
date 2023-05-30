@@ -57,7 +57,7 @@ public class User_ResearchGroupControllerTest {
         when(user_researchGroupService.testInsert(user_researchGroupDTO)).thenReturn("");
 
 
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/register/user_researchgroup")
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/add-user_group")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -81,7 +81,7 @@ public class User_ResearchGroupControllerTest {
         when(user_researchGroupService.testQueryByUser(uid)).thenReturn(fundList);
 
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/selectresearchgroupbyuser")
-                        .param("user_UUID", String.valueOf(uid))
+                        .param("uid", String.valueOf(uid))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(print())
