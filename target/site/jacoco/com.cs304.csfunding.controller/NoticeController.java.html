@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NoticeController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.controller</a> &gt; <span class="el_source">NoticeController.java</span></div><h1>NoticeController.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.controller;
+
+import com.cs304.csfunding.api.NoticeDTO;
+import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.entity.Notice;
+import com.cs304.csfunding.service.NoticeService;
+import com.cs304.csfunding.util.HttpContextUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+<span class="fc" id="L14">public class NoticeController {</span>
+    @Autowired
+    private NoticeService noticeService;
+
+    @PostMapping(value = &quot;/register-notice&quot;)
+    public Result addNotice(@RequestBody NoticeDTO noticeDTO) {
+<span class="fc" id="L20">        return new Result(noticeService.testInsert(noticeDTO, -1));</span>
+    }
+
+    @GetMapping(&quot;/delete-notice&quot;)
+    public Result deleteNotice(@RequestParam int uuid) {
+<span class="fc" id="L25">        Notice notice = noticeService.testQueryByID(uuid);</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (notice == null) {</span>
+<span class="fc" id="L27">            return new Result(404, &quot;notice not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L29">            noticeService.testDeleteByID(uuid);</span>
+<span class="fc" id="L30">            return new Result(200,&quot;success&quot;,null);</span>
+        }
+    }
+
+    @GetMapping(&quot;/get-all-notice&quot;)
+    public Result getAllNotice(){
+<span class="fc" id="L36">        List&lt;Notice&gt; notices = noticeService.testQueryAll();</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        if (notices == null) {</span>
+<span class="nc" id="L38">            return new Result(404, &quot;notice not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L40">            return new Result(notices);</span>
+        }
+    }
+
+    @GetMapping(&quot;/get-notice&quot;)
+    public Result testGetNoticeByID(@RequestParam int uuid){
+<span class="fc" id="L46">        Notice notice = noticeService.testQueryByID(uuid);</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (notice == null) {</span>
+<span class="fc" id="L48">            return new Result(404, &quot;notice not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L50">            return new Result(200,&quot;success&quot;,notice);</span>
+        }
+    }
+
+    @GetMapping(&quot;/my-notice&quot;)
+    public Result getNoticeByUserID(){
+<span class="fc" id="L56">        int userID = HttpContextUtil.getRequestUuid();</span>
+<span class="fc" id="L57">        List&lt;Notice&gt; notices = noticeService.testQueryByNoticeTo(userID);</span>
+<span class="fc" id="L58">        return new Result(notices);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

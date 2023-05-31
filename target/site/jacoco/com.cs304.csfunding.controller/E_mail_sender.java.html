@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>E_mail_sender.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.controller</a> &gt; <span class="el_source">E_mail_sender.java</span></div><h1>E_mail_sender.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.controller;
+
+import java.io.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
+
+<span class="nc" id="L10">public class E_mail_sender {</span>
+  public static void send(String to) throws MessagingException, IOException
+  {
+    // read properties
+<span class="nc" id="L14">    Properties props = new Properties();</span>
+<span class="nc" id="L15">    try (InputStream in = Files.newInputStream(Paths.get(&quot;mail.properties&quot;)))</span>
+    {
+<span class="nc" id="L17">      props.load(in);</span>
+    }
+
+<span class="nc" id="L20">    props.setProperty(&quot;mail.smtp.starttls.enable&quot;, &quot;true&quot;); // 启用 STARTTLS 加密</span>
+
+<span class="nc" id="L22">    String from = &quot;12011913@mail.sustech.edu.cn&quot;;</span>
+<span class="nc" id="L23">    String subject = &quot;财务系统注册&quot;;</span>
+
+<span class="nc" id="L25">    String password = &quot;336699Xyd&quot;;</span>
+
+<span class="nc" id="L27">    Session mailSession = Session.getDefaultInstance(props);</span>
+<span class="nc" id="L28">    MimeMessage message = new MimeMessage(mailSession);</span>
+    // TODO 1: check the MimeMessage API to figure out how to set the sender, receiver, subject, and email body
+<span class="nc" id="L30">    message.setFrom(new InternetAddress(from));</span>
+<span class="nc" id="L31">    message.setRecipient(Message.RecipientType.TO, new InternetAddress(to));</span>
+<span class="nc" id="L32">    message.setSubject(subject);</span>
+<span class="nc" id="L33">    message.setText(&quot;你的验证码是12345&quot;);</span>
+
+    // TODO 2: check the Session API to figure out how to connect to the mail server and send the message
+<span class="nc" id="L36">    Session session = Session.getDefaultInstance(props);</span>
+<span class="nc" id="L37">    Transport transport = session.getTransport(&quot;smtp&quot;);</span>
+<span class="nc" id="L38">    transport.connect(&quot;smtp.sustech.edu.cn&quot;, from, password);</span>
+<span class="nc" id="L39">    transport.sendMessage(message, message.getAllRecipients());</span>
+<span class="nc" id="L40">    transport.close();</span>
+<span class="nc" id="L41">    System.out.println(&quot;Message sent successfully.&quot;);</span>
+
+<span class="nc" id="L43">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

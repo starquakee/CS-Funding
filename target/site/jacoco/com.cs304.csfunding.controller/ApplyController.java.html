@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApplyController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.controller</a> &gt; <span class="el_source">ApplyController.java</span></div><h1>ApplyController.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.controller;
+
+import com.cs304.csfunding.api.ApplyDTO;
+import com.cs304.csfunding.api.FundDTO;
+import com.cs304.csfunding.api.ApplyVO;
+import com.cs304.csfunding.api.InspectDTO;
+import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.api.*;
+import com.cs304.csfunding.entity.Apply;
+import com.cs304.csfunding.entity.Fund;
+import com.cs304.csfunding.entity.ResearchGroup;
+import com.cs304.csfunding.entity.User;
+import com.cs304.csfunding.service.*;
+import com.cs304.csfunding.util.HttpContextUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+<span class="fc" id="L24">public class ApplyController {</span>
+
+    @Autowired
+    private ApplyService applyService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private NoticeService noticeService;
+    @Autowired
+    private ResearchGroupService researchGroupService;
+    @Autowired
+    private ResearchGroup_FundService researchGroupFundService;
+    @Autowired
+    private FundService fundService;
+<span class="fc" id="L38">    Logger logger = LoggerFactory.getLogger(ApplyController.class);</span>
+
+
+//    @PostMapping(value = &quot;/add-apply&quot;)
+//    public String testAddApply(@RequestBody ApplyDTO applyDTO) {
+//        return applyService.testInsert(applyDTO);
+//    }
+
+//    @PostMapping(value = &quot;/add-apply&quot;)
+//    public Result AddApply(@RequestBody ApplyDTO applyDTO) {
+//        int uuid = HttpContextUtil.getRequestUuid();
+//        System.out.println(&quot;uuid: &quot; + uuid);
+////        int uuid = applyDTO.getUserID();
+//        applyDTO.setUserID(uuid);
+//        User user = userService.queryByUuid(uuid);
+//        applyDTO.setState(&quot;submit&quot;);
+//        List&lt;ResearchGroup&gt; rg = researchGroupService.testQueryByUser(user.getUuid()); //user's research group
+//        List&lt;Integer&gt; rg_uuid = new ArrayList&lt;&gt;();
+//
+//        if (rg.isEmpty()) {
+//            return new Result(410, &quot;user belongs to no group&quot;, null);
+//        }
+//
+//        for (ResearchGroup researchGroup : rg) {
+//            rg_uuid.add(researchGroup.getUuid());
+//        }
+//        int fund_rg = researchGroupFundService.testQueryByFund(applyDTO.getFundID()).get(0); //fund's research group
+//        Fund fund = fundService.queryByID(applyDTO.getFundID());
+//        //filter
+//        if (!rg_uuid.contains(applyDTO.getResearchGroupID())) {
+//            return new Result(403, &quot;user doesn't belong to the research group&quot;, null);
+//        }
+//        if (!rg_uuid.contains(fund_rg)) {
+//            return new Result(403, &quot;fund provide no access to user&quot;, null);
+//        }
+//        if (applyDTO.getMoney() &gt; fund.getSum()) {
+//            return new Result(403, &quot;exceed fund budget&quot;, null);
+//        }
+//        //insert
+//        applyService.testInsert(applyDTO);
+//        if (applyDTO.getApply() != -1) {
+//            applyService.testUpdateReSubmitted(applyDTO.getApply());
+//        }
+//        //update correspond fund
+//        return new Result(200, &quot;OK&quot;, null);
+//    }
+
+//    @PostMapping(value = &quot;/inspect-apply&quot;)
+//    public Result testJudgeApply(@RequestBody InspectDTO inspectDTO) {
+//        //change state by name
+//        if (inspectDTO.isPass()) {
+//            applyService.testJudgeByID(&quot;pass&quot;, inspectDTO.getRemark(), inspectDTO.getAid());
+//            List&lt;Apply&gt; applies = applyService.testQueryByID(inspectDTO.getAid());
+//            Apply apply = applies.get(0);
+//            Fund fund = fundService.queryByID(apply.getFundID());
+//            FundDTO fd = new FundDTO();
+//            fd.setBalance(fund.getBalance() - apply.getMoney());
+//            fd.setSum(fund.getSum());
+//            fd.setUuid(fund.getUuid());
+//            fd.setEndTime(fund.getEndTime());
+//            fd.setFundNumber(fund.getFundNumber());
+//            fd.setFundName(fund.getFundName());
+//            fd.setRemainDays(fund.getRemainDays());
+//            fd.setStartTime(fund.getStartTime());
+//            fundService.testModify(fd);
+//
+//            NoticeDTO nd = new NoticeDTO();
+//            nd.setContent(&quot;Your apply for &quot; + apply.getType2() + &quot; is passed&quot;);
+//            noticeService.testInsert(nd, apply.getUserID());
+//        } else {
+//            applyService.testJudgeByID(&quot;fail&quot;, inspectDTO.getRemark(), inspectDTO.getAid());
+//            List&lt;Apply&gt; applies = applyService.testQueryByID(inspectDTO.getAid());
+//            Apply apply = applies.get(0);
+//            NoticeDTO nd = new NoticeDTO();
+//            nd.setContent(apply.getName() + &quot; failed to pass&quot;);
+//            noticeService.testInsert(nd, apply.getUserID());
+//        }
+//        return new Result(200, &quot;OK&quot;, null);
+//    }
+
+//    @RequestMapping(value = &quot;/search-all-apply&quot;, method = {RequestMethod.GET, RequestMethod.POST})
+//    public Result searchAllApply(@RequestBody ApplySearchDTO searchDTO) {
+//        return new Result(applyService.searchAllVO(searchDTO));
+//    }
+
+//    @RequestMapping(value = &quot;/search-apply-userid&quot;, method = {RequestMethod.GET, RequestMethod.POST})
+//    public Result searchApplyUserID(@RequestBody ApplySearchDTO searchDTO, @RequestParam int uid) {
+//        return new Result(applyService.searchUserApplyVO(searchDTO, uid));
+//    }
+
+//    @GetMapping(&quot;/get-all-apply&quot;)
+//    public Result getAllApply() {
+//        List&lt;ApplyVO&gt; applies = applyService.queryAllVO();
+//        if (applies == null) {
+//            return new Result(404, &quot;applies not found&quot;, null);
+//        } else {
+//            return new Result(applies);
+//        }
+//    }
+
+    @GetMapping(&quot;/all-apply-fund&quot;)
+    public Result getApplyByFundID(@RequestParam int fundID) {
+<span class="fc" id="L140">        List&lt;Apply&gt; applies = applyService.testQueryByFundID(fundID);</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (applies == null) {</span>
+<span class="fc" id="L142">            return new Result(404, &quot;applies not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L144">            return new Result(applies);</span>
+        }
+    }
+
+    @GetMapping(&quot;/selectapplybyresearchgroupid&quot;)
+    public Result getApplyByResearchGroupID(int researchGroupID) {
+<span class="fc" id="L150">        List&lt;Apply&gt; applies = applyService.testQueryByResearchGroupID(researchGroupID);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (applies == null) {</span>
+<span class="fc" id="L152">            return new Result(404, &quot;applies not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L154">            return new Result(applies);</span>
+        }
+    }
+
+//    @GetMapping(&quot;/apply-userid&quot;)
+//    public Result getSortApplyByUserID(int userID) {
+//        List&lt;ApplyVO&gt; applies = applyService.testQueryByUserID(userID);
+//        if (applies == null) {
+//            return new Result(404, &quot;latest applies not found&quot;, null);
+//        } else {
+//            return new Result(applies);
+//        }
+//    }
+
+//    @GetMapping(&quot;/my-apply&quot;)
+//    public Result getMyApply() {
+//        int my_id = HttpContextUtil.getRequestUuid();
+//        return getSortApplyByUserID(my_id);
+//    }
+
+//    @RequestMapping(value = &quot;/search-my-apply&quot;, method = {RequestMethod.GET, RequestMethod.POST})
+//    public Result searchMyApply(@RequestBody ApplySearchDTO applySearchDTO) {
+//        return new Result(applyService.searchUserApplyVO(applySearchDTO, HttpContextUtil.getRequestUuid()));
+//    }
+
+//    @GetMapping(&quot;/all-recent-apply&quot;)
+//    public Result allRecentApply(){
+//        return new Result(applyService.allRecentApply());
+//    }
+
+//    @GetMapping(&quot;/my-recent-apply&quot;)
+//    public Result myRecentApply(){
+//        return new Result(applyService.userRecentApply(HttpContextUtil.getRequestUuid()));
+//    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -81,22 +81,22 @@ public class ApplyControllerTest {
 
     }
 
-    @Test
-    public void testAddApply() throws Exception {
-        ApplyDTO applyDTO = new ApplyDTO();
-        applyDTO.setUserID(1);
-
-        when(applyService.testInsert(applyDTO)).thenReturn("success");
-
-        mockMvc.perform(post("/add-apply")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"userID\": 1}"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("success"));
-
-        verify(applyService, times(1)).testInsert(applyDTO);
-        verifyNoMoreInteractions(applyService);
-    }
+//    @Test
+//    public void testAddApply() throws Exception {
+//        ApplyDTO applyDTO = new ApplyDTO();
+//        applyDTO.setUserID(1);
+//
+//        when(applyService.testInsert(applyDTO)).thenReturn("success");
+//
+//        mockMvc.perform(post("/add-apply")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content("{\"userID\": 1}"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("success"));
+//
+//        verify(applyService, times(1)).testInsert(applyDTO);
+//        verifyNoMoreInteractions(applyService);
+//    }
 
 //    @Test
 //    public void testAddApply_shouldReturnForbidden_whenUserNotBelongToResearchGroup() throws Exception {
