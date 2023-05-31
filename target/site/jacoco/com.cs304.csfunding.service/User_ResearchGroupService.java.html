@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User_ResearchGroupService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.service</a> &gt; <span class="el_source">User_ResearchGroupService.java</span></div><h1>User_ResearchGroupService.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.service;
+
+import com.cs304.csfunding.api.UserDTO;
+import com.cs304.csfunding.api.User_ResearchGroupDTO;
+import com.cs304.csfunding.controller.User_ResearchGroupController;
+import com.cs304.csfunding.entity.User;
+import com.cs304.csfunding.entity.User_ResearchGroup;
+import com.cs304.csfunding.mapper.UserMapper;
+import com.cs304.csfunding.mapper.User_ResearchGroupMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class User_ResearchGroupService {
+    private final User_ResearchGroupMapper user_researchGroupMapper;
+
+<span class="fc" id="L20">    public User_ResearchGroupService(User_ResearchGroupMapper user_researchGroupMapper) {</span>
+<span class="fc" id="L21">        this.user_researchGroupMapper = user_researchGroupMapper;</span>
+<span class="fc" id="L22">    }</span>
+
+    public String delete(User_ResearchGroupDTO user_researchGroupDTO){
+<span class="nc" id="L25">        User_ResearchGroup user_researchGroup = new User_ResearchGroup();</span>
+<span class="nc" id="L26">        user_researchGroup.setUser_UUID(user_researchGroupDTO.getUserUUID());</span>
+<span class="nc" id="L27">        user_researchGroup.setResearchGroup_UUID(user_researchGroupDTO.getResearchGroupUUID());</span>
+<span class="nc" id="L28">        user_researchGroupMapper.deleteUserGroup(user_researchGroup);</span>
+<span class="nc" id="L29">        return &quot;OK&quot;;</span>
+    }
+
+    public String testInsert(User_ResearchGroupDTO user_researchGroupDTO) {
+<span class="nc" id="L33">        User_ResearchGroup user_researchGroup = new User_ResearchGroup();</span>
+<span class="nc" id="L34">        user_researchGroup.setUser_UUID(user_researchGroupDTO.getUserUUID());</span>
+<span class="nc" id="L35">        user_researchGroup.setResearchGroup_UUID(user_researchGroupDTO.getResearchGroupUUID());</span>
+//        System.out.println(user_researchGroupDTO.getUserUUID());
+//        System.out.println(user_researchGroupDTO.getResearchGroupUUID());
+<span class="nc" id="L38">        user_researchGroupMapper.addUser_ResearchGroup(user_researchGroup);</span>
+<span class="nc" id="L39">        return &quot;&quot;;</span>
+    }
+
+    public List&lt;Integer&gt; testQueryByUser(int user){
+<span class="nc" id="L43">        return user_researchGroupMapper.findResearchGroupByUser(user);</span>
+    }
+
+    public List&lt;User&gt; queryUserByGroup(int gid){
+<span class="nc" id="L47">        return user_researchGroupMapper.findUserByGroup(gid);</span>
+    }
+
+    public List&lt;User&gt; queryUserNotInGroup(int gid){
+<span class="nc" id="L51">        return user_researchGroupMapper.findUserNotInGroup(gid);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cs304.csfunding.mapper.ApplyMapper">
+
+    <select id="searchApply" resultType="com.cs304.csfunding.entity.Apply">
+        SELECT a.name,
+               money,
+               type1,
+               type2,
+               a.uuid,
+               fundid,
+               researchgroupid,
+               state,
+               contentsummary,
+               remark,
+               time,
+               userid
+        FROM apply a
+                 join fund f on a.FundID = f.UUID
+                 join researchgroup r on a.ResearchGroupID = r.UUID
+        where
+          r.Teacher like CONCAT('%', #{researchGroup}, '%')
+          and f.FundName like CONCAT('%', #{fundName}, '%')
+        <if test="state != null">
+          and a.State = #{state}
+        </if>
+        <if test="userId != -1">
+          and a.UserID = #{userId}
+        </if>
+        order by a.time desc
+
+
+    </select>
+</mapper>

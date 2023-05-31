@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FundController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.controller</a> &gt; <span class="el_source">FundController.java</span></div><h1>FundController.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.controller;
+
+import com.cs304.csfunding.api.*;
+import com.cs304.csfunding.entity.Apply;
+import com.cs304.csfunding.entity.Fund;
+import com.cs304.csfunding.service.ApplyService;
+import com.cs304.csfunding.service.FundService;
+import com.cs304.csfunding.service.ResearchGroupService;
+import com.cs304.csfunding.service.ResearchGroup_FundService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.cs304.csfunding.service.Fund_ApplyService;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+<span class="fc" id="L31">public class FundController {</span>
+
+    @Autowired
+    private FundService fundService;
+    @Autowired
+    private Fund_ApplyService fund_applyService;
+    @Autowired
+    private ApplyService applyService;
+
+    @Autowired
+    private ResearchGroup_FundService researchGroup_fundService;
+    @Autowired
+    private ResearchGroupService researchGroupService;
+
+<span class="fc" id="L45">    Logger logger = LoggerFactory.getLogger(FundController.class);</span>
+
+
+    @PostMapping(value = &quot;/add-fund&quot;)
+    public Result testAddFund(@RequestBody FundInsertDTO fundDTO) {
+<span class="fc" id="L50">        int id = fundService.testInsert(fundDTO);</span>
+<span class="fc" id="L51">        logger.info(Integer.toString(id));</span>
+<span class="fc" id="L52">        ResearchGroup_FundDTO r_f = new ResearchGroup_FundDTO();</span>
+<span class="fc" id="L53">        r_f.setFundUUID(id);</span>
+<span class="fc" id="L54">        r_f.setResearchGroupUUID(fundDTO.getResearchGroup());</span>
+<span class="nc" id="L55">        researchGroup_fundService.testInsert(r_f);</span>
+<span class="nc" id="L56">        researchGroupService.addResearchGroupFund(fundDTO.getResearchGroup(), fundDTO.getSum());</span>
+<span class="nc" id="L57">        return new Result(&quot;OK&quot;);</span>
+    }
+
+    @PostMapping(value = &quot;/modify-fund&quot;)
+    public Result testModifyFund(@RequestBody FundDTO fundDTO) {
+<span class="fc" id="L62">        Fund fund = fundService.queryByID(fundDTO.getUuid());</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (fund == null) {</span>
+<span class="fc" id="L64">            return new Result(404, &quot;fund not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L66">            return fundService.testModify(fundDTO);</span>
+        }
+    }
+
+    @GetMapping(&quot;delete-fund&quot;)
+    public Result testDeleteFund(@RequestParam int uuid) {
+<span class="fc" id="L72">        Fund fund = fundService.queryByID(uuid);</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (fund == null) {</span>
+<span class="fc" id="L74">            return new Result(404, &quot;fund not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L76">            fundService.testDelete(uuid);</span>
+<span class="fc" id="L77">            return new Result(200, &quot;success&quot;, null);</span>
+        }
+    }
+
+    @GetMapping(&quot;/get-all-funds&quot;)
+    public Result getAllFund() {
+<span class="fc" id="L83">        List&lt;Fund&gt; funds = fundService.testQueryAll();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (funds == null) {</span>
+<span class="fc" id="L85">            return new Result(404, &quot;funds not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L87">            return new Result(funds);</span>
+        }
+    }
+
+    @GetMapping(&quot;/get-fund&quot;)
+    public Result getFundByUuid(@RequestParam int uuid) {
+<span class="fc" id="L93">        Fund fund = fundService.queryByID(uuid);</span>
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (fund == null) {</span>
+<span class="fc" id="L95">            return new Result(404, &quot;fund not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L97">            return new Result(200, &quot;success&quot;, fund);</span>
+        }
+    }
+
+    @GetMapping(&quot;/get-fund-vague&quot;)
+    public Result getFundVague(@RequestParam String FundNumber, @RequestParam String FundName, @RequestParam String researchGroupId) {
+<span class="fc" id="L103">        List&lt;Fund&gt; fund = fundService.queryVague(FundNumber, FundName, researchGroupId);</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (fund == null) {</span>
+<span class="fc" id="L105">            return new Result(404, &quot;fund not found&quot;, null);</span>
+        } else {
+<span class="fc" id="L107">            return new Result(200, &quot;success&quot;, fund);</span>
+        }
+    }
+
+//    @GetMapping(&quot;/get-12month-cost&quot;)
+//    public Result getCost(@RequestParam int uuid) {
+//        Fund fund = fundService.queryByID(uuid);
+//        if (fund == null) {
+//            return new Result(404, &quot;fund not found&quot;, null);
+//        } else {
+//            List&lt;Apply&gt; applies = applyService.testQueryByFundID(uuid);
+//            Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
+//            for (int i = 0; i &lt; 12; i++) {
+//                map.put(i + 1, 0);
+//            }
+//            long timeMill = System.currentTimeMillis();
+//
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTimeInMillis(timeMill);
+//            int currentMonth = calendar.get(Calendar.MONTH) + 1;
+//            int currentYear = calendar.get(Calendar.YEAR);
+//            int applyMonth;
+//
+//            for (Apply apply : applies) {
+//                if (!apply.getState().equals(&quot;pass&quot;))
+//                    continue;
+//                String time = apply.getTime();
+//                // Convert the time string to a Date object
+//                calendar.setTimeInMillis(Long.parseLong(time));
+//                if (calendar.get(Calendar.YEAR) == currentYear - 1 &amp;&amp; calendar.get(Calendar.MONTH) + 1 &gt; currentMonth) {
+//                    applyMonth = calendar.get(Calendar.MONTH) + 1;
+//                } else if (calendar.get(Calendar.YEAR) == currentYear) {
+//                    applyMonth = calendar.get(Calendar.MONTH) + 1;
+//                } else {
+//                    continue;
+//                }
+//                map.put(applyMonth, map.get(applyMonth) + apply.getMoney());
+//            }
+//            List&lt;Map&lt;String, Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+//            for (int i = 0; i &lt; 12; i++) {
+//                Map&lt;String, Integer&gt; m = new HashMap&lt;&gt;();
+//                m.put(&quot;name&quot;, (i + currentMonth) % 12 + 1);
+//                m.put(&quot;value&quot;, map.get((i + currentMonth) % 12 + 1));
+//                res.add(m);
+//            }
+//            return new Result(200, &quot;success&quot;, res);
+//        }
+//    }
+
+//    @GetMapping(&quot;/get-excel&quot;)
+//    public Result getExcel(@RequestParam String path) throws IOException {
+//        Workbook workbook = new XSSFWorkbook();
+//
+//        Sheet sheet = workbook.createSheet(&quot;多项经费使用一览表&quot;);
+//
+//        Row dataRow = sheet.createRow(0);
+//        Cell dataCell = dataRow.createCell(0);
+//        dataCell.setCellValue(&quot;多项经费使用一览表&quot;);
+//
+//        dataRow = sheet.createRow(1);
+//        dataCell = dataRow.createCell(0);
+//        dataCell.setCellValue(&quot;序号&quot;);
+//
+//        dataCell = dataRow.createCell(2);
+//        dataCell.setCellValue(&quot;经费名称（编号）&quot;);
+//        dataCell = dataRow.createCell(3);
+//        dataCell.setCellValue(&quot;经费授权有效期&quot;);
+//        dataCell = dataRow.createCell(4);
+//        dataCell.setCellValue(&quot;经费总额&quot;);
+//        dataCell = dataRow.createCell(5);
+//        dataCell.setCellValue(&quot;已使用经费&quot;);
+//        dataCell = dataRow.createCell(6);
+//        dataCell.setCellValue(&quot;经费余额&quot;);
+//        dataCell = dataRow.createCell(7);
+//        dataCell.setCellValue(&quot;当前是否达标&quot;);
+//
+//        dataRow = sheet.createRow(2);
+//        dataCell = dataRow.createCell(0);
+//        dataCell.setCellValue(1);
+//        dataCell = dataRow.createCell(2);
+//        dataCell.setCellValue(&quot;高水平1（G000XX）&quot;);
+//        dataCell = dataRow.createCell(3);
+//        dataCell.setCellValue(&quot;2022.05.08-2023.06.28&quot;);
+//        dataCell = dataRow.createCell(4);
+//        dataCell.setCellValue(&quot;500&quot;);
+//        dataCell = dataRow.createCell(5);
+//        dataCell.setCellValue(&quot;300&quot;);
+//        dataCell = dataRow.createCell(6);
+//        dataCell.setCellValue(&quot;200&quot;);
+//        dataCell = dataRow.createCell(7);
+//        dataCell.setCellValue(&quot;是&quot;);
+//
+//        dataRow = sheet.createRow(3);
+//        dataCell = dataRow.createCell(0);
+//        dataCell.setCellValue(2);
+//        dataCell = dataRow.createCell(2);
+//        dataCell.setCellValue(&quot;高水平2（G001XX）&quot;);
+//        dataCell = dataRow.createCell(3);
+//        dataCell.setCellValue(&quot;2023.05.29-2023.06.28&quot;);
+//        dataCell = dataRow.createCell(4);
+//        dataCell.setCellValue(&quot;1000&quot;);
+//        dataCell = dataRow.createCell(5);
+//        dataCell.setCellValue(&quot;700&quot;);
+//        dataCell = dataRow.createCell(6);
+//        dataCell.setCellValue(&quot;300&quot;);
+//        dataCell = dataRow.createCell(7);
+//        dataCell.setCellValue(&quot;是&quot;);
+//
+//        dataRow = sheet.createRow(4);
+//        dataCell = dataRow.createCell(0);
+//        dataCell.setCellValue(3);
+//        dataCell = dataRow.createCell(2);
+//        dataCell.setCellValue(&quot;高水平3（G002XX）&quot;);
+//        dataCell = dataRow.createCell(3);
+//        dataCell.setCellValue(&quot;2023.05.15-2023.06.21&quot;);
+//        dataCell = dataRow.createCell(4);
+//        dataCell.setCellValue(&quot;1500&quot;);
+//        dataCell = dataRow.createCell(5);
+//        dataCell.setCellValue(&quot;700&quot;);
+//        dataCell = dataRow.createCell(6);
+//        dataCell.setCellValue(&quot;800&quot;);
+//        dataCell = dataRow.createCell(7);
+//        dataCell.setCellValue(&quot;否&quot;);
+//
+//        dataRow = sheet.createRow(5);
+//        dataCell = dataRow.createCell(0);
+//        dataCell.setCellValue(3);
+//        dataCell = dataRow.createCell(2);
+//        dataCell.setCellValue(&quot;高水平4（G003XX）&quot;);
+//        dataCell = dataRow.createCell(3);
+//        dataCell.setCellValue(&quot;2023.05.15-2023.6.21&quot;);
+//        dataCell = dataRow.createCell(4);
+//        dataCell.setCellValue(&quot;2000&quot;);
+//        dataCell = dataRow.createCell(5);
+//        dataCell.setCellValue(&quot;500&quot;);
+//        dataCell = dataRow.createCell(6);
+//        dataCell.setCellValue(&quot;1500&quot;);
+//        dataCell = dataRow.createCell(7);
+//        dataCell.setCellValue(&quot;否&quot;);
+//
+//
+//        FileOutputStream fileOut = new FileOutputStream(&quot;C:\\Users\\Xieyudong\\Desktop\\&quot;+path+&quot;\\data.xlsx&quot;);
+//        workbook.write(fileOut);
+//        fileOut.close();
+//        return new Result(200);
+//    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
