@@ -38,7 +38,7 @@ public class MailController {
         // read properties
         Properties props = new Properties();
         try (InputStream in = Objects.requireNonNull(MailController.class.getClassLoader().getResource(
-            "mail.properties")).openStream()) {
+                "mail.properties")).openStream()) {
             props.load(in);
         }
 

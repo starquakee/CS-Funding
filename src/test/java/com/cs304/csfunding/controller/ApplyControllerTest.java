@@ -77,7 +77,7 @@ public class ApplyControllerTest {
     }
 
     @Test
-    public void emptyTest(){
+    public void emptyTest() {
 
     }
 

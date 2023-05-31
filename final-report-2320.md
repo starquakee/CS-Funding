@@ -4,38 +4,38 @@
 
 - Lines of Code
 
-  ![1684755930384](final-delivery-img\1684755930384.png)
+  ![1684755930384](final-delivery-img/1684755930384.png)
   L(J): Lines of Java
 
   LOC: Lines of code
 
 - Number of modules/subprojects
 
-  ![1684755974693](final-delivery-img\1684755974693.png)
+  ![1684755974693](final-delivery-img/1684755974693.png)
 
 
 
 - Number of packages
 
-  ![1684243710806](final-delivery-img\1684243710806.png)
+  ![1684243710806](final-delivery-img/1684243710806.png)
 
 - Number of source files
 
-  ![1684755135128](final-delivery-img\1684755135128.png)
+  ![1684755135128](final-delivery-img/1684755135128.png)
 
 - Number of 3rd party dependencies
 
-  ![1684755698404](final-delivery-img\1684755698404.png)
+  ![1684755698404](final-delivery-img/1684755698404.png)
 
-![1684755729757](final-delivery-img\1684755729757.png)
+![1684755729757](final-delivery-img/1684755729757.png)
 
 We could also use metrics to estimate the maintainability of software systems. Please also answer:
 
 - What is the maintainability of your team project?
 
-  ![1684760251050](final-delivery-img\1684760251050.png)
+  ![1684760251050](final-delivery-img/1684760251050.png)
 
-  ![1684760274848](final-delivery-img\1684760274848.png)
+  ![1684760274848](final-delivery-img/1684760274848.png)
 
   [team-project-2320/maintainability.pdf at main · sustech-cs304/team-project-2320 · GitHub](https://github.com/sustech-cs304/team-project-2320/blob/main/maintainability.pdf)
   
@@ -43,39 +43,39 @@ We could also use metrics to estimate the maintainability of software systems. P
 
 ## Documentation for Users
 
-![1685539970201](final-delivery-img\1685539970201.png)
+![1685539970201](final-delivery-img/1685539970201.png)
 
 login & sign up
 
-![1685540164394](final-delivery-img\1685540164394.png)
+![1685540164394](final-delivery-img/1685540164394.png)
 
 sign up
 
-![1685540333125](final-delivery-img\1685540333125.png)
+![1685540333125](final-delivery-img/1685540333125.png)
 
 main page for admin
 
-![1685540402661](final-delivery-img\1685540402661.png)
+![1685540402661](final-delivery-img/1685540402661.png)
 
 main page for user
 
-![1685540351615](final-delivery-img\1685540351615.png)
+![1685540351615](final-delivery-img/1685540351615.png)
 
 send apply
 
-![1685540450588](final-delivery-img\1685540497435.png)
+![1685540450588](final-delivery-img/1685540497435.png)
 
 check apply
 
-![1685540536703](final-delivery-img\1685540536703.png)
+![1685540536703](final-delivery-img/1685540536703.png)
 
 view funding(in group)
 
-![1685540651935](final-delivery-img\1685540651935.png)
+![1685540651935](final-delivery-img/1685540651935.png)
 
 visualization
 
-![1685540693813](final-delivery-img\1685540693813.png)
+![1685540693813](final-delivery-img/1685540693813.png)
 
 edit group
 
@@ -601,7 +601,40 @@ get current user
 ```
 
 get user by phone number
+## Tests
+### Testing tools and tests kinds
+We do automated tests for our backend codes. And we use following 5 tools to come it true.
+1. JUnit: JUnit is a unit testing framework for Java that allows you to write and run repeatable tests. It provides annotations such as `@Test` `@BeforeEach` to define test methods and assertions to verify expected outcomes.
 
+2. Mockito: Mockito is a mocking framework for Java that allows to create mock objects and define their behavior. It is used for creating mock instances of dependencies and setting up expectations on their interactions.
+
+3. Spring's MockMvc: MockMvc is a testing framework provided by Spring for testing Spring MVC controllers without making actual HTTP requests. It allows to simulate HTTP requests and verify the responses. It is used for testing the behavior of each `ClassController` class.
+
+4. Hamcrest: Hamcrest is a library that provides a set of matchers for creating more readable assertions in tests. It enhances the readability of test assertions by providing a fluent API for expressing expected outcomes.
+
+5. ObjectMapper: ObjectMapper is a part of the Jackson library and is used for converting Java objects to JSON and vice versa. It is used in the code to convert objects to JSON strings for request payloads in the tests.
+
+These testing tools are commonly used in Java development to write unit tests and integration tests to ensure the correctness and robustness of the code.
+### Source code of related artifact for testing
+First, we inject mocks we need in our tests, and then use `@BeforeEach` to init mocks.
+
+![code1](/final-delivery-img/code1.png)
+Then, we new DTO we need and use "when thenReturn" to design pre-returned results of Service.
+Finally, we use mockMvc to perform the api and to assert the real results.
+
+![code1](/final-delivery-img/code2.png)
+![code1](/final-delivery-img/code3.png)
+We put our test codes in here: https://github.com/sustech-cs304/team-project-2320/tree/main/src/test/java/com/cs304/csfunding/controller
+### Test execution results
+We run our automated tests successfully as following:
+
+![code1](/final-delivery-img/result.png)
+![code1](/final-delivery-img/result1.png)
+![code1](/final-delivery-img/result2.png)
+![code1](/final-delivery-img/report1.png)
+And this is our tests report. In our tests, we meet some nullpointer problems, but in the actual use, they don't exist. Even so, in the end, our test coverage is over 80 percent, which means the test is working well.
+![code1](/final-delivery-img/report2.png)
+We push the report in here: https://github.com/sustech-cs304/team-project-2320/blob/main/target/site/jacoco/index.html
 ## Build
 ### Framework/Technology/Tools/Plugins
 #### 1 Framework: SpringBoot
@@ -656,16 +689,71 @@ The artifacts are involved in below picture.
 ### Technology/Tools: Docker
 Docker is an open-source engine that automates the deployment of applications into containers. It is an open platform for developing, shipping, and running applications. Docker enables us to separate our applications from our infrastructure so us can deliver software quickly. With Docker, we can manage our infrastructure in the same ways we manage our applications.
 
-### Preparation for containerization
-Picture below is the dockerfile we used for image creation
-![tupian](/final-delivery-img/dockerfile.png)
+Because our project is split into frontend and backend, they use different framework. In order to containerize them, we use two docker which use two different base images.
+
+### Backend: Springboot
+
+#### Preparation for containerization
+The springboot application needs to first build to a jar file to run.
+
+![](final-delivery-img/docker/mvn-package-1.png)
+
+![](final-delivery-img/docker/mvn-package-2.png)
+
+#### Containerization
+
+dockerfile:
+
+```dockerfile
+FROM openjdk:8
+COPY /target/*.jar /app.jar
+CMD ["--server.port=8081"]
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
 The process and result for image build
+
 ![tupian](final-delivery-img/deploymenting.png)
+
 ![tupian](final-delivery-img/deploymented.png)
 
-### Containerization
 Run the image in container
 ![tupian](final-delivery-img/containerization.png)
 The proof for the success of containerization:
 ![tupian](final-delivery-img/test%20containerization.png)
 The first try is failed by the wrong instruction. The second try is an approximate success because 415 means the CsFunding System is running properly. The third try is a success because we login into the system successfully and get a token from container.
+
+### Frontend: Vue+Vite
+
+#### Preparation for containerization
+
+We need to build the frontend project into a html file to containerize.
+
+![](final-delivery-img/docker/frontend-build.png)
+
+It will generate a folder dist, which can be deployed to a http server.
+
+#### Containerization
+
+dockerfile:
+
+```dockerfile
+FROM node:lts-alpine
+RUN npm install -g http-server
+COPY package*.json ./
+RUN npm install
+COPY dist ./
+EXPOSE 8080
+CMD ["http-server", "dist"]
+```
+
+docker build:
+
+![](final-delivery-img/docker/frontend-docker-build1.png)
+
+docker run:
+
+![](final-delivery-img/docker/frontend-docker-run.png)
+
+Then we can visit the site for frontend. With backend docker running at the same time, The application can run normally.
