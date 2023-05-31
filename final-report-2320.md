@@ -4,38 +4,38 @@
 
 - Lines of Code
 
-  ![1684755930384](final-delivery-img\1684755930384.png)
+  ![1684755930384](final-delivery-img/1684755930384.png)
   L(J): Lines of Java
 
   LOC: Lines of code
 
 - Number of modules/subprojects
 
-  ![1684755974693](final-delivery-img\1684755974693.png)
+  ![1684755974693](final-delivery-img/1684755974693.png)
 
 
 
 - Number of packages
 
-  ![1684243710806](final-delivery-img\1684243710806.png)
+  ![1684243710806](final-delivery-img/1684243710806.png)
 
 - Number of source files
 
-  ![1684755135128](final-delivery-img\1684755135128.png)
+  ![1684755135128](final-delivery-img/1684755135128.png)
 
 - Number of 3rd party dependencies
 
-  ![1684755698404](final-delivery-img\1684755698404.png)
+  ![1684755698404](final-delivery-img/1684755698404.png)
 
-![1684755729757](final-delivery-img\1684755729757.png)
+![1684755729757](final-delivery-img/1684755729757.png)
 
 We could also use metrics to estimate the maintainability of software systems. Please also answer:
 
 - What is the maintainability of your team project?
 
-  ![1684760251050](final-delivery-img\1684760251050.png)
+  ![1684760251050](final-delivery-img/1684760251050.png)
 
-  ![1684760274848](final-delivery-img\1684760274848.png)
+  ![1684760274848](final-delivery-img/1684760274848.png)
 
   [team-project-2320/maintainability.pdf at main · sustech-cs304/team-project-2320 · GitHub](https://github.com/sustech-cs304/team-project-2320/blob/main/maintainability.pdf)
   
@@ -43,39 +43,39 @@ We could also use metrics to estimate the maintainability of software systems. P
 
 ## Documentation for Users
 
-![1685539970201](final-delivery-img\1685539970201.png)
+![1685539970201](final-delivery-img/1685539970201.png)
 
 login & sign up
 
-![1685540164394](final-delivery-img\1685540164394.png)
+![1685540164394](final-delivery-img/1685540164394.png)
 
 sign up
 
-![1685540333125](final-delivery-img\1685540333125.png)
+![1685540333125](final-delivery-img/1685540333125.png)
 
 main page for admin
 
-![1685540402661](final-delivery-img\1685540402661.png)
+![1685540402661](final-delivery-img/1685540402661.png)
 
 main page for user
 
-![1685540351615](final-delivery-img\1685540351615.png)
+![1685540351615](final-delivery-img/1685540351615.png)
 
 send apply
 
-![1685540450588](final-delivery-img\1685540497435.png)
+![1685540450588](final-delivery-img/1685540497435.png)
 
 check apply
 
-![1685540536703](final-delivery-img\1685540536703.png)
+![1685540536703](final-delivery-img/1685540536703.png)
 
 view funding(in group)
 
-![1685540651935](final-delivery-img\1685540651935.png)
+![1685540651935](final-delivery-img/1685540651935.png)
 
 visualization
 
-![1685540693813](final-delivery-img\1685540693813.png)
+![1685540693813](final-delivery-img/1685540693813.png)
 
 edit group
 
