@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.cs304.csfunding.controller.ApplyControllerTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.812 s <<< FAILURE! - in com.cs304.csfunding.controller.ApplyControllerTest
+testGetAllApply  Time elapsed: 0.017 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.cs304.csfunding.controller.ApplyControllerTest.testGetAllApply(ApplyControllerTest.java:223)
+
+testGetMyApply  Time elapsed: 0.01 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.cs304.csfunding.controller.ApplyControllerTest.testGetMyApply(ApplyControllerTest.java:208)
+

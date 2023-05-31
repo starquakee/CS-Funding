@@ -1,0 +1,8 @@
+com\cs304\csfunding\controller\NoticeControllerTest.class
+com\cs304\csfunding\controller\Fund_ApplyControllerTest.class
+com\cs304\csfunding\controller\User_ResearchGroupControllerTest.class
+com\cs304\csfunding\controller\UserControllerTest.class
+com\cs304\csfunding\controller\FundControllerTest.class
+com\cs304\csfunding\controller\ResearchGroup_FundControllerTest.class
+com\cs304\csfunding\controller\LoginControllerTest.class
+com\cs304\csfunding\controller\ResearchGroupControllerTest.class
