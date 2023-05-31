@@ -621,16 +621,71 @@ Our project uses pom.xml for the whole building process. The artifacts are invol
 ### Technology/Tools: Docker
 Docker is an open-source engine that automates the deployment of applications into containers. It is an open platform for developing, shipping, and running applications. Docker enables us to separate our applications from our infrastructure so us can deliver software quickly. With Docker, we can manage our infrastructure in the same ways we manage our applications.
 
-### Preparation for containerization
-Picture below is the dockerfile we used for image creation
-![tupian](/final-delivery-img/dockerfile.png)
+Because our project is split into frontend and backend, they use different framework. In order to containerize them, we use two docker which use two different base images.
+
+### Backend: Springboot
+
+#### Preparation for containerization
+The springboot application needs to first build to a jar file to run.
+
+![](final-delivery-img/docker/mvn-package-1.png)
+
+![](final-delivery-img/docker/mvn-package-2.png)
+
+#### Containerization
+
+dockerfile:
+
+```dockerfile
+FROM openjdk:8
+COPY /target/*.jar /app.jar
+CMD ["--server.port=8081"]
+EXPOSE 8081
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
 The process and result for image build
+
 ![tupian](final-delivery-img/deploymenting.png)
+
 ![tupian](final-delivery-img/deploymented.png)
 
-### Containerization
 Run the image in container
 ![tupian](final-delivery-img/containerization.png)
 The proof for the success of containerization:
 ![tupian](final-delivery-img/test%20containerization.png)
 The first try is failed by the wrong instruction. The second try is an approximate success because 415 means the CsFunding System is running properly. The third try is a success because we login into the system successfully and get a token from container.
+
+### Frontend: Vue+Vite
+
+#### Preparation for containerization
+
+We need to build the frontend project into a html file to containerize.
+
+![](final-delivery-img/docker/frontend-build.png)
+
+It will generate a folder dist, which can be deployed to a http server.
+
+#### Containerization
+
+dockerfile:
+
+```dockerfile
+FROM node:lts-alpine
+RUN npm install -g http-server
+COPY package*.json ./
+RUN npm install
+COPY dist ./
+EXPOSE 8080
+CMD ["http-server", "dist"]
+```
+
+docker build:
+
+![](final-delivery-img/docker/frontend-docker-build1.png)
+
+docker run:
+
+![](final-delivery-img/docker/frontend-docker-run.png)
+
+Then we can visit the site for frontend. With backend docker running at the same time, The application can run normally.
