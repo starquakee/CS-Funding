@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.service;
+
+import com.cs304.csfunding.api.RegisterDTO;
+import com.cs304.csfunding.api.UserDTO;
+import com.cs304.csfunding.entity.User;
+import com.cs304.csfunding.mapper.UserMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Future;
+
+@Service
+@Transactional
+public class UserService {
+    private final UserMapper userMapper;
+<span class="fc" id="L23">    private final Logger logger = LoggerFactory.getLogger(UserService.class);</span>
+
+<span class="fc" id="L25">    private final Map&lt;String, String&gt; codeMap = new HashMap&lt;&gt;();</span>
+
+<span class="fc" id="L27">    public UserService(UserMapper userMapper) {</span>
+<span class="fc" id="L28">        this.userMapper = userMapper;</span>
+<span class="fc" id="L29">    }</span>
+
+    public boolean checkReg(String reg, String code){
+<span class="nc bnc" id="L32" title="All 4 branches missed.">        return codeMap.containsKey(reg) &amp;&amp; code.equals(codeMap.get(reg));</span>
+    }
+
+    public void addUser(RegisterDTO registerDTO){
+<span class="nc" id="L36">        User user = new User();</span>
+<span class="nc" id="L37">        user.setID(registerDTO.getUserId());</span>
+<span class="nc" id="L38">        user.setName(registerDTO.getName());</span>
+<span class="nc" id="L39">        user.setKey(registerDTO.getRegister_key());</span>
+<span class="nc" id="L40">        user.setPhoneNum(&quot;123456&quot;);</span>
+<span class="nc" id="L41">        user.setIsAdmin(false);</span>
+<span class="nc" id="L42">        userMapper.addUser(user);</span>
+<span class="nc" id="L43">    }</span>
+
+    public String testInsert(UserDTO userDTO) {
+<span class="nc" id="L46">        User user = new User();</span>
+<span class="nc" id="L47">        user.setID(Long.toString(System.currentTimeMillis()));</span>
+<span class="nc" id="L48">        user.setKey(userDTO.getKey());</span>
+<span class="nc" id="L49">        user.setPhoneNum(userDTO.getPhoneNum());</span>
+<span class="nc" id="L50">        user.setName(userDTO.getName());</span>
+<span class="nc" id="L51">        user.setIsAdmin(false);</span>
+<span class="nc" id="L52">        userMapper.addUser(user);</span>
+<span class="nc" id="L53">        return &quot;&quot;;</span>
+    }
+
+    public List&lt;User&gt; queryAll() {
+<span class="nc" id="L57">        return userMapper.getAllUser();</span>
+    }
+
+    public List&lt;User&gt; testQueryAllAdmin() {
+<span class="nc" id="L61">        return userMapper.getAllAdmin();</span>
+    }
+
+    public User queryByID(String id) {
+<span class="nc" id="L65">        return userMapper.findUserById(id);</span>
+    }
+
+    public User queryByPhoneNum(String phoneNum) {
+<span class="nc" id="L69">        return userMapper.findUserByPhoneNum(phoneNum);</span>
+    }
+
+    public User queryByUuid(int uuid) {
+<span class="nc" id="L73">        return userMapper.findUserByUuid(uuid);</span>
+    }
+
+    public void addMailCode(String reg, String code) {
+<span class="nc" id="L77">        codeMap.put(reg, code);</span>
+<span class="nc" id="L78">        this.removeMailRegTimer(reg);</span>
+<span class="nc" id="L79">        logger.info(&quot;Function done&quot;);</span>
+<span class="nc" id="L80">    }</span>
+
+    private void removeMailRegTimer(String reg) {
+<span class="nc" id="L83">        new Thread(() -&gt; {</span>
+            try {
+<span class="nc" id="L85">                Thread.sleep(600000);</span>
+<span class="nc" id="L86">            } catch (Exception e) {</span>
+<span class="nc" id="L87">                logger.error(e.toString());</span>
+<span class="nc" id="L88">            }</span>
+<span class="nc" id="L89">            codeMap.remove(reg);</span>
+<span class="nc" id="L90">        }).start();</span>
+<span class="nc" id="L91">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

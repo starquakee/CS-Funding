@@ -174,9 +174,9 @@ function initRoseChart() {
           },
           data: [
             {value: 200, name: '高水平1'},
-            {value: 300, name: '高水平2'},
-            {value: 800, name: '高水平3'},
-            {value: 1500, name: '高水平4'},
+            {value: 900, name: '高水平2'},
+            {value: 1500, name: '高水平3'},
+            {value: 1990, name: '高水平4'},
           ]
         },
 

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarChartGenerator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.controller</a> &gt; <span class="el_source">BarChartGenerator.java</span></div><h1>BarChartGenerator.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.controller;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtils;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.CategoryItemLabelGenerator;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.ui.TextAnchor;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+
+<span class="nc" id="L21">public class BarChartGenerator {</span>
+  public static void generateBarChart(int[] data, String outputFilePath) {
+<span class="nc" id="L23">    DefaultCategoryDataset dataset = new DefaultCategoryDataset();</span>
+
+<span class="nc" id="L25">    String[] monthNames = {&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;};</span>
+<span class="nc bnc" id="L26" title="All 2 branches missed.">    for (int i = 0; i &lt; data.length; i++) {</span>
+<span class="nc" id="L27">      dataset.addValue(data[i], &quot;Value&quot;, monthNames[i]);</span>
+    }
+
+<span class="nc" id="L30">    JFreeChart chart = ChartFactory.createBarChart(&quot;Monthly Data&quot;, &quot;Month&quot;, &quot;Value&quot;, dataset);</span>
+<span class="nc" id="L31">    CategoryPlot plot = (CategoryPlot) chart.getPlot();</span>
+<span class="nc" id="L32">    BarRenderer renderer = (BarRenderer) plot.getRenderer();</span>
+
+    // Set custom colors for the bars
+<span class="nc" id="L35">    renderer.setSeriesPaint(0, new Color(0, 0, 255));</span>
+
+    // Show labels for each bar
+<span class="nc" id="L38">    renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator());</span>
+<span class="nc" id="L39">    renderer.setDefaultItemLabelsVisible(true);</span>
+<span class="nc" id="L40">    CategoryItemLabelGenerator generator = new StandardCategoryItemLabelGenerator();</span>
+<span class="nc" id="L41">    renderer.setDefaultItemLabelGenerator(generator);</span>
+<span class="nc" id="L42">    renderer.setDefaultPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12,</span>
+        TextAnchor.BOTTOM_CENTER));
+
+    // Customize axis labels and ticks
+<span class="nc" id="L46">    CategoryAxis domainAxis = plot.getDomainAxis();</span>
+<span class="nc" id="L47">    domainAxis.setTickLabelFont(new Font(&quot;Arial&quot;, Font.PLAIN, 12));</span>
+
+<span class="nc" id="L49">    NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();</span>
+<span class="nc" id="L50">    rangeAxis.setTickLabelFont(new Font(&quot;Arial&quot;, Font.PLAIN, 12));</span>
+
+    // Save the chart to a file
+    try {
+<span class="nc" id="L54">      ChartUtils.saveChartAsPNG(new File(outputFilePath), chart, 1200, 600);</span>
+<span class="nc" id="L55">      System.out.println(&quot;Bar chart saved to: &quot; + outputFilePath);</span>
+<span class="nc" id="L56">    } catch (IOException e) {</span>
+<span class="nc" id="L57">      e.printStackTrace();</span>
+<span class="nc" id="L58">    }</span>
+<span class="nc" id="L59">  }</span>
+
+  public static void main(String[] args) {
+<span class="nc" id="L62">    int[] data = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120};</span>
+<span class="nc" id="L63">    String outputFilePath = &quot;bar_chart.png&quot;;</span>
+<span class="nc" id="L64">    generateBarChart(data, outputFilePath);</span>
+<span class="nc" id="L65">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

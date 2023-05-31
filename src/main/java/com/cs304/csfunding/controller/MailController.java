@@ -37,7 +37,8 @@ public class MailController {
     public static String send(String mail) throws MessagingException, IOException {
         // read properties
         Properties props = new Properties();
-        try (InputStream in = Objects.requireNonNull(MailController.class.getClassLoader().getResource("mail.properties")).openStream()) {
+        try (InputStream in = Objects.requireNonNull(MailController.class.getClassLoader().getResource(
+                "mail.properties")).openStream()) {
             props.load(in);
         }
 

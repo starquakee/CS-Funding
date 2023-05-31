@@ -52,11 +52,8 @@ public class User_ResearchGroupControllerTest {
         user_researchGroupDTO.setResearchGroupUUID(2);
         ObjectMapper objectMapper = new ObjectMapper();
         String content = objectMapper.writeValueAsString(user_researchGroupDTO);
-
         // 设置fund_applyDTO的属性值
         when(user_researchGroupService.testInsert(user_researchGroupDTO)).thenReturn("");
-
-
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/add-user_group")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -64,13 +61,11 @@ public class User_ResearchGroupControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.data").value(""))
                 .andDo(print())
                 .andReturn();
-
         String responseJson = result.getResponse().getContentAsString();
         JsonNode jsonResponse = new ObjectMapper().readTree(responseJson);
         JsonNode dataNode = jsonResponse.get("data");
         System.out.println(1);
         System.out.println(dataNode);
-
     }
 
     @Test
@@ -93,6 +88,5 @@ public class User_ResearchGroupControllerTest {
         System.out.println(1);
         System.out.println(dataNode);
         assertEquals(dataNode.toString(), fundList.toString());
-
     }
 }

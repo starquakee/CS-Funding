@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResearchGroupService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.service</a> &gt; <span class="el_source">ResearchGroupService.java</span></div><h1>ResearchGroupService.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.service;
+
+import com.cs304.csfunding.api.ResearchGroupDTO;
+import com.cs304.csfunding.entity.ResearchGroup;
+import com.cs304.csfunding.mapper.ResearchGroupMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class ResearchGroupService {
+    private final ResearchGroupMapper researchGroupMapper;
+
+<span class="fc" id="L16">    public ResearchGroupService(ResearchGroupMapper researchGroupMapper) {</span>
+<span class="fc" id="L17">        this.researchGroupMapper = researchGroupMapper;</span>
+<span class="fc" id="L18">    }</span>
+
+    public String testInsert(ResearchGroupDTO researchGroupDTO) {
+<span class="nc" id="L21">        ResearchGroup researchGroup = new ResearchGroup();</span>
+<span class="nc" id="L22">        researchGroup.setTeacher(researchGroupDTO.getTeacher());</span>
+<span class="nc" id="L23">        researchGroup.setAllFund(researchGroupDTO.getAllFund());</span>
+<span class="nc" id="L24">        researchGroupMapper.addResearchGroup(researchGroup);</span>
+<span class="nc" id="L25">        return &quot;&quot;;</span>
+    }
+
+    public List&lt;ResearchGroup&gt; testQueryAll(){
+<span class="nc" id="L29">        return researchGroupMapper.getAllResearchGroup();</span>
+    }
+
+    public List&lt;ResearchGroup&gt; testQueryByName(String teacherName){
+<span class="nc" id="L33">        return researchGroupMapper.getAllResearchGroupByName(teacherName);</span>
+    }
+
+    public List&lt;ResearchGroup&gt; testQueryByUser(int UserID){
+<span class="nc" id="L37">        return researchGroupMapper.getResearchGroupByUser(UserID);</span>
+    }
+
+    public void addResearchGroupFund(int gid, float addon){
+<span class="nc" id="L41">        ResearchGroup researchGroup = researchGroupMapper.getResearchGroup(gid);</span>
+<span class="nc" id="L42">        researchGroupMapper.modifyGroupFundCnt(gid, researchGroup.getAllFund() + addon);</span>
+<span class="nc" id="L43">    }</span>
+
+    public ResearchGroup queryResearchGroupById(int gid){
+<span class="nc" id="L46">        return researchGroupMapper.getResearchGroup(gid);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>

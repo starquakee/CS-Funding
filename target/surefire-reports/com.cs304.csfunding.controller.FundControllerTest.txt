@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+Test set: com.cs304.csfunding.controller.FundControllerTest
+-------------------------------------------------------------------------------
+Tests run: 11, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.237 s <<< FAILURE! - in com.cs304.csfunding.controller.FundControllerTest
+testAddFund  Time elapsed: 0.085 s  <<< ERROR!
+org.springframework.web.util.NestedServletException: Request processing failed; nested exception is java.lang.NullPointerException
+	at com.cs304.csfunding.controller.FundControllerTest.testAddFund(FundControllerTest.java:50)
+Caused by: java.lang.NullPointerException
+	at com.cs304.csfunding.controller.FundControllerTest.testAddFund(FundControllerTest.java:50)
+

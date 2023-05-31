@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResearchGroup_FundController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CsFunding</a> &gt; <a href="index.source.html" class="el_package">com.cs304.csfunding.controller</a> &gt; <span class="el_source">ResearchGroup_FundController.java</span></div><h1>ResearchGroup_FundController.java</h1><pre class="source lang-java linenums">package com.cs304.csfunding.controller;
+import com.cs304.csfunding.api.ResearchGroup_FundDTO;
+import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.service.ResearchGroup_FundService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+<span class="fc" id="L14">public class ResearchGroup_FundController {</span>
+    @Autowired
+    private ResearchGroup_FundService researchGroup_fundService;
+
+
+    @PostMapping(value = &quot;/add-research-group_fund&quot;)
+    public Result testAddResearchGroupFund(@RequestBody ResearchGroup_FundDTO researchGroup_fundDTO) {
+<span class="fc" id="L21">        return new Result(researchGroup_fundService.testInsert(researchGroup_fundDTO));</span>
+    }
+
+    @GetMapping(&quot;/fund-research-group&quot;)
+    public Result getFundByResearchGroup(int gid){
+<span class="fc" id="L26">        return new Result(researchGroup_fundService.testQueryByResearchGroup(gid));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
