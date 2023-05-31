@@ -667,21 +667,26 @@ Run the package function of maven in terminal
 maven package
 ```
 Then it will produce a .jar file in target directory
+
 ![tupian](final-delivery-img/jar-back.png)
 
 ### Buildfile for project build
 #### 1 Frontend build
 Buildfile for our project's frontend building is /csfunding-frontend/dockerfile. package*.json including package.json and package-lock.json is involved to help building process.
+
 ![tupian](final-delivery-img/dockerfile_frontend.png)
 
 
 build result:
+
 ![tupian](final-delivery-img/artifacts-front.png)
 #### 2 Backend build
 Our project uses pom.xml for the whole backend building process. 
+
 ![tupian](final-delivery-img/buildfile.png)
 
 The artifacts are involved in below picture.
+
 ![tupian](final-delivery-img/build.png)
 
 ## Deployment
