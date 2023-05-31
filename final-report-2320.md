@@ -2,14 +2,18 @@
 
 ## Metrics
 
-- Lines of Code Number of modules/subprojects
+- Lines of Code
 
   ![1684755930384](final-delivery-img\1684755930384.png)
   L(J): Lines of Java
 
+  LOC: Lines of code
+
+- Number of modules/subprojects
+
   ![1684755974693](final-delivery-img\1684755974693.png)
 
-  LOC: Lines of code
+
 
 - Number of packages
 
