@@ -622,6 +622,20 @@ SpringBoot provides Java developers with a platform to get started with an auto 
 + Set up the context for project
 + Start service
 
+### How to run the build
+#### 1 Frontend
+Run the command below to build frontend
+```
+npm run build
+```
+#### 2 Backend
+Run the package function of maven in terminal
+```
+maven package
+```
+Then it will produce a .jar file in target directory
+![tupian](final-delivery-img/jar-back.png)
+
 ### Buildfile for project build
 #### 1 Frontend build
 Buildfile for our project's frontend building is /csfunding-frontend/dockerfile. package*.json including package.json and package-lock.json is involved to help building process.
