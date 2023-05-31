@@ -5,8 +5,11 @@
 - Lines of Code Number of modules/subprojects
 
   ![1684755930384](final-delivery-img\1684755930384.png)
+  L(J): Lines of Java
 
   ![1684755974693](final-delivery-img\1684755974693.png)
+
+  LOC: Lines of code
 
 - Number of packages
 
@@ -31,6 +34,8 @@ We could also use metrics to estimate the maintainability of software systems. P
   ![1684760274848](final-delivery-img\1684760274848.png)
 
   [team-project-2320/maintainability.pdf at main · sustech-cs304/team-project-2320 · GitHub](https://github.com/sustech-cs304/team-project-2320/blob/main/maintainability.pdf)
+  
+  this report is export by Code Climate
 
 ## Documentation for Users
 
