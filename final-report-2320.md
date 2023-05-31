@@ -592,7 +592,40 @@ get current user
 ```
 
 get user by phone number
+## Tests
+### Testing tools and tests kinds
+We do automated tests for our backend codes. And we use following 5 tools to come it true.
+1. JUnit: JUnit is a unit testing framework for Java that allows you to write and run repeatable tests. It provides annotations such as `@Test` `@BeforeEach` to define test methods and assertions to verify expected outcomes.
 
+2. Mockito: Mockito is a mocking framework for Java that allows to create mock objects and define their behavior. It is used for creating mock instances of dependencies and setting up expectations on their interactions.
+
+3. Spring's MockMvc: MockMvc is a testing framework provided by Spring for testing Spring MVC controllers without making actual HTTP requests. It allows to simulate HTTP requests and verify the responses. It is used for testing the behavior of each `ClassController` class.
+
+4. Hamcrest: Hamcrest is a library that provides a set of matchers for creating more readable assertions in tests. It enhances the readability of test assertions by providing a fluent API for expressing expected outcomes.
+
+5. ObjectMapper: ObjectMapper is a part of the Jackson library and is used for converting Java objects to JSON and vice versa. It is used in the code to convert objects to JSON strings for request payloads in the tests.
+
+These testing tools are commonly used in Java development to write unit tests and integration tests to ensure the correctness and robustness of the code.
+### Source code of related artifact for testing
+First, we inject mocks we need in our tests, and then use `@BeforeEach` to init mocks.
+
+![code1](/final-delivery-img/code1.png)
+Then, we new DTO we need and use "when thenReturn" to design pre-returned results of Service.
+Finally, we use mockMvc to perform the api and to assert the real results.
+
+![code1](/final-delivery-img/code2.png)
+![code1](/final-delivery-img/code3.png)
+We put our test codes in here: https://github.com/sustech-cs304/team-project-2320/tree/main/src/test/java/com/cs304/csfunding/controller
+### Test execution results
+We run our automated tests successfully as following:
+
+![code1](/final-delivery-img/result.png)
+![code1](/final-delivery-img/result1.png)
+![code1](/final-delivery-img/result2.png)
+![code1](/final-delivery-img/report1.png)
+And this is our tests report. In our tests, we meet some nullpointer problems, but in the actual use, they don't exist. Even so, in the end, our test coverage is over 80 percent, which means the test is working well.
+![code1](/final-delivery-img/report2.png)
+We push the report in here: https://github.com/sustech-cs304/team-project-2320/blob/main/target/site/jacoco/index.html
 ## Build
 ### Framework: SpringBoot
 SpringBoot provides Java developers with a platform to get started with an auto configurable production-grade Spring application. With it, developers can get started quickly without losing time on preparing and configuring their Spring application.
