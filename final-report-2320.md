@@ -594,14 +594,15 @@ get current user
 get user by phone number
 
 ## Build
-### Framework: SpringBoot
+### Framework/Technology/Tools/Plugins
+#### 1 Framework: SpringBoot
 SpringBoot provides Java developers with a platform to get started with an auto configurable production-grade Spring application. With it, developers can get started quickly without losing time on preparing and configuring their Spring application.
 ![tupian](/final-delivery-img/build.png)
-### Technology/Tools
+#### 2 Technology/Tools
 + Mysql: MySQL is a relational database management system. Databases are the essential data repository for all software applications.
 + Lombok: Lombok is a library that helps reduce boilerplate code in Java applications. It provides annotations that generate code during compilation time.
 ![tupian](/final-delivery-img/build-sql-lombok.png "views in pom.xml")
-### Plugins
+#### 3 Plugins
 + SpringBoot Maven Plugin: It provides a connection between Spring project and Maven. The connection helps the developer test and package the project with high efficiency.
 + Jacoco Maven Plugin: The Jacoco Maven Plugin is used to generate code coverage reports for unit tests. It provides a way to measure how much of the code is covered by unit tests. The plugin generates a report that shows the percentage of code that is covered by unit tests.
 
@@ -613,7 +614,18 @@ SpringBoot provides Java developers with a platform to get started with an auto 
 + Start service
 
 ### Buildfile for project build
-Our project uses pom.xml for the whole building process. The artifacts are involved in below picture.
+#### 1 Frontend build
+Buildfile for our project's frontend building is /csfunding-frontend/dockerfile. package*.json including package.json and package-lock.json is involved to help building process.
+![tupian](final-delivery-img/dockerfile_frontend.png)
+
+
+build result:
+![tupian](final-delivery-img/artifacts-front.png)
+#### 2 Backend build
+Our project uses pom.xml for the whole backend building process. 
+![tupian](final-delivery-img/buildfile.png)
+
+The artifacts are involved in below picture.
 ![tupian](final-delivery-img/build.png)
 
 ## Deployment
