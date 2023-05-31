@@ -54,7 +54,7 @@ public class ResearchGroup_FundControllerTest {
 
         when(researchGroup_fundService.testInsert(researchGroup_fundDTO)).thenReturn("");
 
-        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/register/research-group_fund")
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.post("/add-research-group_fund")
                 .content(content)
                 .contentType(MediaType.APPLICATION_JSON));
 

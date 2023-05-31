@@ -52,7 +52,7 @@
                     </div>
                     <div>
                       <el-form :inline="true" :model="ResearchGroupForm" class="demo-form-inline"
-                               style="margin-top: 10px">
+                               style="margin-top: 10px" v-if="userData.type==='管理员'">
 
                         <el-form-item label-width="1px">
                           <el-input v-model="ResearchGroupForm.ResearchGroupName"
@@ -63,7 +63,8 @@
 
 
                     </div>
-                    <el-button @click="onQuery" type="primary" style="margin-top: 25px">查询</el-button>
+                    <el-button @click="onQuery" type="primary" style="margin-top: 25px" v-if="userData.type==='管理员'">
+                      查询</el-button>
                   </div>
 
                 </el-header>
@@ -75,21 +76,6 @@
                         <el-button @click="FundByResearchGroup(props.row)" type="primary" size="small" plain>
                           查看
                         </el-button>
-                        <el-popconfirm
-                            confirm-button-text="确认"
-                            cancel-button-text="取消"
-                            :icon="InfoFilled"
-                            icon-color="#626AEF"
-                            title="确定删除此项?"
-                            @confirm="confirmDeleteResearchGroup"
-                            @cancel="cancelDeleteResearchGroup"
-                        >
-                          <template #reference>
-                            <el-button v-if="isAdmin" type="danger" size="small" plain>
-                              删除
-                            </el-button>
-                          </template>
-                        </el-popconfirm>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -112,28 +98,7 @@
                 </el-header>
                 <el-main>
                   <el-table :data="notices" style="width: 95%" class="GroupTable">
-                    <el-table-column prop="content" label="通知内容" width="210px"/>
-                    <el-table-column v-if="isAdmin">
-                      <el-button type="warning" size="small" plain>
-                        修改
-                      </el-button>
-                      <el-popconfirm
-                          confirm-button-text="确认"
-                          cancel-button-text="取消"
-                          :icon="InfoFilled"
-                          icon-color="#626AEF"
-                          title="确定删除此项?"
-                          @confirm="confirmDeleteNotice"
-                          @cancel="cancelDeleteNotice"
-                      >
-                        <template #reference>
-                          <el-button v-if="isAdmin" type="danger" size="small" plain>
-                            删除
-                          </el-button>
-                        </template>
-                      </el-popconfirm>
-                    </el-table-column>
-
+                    <el-table-column prop="content" label="通知内容" width="340px"/>
                   </el-table>
 
                 </el-main>
@@ -344,7 +309,7 @@
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="onSubmitFund">确认</el-button>
+                    <el-button type="success" @click="onSubmitFund(); fundDialogVisible = false">确认</el-button>
                     <el-button type="danger" @click="fundDialogVisible = false; ">
                       取消
                     </el-button>
@@ -373,7 +338,7 @@
         <el-form :model="EditResearchGroupForm" label-width="40px"
                  label-position="top" rules="EditResearchGroupFormRule">
           <el-form-item label="操作类型">
-            <el-select v-model="EditResearchGroupForm.Operation1" placeholder="经费名">
+            <el-select v-model="EditResearchGroupForm.Operation1">
               <el-option label="增加课题组" value="add"/>
               <el-option label="编辑课题组" value="edit"/>
             </el-select>
@@ -409,7 +374,7 @@
         </el-form>
         <template #footer>
                   <span class="dialog-footer">
-                    <el-button type="success" @click="editResearchGroupSubmit">确定</el-button>
+                    <el-button type="success" @click="editResearchGroupSubmit(); editResearchGroupVisible = false">确定</el-button>
                     <el-button type="danger" @click="editResearchGroupVisible = false">取消</el-button>
                   </span>
         </template>
@@ -550,11 +515,13 @@ import request from "@/util/request";
 import {Coin, Edit, InfoFilled, Search, UploadFilled, View} from '@element-plus/icons-vue'
 
 import {ElMessage, type FormInstance, type FormRules} from 'element-plus'
+import {sha256} from "js-sha256";
 
 const ruleFormRef = ref<FormInstance>()
 const {isAdmin, userName} = storeToRefs(useUserStore());
 
 const userData = reactive({
+  uuid: '',
   username: '',
   name: '',
   phoneNumber: '',
@@ -769,7 +736,7 @@ function checkInitialPass(rule: any, value: any, callback: any) {
     return callback(new Error('请输入原密码'))
   }
   setTimeout(() => {
-    if (value != userData.key) {
+    if (sha256(value) != userData.key) {
       callback(new Error('密码不正确'))
     } else {
       callback()
@@ -872,21 +839,43 @@ function getNotice() {
 
 function getResearchGroup() {
   researchGroup.splice(0);
-  request({
-    url: '/get-all-research-groups',
-    method: 'get'
-  }).then(r => {
-    r.data.data.forEach((val: any) => {
-      console.log(val)
-      let add = {
-        name: val.teacher,
-        sum: val.allFund,
-        uuid: val.uuid
-      }
-      researchGroup.push(add)
+  if (userData.type!="用户") {
+    request({
+      url: '/get-all-research-groups',
+      method: 'get'
+    }).then(r => {
+      r.data.data.forEach((val: any) => {
+        console.log(val)
+        let add = {
+          name: val.teacher,
+          sum: val.allFund,
+          uuid: val.uuid
+        }
+        researchGroup.push(add)
+      })
+      // console.log(researchGroup)
     })
-    // console.log(researchGroup)
-  })
+  }
+  else{
+    request({
+      url: '/get-research-groups-by-user',
+      method: 'get',
+      params: {
+        UserID: userData.uuid
+      }
+    }).then(r => {
+      r.data.data.forEach((val: any) => {
+        console.log(val)
+        let add = {
+          name: val.teacher,
+          sum: val.allFund,
+          uuid: val.uuid
+        }
+        researchGroup.push(add)
+      })
+      // console.log(researchGroup)
+    })
+  }
 }
 
 function getUserData() {
@@ -896,6 +885,7 @@ function getUserData() {
   }).then(res => {
     // console.log(res);
     let ud = res.data.data;
+    userData.uuid = ud.uuid;
     userData.username = ud.id;
     userData.name = ud.name;
     userData.key = ud.key;

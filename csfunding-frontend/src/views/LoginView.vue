@@ -72,12 +72,16 @@ import {useRoute} from "vue-router";
 import {useTokenStore} from "@/stores/token";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/stores/user";
-import type {FormInstance, FormRules} from 'element-plus'
+import type {FormInstance, FormRules} from 'element-plus';
+import {sha256} from "js-sha256";
 
 const ruleFormRef = ref<FormInstance>()
 
 const store = useTokenStore();
 const route = useRoute();
+
+let mailSha="";
+let reg = ''
 
 const loginForm = reactive({
   name: "",
@@ -111,20 +115,26 @@ function generateString(length: number) {
   return result;
 }
 
+function hash(string: any) {
+  return sha256(string);
+}
+
 async function sendEmail() {
   if (!isSend.value && registerForm.e_mail.includes('sustech.edu')) {
     // send mail
-
+    reg = generateString(10);
     axios.post("http://localhost:8081/register/send-mail", {
       mail: registerForm.e_mail,
-      reg: generateString(10)
-    }).then(res => console.log(res));
-    // isSend.value = true;
-    // for (let i = 60; i > 0; i--) {
-    //   sendTimeout.value = i;
-    //   await new Promise(f => setTimeout(f, 1000));
-    // }
-    // isSend.value = false;
+      reg: reg
+    }).then(res => {
+      mailSha = res.data.data;
+    });
+    isSend.value = true;
+    for (let i = 5; i > 0; i--) {
+      sendTimeout.value = i;
+      await new Promise(f => setTimeout(f, 1000));
+    }
+    isSend.value = false;
   }
 }
 
@@ -147,7 +157,7 @@ const checkValid = (rule: any, value: any, callback: any) => {
   }
   setTimeout(() => {
 
-    if (value != "12345") {
+    if (sha256(value) != mailSha) {
       callback(new Error('验证码错误'))
     } else {
       callback()
@@ -189,7 +199,17 @@ const submitForm = (formEl: FormInstance | undefined) => {
   formEl.validate((valid) => {
     if (valid) {
       console.log('submit!')
-      registerSuccess.value = true
+      let url = "http://localhost:8081/register/user";
+      axios.post(url, {
+        userId: registerForm.userId,
+        name: registerForm.name,
+        register_key: sha256(registerForm.register_key),
+        validCode: registerForm.valid_code,
+        reg: reg,
+      }).then(res=>{
+        console.log(res);
+        registerSuccess.value = true;
+      })
     } else {
       console.log('error submit!')
       return false
@@ -208,7 +228,10 @@ onMounted(() => {
 
 function doLogin() {
   let url = "http://localhost:8081/api/login";
-  axios.post(url, loginForm).then(res => {
+  axios.post(url, {
+    name: loginForm.name,
+    key: hash(loginForm.key)
+  }).then(res => {
     if (res.data.code === 200) {
       store.setToken(res.data.data.token);
       isAdmin.value = res.data.data.isAdmin;
@@ -218,28 +241,6 @@ function doLogin() {
       loginFail.value = true;
     }
   });
-  // router.push('/home')
-  // axios.post(url, form).then(resp => {
-  //
-  //     code = resp.data.code
-  //     person = resp.data.data.name
-  //     phoneNum = resp.data.data.phoneNum
-  //     isAdmin = resp.data.data.isAdmin
-  //
-  //     console.log(code, person)
-  //
-  //     if (code === 200) {
-  //         router.push({
-  //             path: '/home', query: {
-  //                 username: form.name,
-  //                 name: person,
-  //                 phoneNumber: phoneNum,
-  //                 isAdmin: isAdmin
-  //             }
-  //         });
-  //     }
-  // })
-
 
 }
 

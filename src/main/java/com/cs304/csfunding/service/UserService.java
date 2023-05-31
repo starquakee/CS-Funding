@@ -1,5 +1,6 @@
 package com.cs304.csfunding.service;
 
+import com.cs304.csfunding.api.RegisterDTO;
 import com.cs304.csfunding.api.UserDTO;
 import com.cs304.csfunding.entity.User;
 import com.cs304.csfunding.mapper.UserMapper;
@@ -25,6 +26,20 @@ public class UserService {
 
     public UserService(UserMapper userMapper) {
         this.userMapper = userMapper;
+    }
+
+    public boolean checkReg(String reg, String code){
+        return codeMap.containsKey(reg) && code.equals(codeMap.get(reg));
+    }
+
+    public void addUser(RegisterDTO registerDTO){
+        User user = new User();
+        user.setID(registerDTO.getUserId());
+        user.setName(registerDTO.getName());
+        user.setKey(registerDTO.getRegister_key());
+        user.setPhoneNum("123456");
+        user.setIsAdmin(false);
+        userMapper.addUser(user);
     }
 
     public String testInsert(UserDTO userDTO) {

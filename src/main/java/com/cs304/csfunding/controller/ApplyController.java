@@ -91,8 +91,8 @@ public class ApplyController {
             Apply apply = applies.get(0);
             Fund fund = fundService.queryByID(apply.getFundID());
             FundDTO fd = new FundDTO();
-            fd.setBalance(fund.getBalance());
-            fd.setSum(fund.getSum() - apply.getMoney());
+            fd.setBalance(fund.getBalance() - apply.getMoney());
+            fd.setSum(fund.getSum());
             fd.setUuid(fund.getUuid());
             fd.setEndTime(fund.getEndTime());
             fd.setFundNumber(fund.getFundNumber());

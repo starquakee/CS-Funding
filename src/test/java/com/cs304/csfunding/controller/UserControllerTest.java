@@ -40,13 +40,13 @@ public class UserControllerTest {
     public void testAddUser() throws Exception {
         UserDTO userDTO = new UserDTO(); // Create a UserDTO object with test data
 
-        when(userService.testInsert(userDTO)).thenReturn("success");
+        when(userService.testInsert(userDTO)).thenReturn("");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/user")
+        mockMvc.perform(MockMvcRequestBuilders.post("/add-user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(userDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("success"));
+                .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     @Test

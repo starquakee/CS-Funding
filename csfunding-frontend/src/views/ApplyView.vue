@@ -126,7 +126,7 @@
 
   <el-dialog v-model="ViewDialogVisible" title="查看申请" width="30%" draggable class="ApplyDialog">
 
-      <div>经费信息：{{ FundNumber }}-{{ FundName }}</div>
+      <div>经费信息：{{ FundName }}</div>
       <br>
       <div>申请类型：{{ Type1 }}-{{ Type2 }}</div>
       <br>
@@ -390,29 +390,29 @@ interface Apply {
 
 const typeOption = reactive([
   {
-    value: '大类1',
-    label: '大类1',
+    value: '维修（护）费',
+    label: '维修（护）费',
     children: [
-      {value: '小类1-1', label: '小类1-1'},
-      {value: '小类1-2', label: '小类1-2'},
-      {value: '小类1-3', label: '小类1-3'},
+      {value: '房屋建筑物修缮费', label: '房屋建筑物修缮费'},
+      {value: '仪器设备维修费', label: '仪器设备维修费'},
+      {value: '公用设施维修', label: '公用设施维修'},
     ]
   }, {
-    value: '大类2',
-    label: '大类2',
+    value: '无形资产',
+    label: '无形资产',
     children: [
-      {value: '小类2-1', label: '小类2-1'},
-      {value: '小类2-2', label: '小类2-2'},
-      {value: '小类2-3', label: '小类2-3'},
-      {value: '小类2-4', label: '小类2-4'},
+      {value: '专利权', label: '专利权'},
+      {value: '非专利技术', label: '非专利技术'},
+      {value: '著作权', label: '著作权'},
+      {value: '商标', label: '商标'},
     ]
   },
   {
-    value: '大类3',
-    label: '大类3',
+    value: '劳务费',
+    label: '劳务费',
     children: [
-      {value: '小类3-1', label: '小类3-1'},
-      {value: '小类3-2', label: '小类3-2'},
+      {value: '工资', label: '工资'},
+      {value: '五险一金', label: '五险一金'},
     ]
   },
 ])

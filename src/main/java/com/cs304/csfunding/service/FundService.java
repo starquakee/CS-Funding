@@ -24,7 +24,7 @@ public class FundService {
         Fund ff = new Fund();
         ff.setFundNumber(fundDTO.getFundNumber());
         ff.setFundName(fundDTO.getFundName());
-        ff.setBalance(0);
+        ff.setBalance(fundDTO.getSum());
         ff.setSum(fundDTO.getSum());
         ff.setRemainDays(0);
         ff.setStartTime(fundDTO.getStartTime());

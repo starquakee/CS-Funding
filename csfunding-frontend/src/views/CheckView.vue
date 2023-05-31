@@ -48,7 +48,7 @@
 
   <div style="height: 50px">
     <div style="height: 8px"></div>
-    <el-button type="primary" @click="SubmitApply; ApplyDialogVisible=true">
+    <el-button type="primary" @click="SubmitApply(); ApplyDialogVisible=true">
       新增申请
     </el-button>
   </div>
@@ -67,10 +67,10 @@
 
         <template #default="props">
 
-          <el-button @click="ClickOnCheck; CheckDialogVisible = true" type="primary" size="small" plain>
+          <el-button @click="ClickOnCheck(); CheckDialogVisible = true" type="primary" size="small" plain>
             查看
           </el-button>
-          <el-button @click="ClickOnCheck; CheckDialogVisible = true" type="warning" size="small" plain v-if="props.row.state === 'fail'">
+          <el-button @click="ClickOnCheck(); CheckDialogVisible = true" type="warning" size="small" plain v-if="props.row.state === 'fail'">
             重新提交
           </el-button>
         </template>

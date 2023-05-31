@@ -1,7 +1,9 @@
 package com.cs304.csfunding.controller;
 
 import com.cs304.csfunding.api.MailSendDTO;
+import com.cs304.csfunding.api.Result;
 import com.cs304.csfunding.service.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,10 +28,10 @@ public class MailController {
     }
 
     @PostMapping("/register/send-mail")
-    public String sendMail(@RequestBody MailSendDTO sendDTO) throws MessagingException, IOException {
+    public Result sendMail(@RequestBody MailSendDTO sendDTO) throws MessagingException, IOException {
         String code = send(sendDTO.getMail());
         userService.addMailCode(sendDTO.getReg(), code);
-        return "OK";
+        return new Result(DigestUtils.sha256Hex(code));
     }
 
     public static String send(String mail) throws MessagingException, IOException {

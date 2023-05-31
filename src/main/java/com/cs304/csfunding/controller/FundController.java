@@ -1,9 +1,6 @@
 package com.cs304.csfunding.controller;
 
-import com.cs304.csfunding.api.FundDTO;
-import com.cs304.csfunding.api.FundInsertDTO;
-import com.cs304.csfunding.api.ResearchGroup_FundDTO;
-import com.cs304.csfunding.api.Result;
+import com.cs304.csfunding.api.*;
 import com.cs304.csfunding.entity.Apply;
 import com.cs304.csfunding.entity.Fund;
 import com.cs304.csfunding.service.ApplyService;
@@ -120,7 +117,7 @@ public class FundController {
             List<Apply> applies = applyService.testQueryByFundID(uuid);
             Map<Integer, Integer> map = new HashMap<>();
             for (int i = 0; i < 12; i++) {
-                map.put(i+1, 0);
+                map.put(i + 1, 0);
             }
             long timeMill = System.currentTimeMillis();
 
@@ -131,23 +128,25 @@ public class FundController {
             int applyMonth;
 
             for (Apply apply : applies) {
+                if (!apply.getState().equals("pass"))
+                    continue;
                 String time = apply.getTime();
                 // Convert the time string to a Date object
                 calendar.setTimeInMillis(Long.parseLong(time));
-                if (calendar.get(Calendar.YEAR)==currentYear-1 && calendar.get(Calendar.MONTH)+1>currentMonth) {
+                if (calendar.get(Calendar.YEAR) == currentYear - 1 && calendar.get(Calendar.MONTH) + 1 > currentMonth) {
                     applyMonth = calendar.get(Calendar.MONTH) + 1;
-                } else if (calendar.get(Calendar.YEAR)==currentYear) {
+                } else if (calendar.get(Calendar.YEAR) == currentYear) {
                     applyMonth = calendar.get(Calendar.MONTH) + 1;
                 } else {
                     continue;
                 }
-                map.put(applyMonth, map.get(applyMonth)+apply.getMoney());
+                map.put(applyMonth, map.get(applyMonth) + apply.getMoney());
             }
             List<Map<String, Integer>> res = new ArrayList<>();
             for (int i = 0; i < 12; i++) {
                 Map<String, Integer> m = new HashMap<>();
-                m.put("name", i+1);
-                m.put("value", map.get(i+1));
+                m.put("name", (i + currentMonth) % 12 + 1);
+                m.put("value", map.get((i + currentMonth) % 12 + 1));
                 res.add(m);
             }
             return new Result(200, "success", res);
@@ -155,7 +154,7 @@ public class FundController {
     }
 
     @GetMapping("/get-excel")
-    public Result getExcel() throws IOException {
+    public Result getExcel(@RequestParam String path) throws IOException {
         Workbook workbook = new XSSFWorkbook();
 
         Sheet sheet = workbook.createSheet("多项经费使用一览表");
@@ -167,10 +166,9 @@ public class FundController {
         dataRow = sheet.createRow(1);
         dataCell = dataRow.createCell(0);
         dataCell.setCellValue("序号");
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("经费编号");
+
         dataCell = dataRow.createCell(2);
-        dataCell.setCellValue("经费名称");
+        dataCell.setCellValue("经费名称（编号）");
         dataCell = dataRow.createCell(3);
         dataCell.setCellValue("经费授权有效期");
         dataCell = dataRow.createCell(4);
@@ -180,101 +178,74 @@ public class FundController {
         dataCell = dataRow.createCell(6);
         dataCell.setCellValue("经费余额");
         dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("剩余时间天数");
-        dataCell = dataRow.createCell(8);
-        dataCell.setCellValue("当前执行率");
-        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("当前是否达标");
 
         dataRow = sheet.createRow(2);
         dataCell = dataRow.createCell(0);
         dataCell.setCellValue(1);
         dataCell = dataRow.createCell(2);
-        dataCell.setCellValue("国自然（Y012300XX）");
+        dataCell.setCellValue("高水平1（G000XX）");
         dataCell = dataRow.createCell(3);
-        dataCell.setCellValue("2019.01.01-2020.01.01");
+        dataCell.setCellValue("2022.05.08-2023.06.28");
         dataCell = dataRow.createCell(4);
-        dataCell.setCellValue("300.0");
+        dataCell.setCellValue("500");
         dataCell = dataRow.createCell(5);
-        dataCell.setCellValue("100.0");
+        dataCell.setCellValue("300");
         dataCell = dataRow.createCell(6);
-        dataCell.setCellValue("200.0");
+        dataCell.setCellValue("200");
         dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("0");
-        dataCell = dataRow.createCell(8);
-        dataCell.setCellValue("33%");
-        dataCell = dataRow.createCell(9);
-        dataCell.setCellValue("否");
+        dataCell.setCellValue("是");
 
         dataRow = sheet.createRow(3);
         dataCell = dataRow.createCell(0);
         dataCell.setCellValue(2);
         dataCell = dataRow.createCell(2);
-        dataCell.setCellValue("中央财政支持地方高校经费（Y120XX）");
+        dataCell.setCellValue("高水平2（G001XX）");
         dataCell = dataRow.createCell(3);
-        dataCell.setCellValue("2020.03.01-2021.02.02");
+        dataCell.setCellValue("2023.05.29-2023.06.28");
         dataCell = dataRow.createCell(4);
-        dataCell.setCellValue("100.0");
+        dataCell.setCellValue("1000");
         dataCell = dataRow.createCell(5);
-        dataCell.setCellValue("80.0");
+        dataCell.setCellValue("700");
         dataCell = dataRow.createCell(6);
-        dataCell.setCellValue("20.0");
+        dataCell.setCellValue("300");
         dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("340");
-        dataCell = dataRow.createCell(8);
-        dataCell.setCellValue("80%");
-        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("是");
 
         dataRow = sheet.createRow(4);
         dataCell = dataRow.createCell(0);
         dataCell.setCellValue(3);
         dataCell = dataRow.createCell(2);
-        dataCell.setCellValue("高水平（G000XX）");
+        dataCell.setCellValue("高水平3（G002XX）");
         dataCell = dataRow.createCell(3);
-        dataCell.setCellValue("2020.05.01-2020.10.03");
+        dataCell.setCellValue("2023.05.15-2023.06.21");
         dataCell = dataRow.createCell(4);
-        dataCell.setCellValue("500.0");
+        dataCell.setCellValue("1500");
         dataCell = dataRow.createCell(5);
-        dataCell.setCellValue("200.0");
+        dataCell.setCellValue("700");
         dataCell = dataRow.createCell(6);
-        dataCell.setCellValue("300.0");
+        dataCell.setCellValue("800");
         dataCell = dataRow.createCell(7);
-        dataCell.setCellValue("220");
-        dataCell = dataRow.createCell(8);
-        dataCell.setCellValue("40%");
-        dataCell = dataRow.createCell(9);
-        dataCell.setCellValue("是");
-
-        dataRow = sheet.createRow(10);
-        dataCell = dataRow.createCell(0);
-        dataCell.setCellValue("合计");
-        dataCell = dataRow.createCell(4);
-        dataCell.setCellValue("900.0");
-        dataCell = dataRow.createCell(5);
-        dataCell.setCellValue("380.0");
-        dataCell = dataRow.createCell(6);
-        dataCell.setCellValue("520.0");
-        dataCell = dataRow.createCell(8);
-        dataCell.setCellValue("42%");
-        dataCell = dataRow.createCell(9);
         dataCell.setCellValue("否");
 
-        dataRow = sheet.createRow(12);
+        dataRow = sheet.createRow(5);
         dataCell = dataRow.createCell(0);
-        dataCell.setCellValue("备注");
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("1、经费中只要有一个经费不达标，则为不达标");
+        dataCell.setCellValue(3);
+        dataCell = dataRow.createCell(2);
+        dataCell.setCellValue("高水平4（G003XX）");
+        dataCell = dataRow.createCell(3);
+        dataCell.setCellValue("2023.05.15-2023.6.21");
+        dataCell = dataRow.createCell(4);
+        dataCell.setCellValue("2000");
+        dataCell = dataRow.createCell(5);
+        dataCell.setCellValue("500");
+        dataCell = dataRow.createCell(6);
+        dataCell.setCellValue("1500");
+        dataCell = dataRow.createCell(7);
+        dataCell.setCellValue("否");
 
-        dataRow = sheet.createRow(13);
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("2、提醒：当剩余天数<60天&剩余金额>20&执行率<");
 
-        dataRow = sheet.createRow(14);
-        dataCell = dataRow.createCell(1);
-        dataCell.setCellValue("部份经费如有三年期使用，再细分为每年可使用的额度");
-
-        FileOutputStream fileOut = new FileOutputStream("data2.xlsx");
+        FileOutputStream fileOut = new FileOutputStream("C:\\Users\\Xieyudong\\Desktop\\"+path+"\\data.xlsx");
         workbook.write(fileOut);
         fileOut.close();
         return new Result(200);

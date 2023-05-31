@@ -50,11 +50,11 @@ public class ResearchGroupControllerTest {
 
         when(researchGroupService.testInsert(researchGroupDTO)).thenReturn("success");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/researchgroup")
+        mockMvc.perform(MockMvcRequestBuilders.post("/add-researchgroup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(researchGroupDTO)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("success"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value("success"));
     }
 
     @Test

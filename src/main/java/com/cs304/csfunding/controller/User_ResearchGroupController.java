@@ -27,7 +27,7 @@ public class User_ResearchGroupController {
     }
 
     @PostMapping("/delete-user_group")
-    public Result removeUserGroup(@RequestParam User_ResearchGroupDTO user_researchGroupDTO) {
+    public Result removeUserGroup(@RequestBody User_ResearchGroupDTO user_researchGroupDTO) {
         return new Result(user_researchGroupService.delete(user_researchGroupDTO));
     }
 
